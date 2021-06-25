@@ -13,6 +13,7 @@ type Config struct {
 
 type Node struct {
 	Name           string `json:"name"`
+	Plan           string `json:"plan"`
 	ManagerAddress string `json:"manager_address"`
 	NodeAddress    string `json:"node_address"`
 	UnlockToken    string `json:"unlock_token"`

@@ -57,7 +57,7 @@ func (a *App) WriteConfig() error {
 	return a.config.Store(a.configFilePath)
 }
 
-func (a *App) NodePut(node *Node) error {
+func (a *App) nodePut(node *Node) error {
 	a.config.Nodes[node.Name] = node
 	return a.config.Store(a.configFilePath)
 }

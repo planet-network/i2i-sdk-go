@@ -55,5 +55,4 @@ func cfgList(cmd *cobra.Command, args []string) {
 			fmt.Printf("    %s\n", k)
 		}
 	}
-
 }
