@@ -5,9 +5,10 @@ import (
 )
 
 const (
-	flagSkipInitialize = "skip-initialize"
-	flagInitializeAs   = "initialize-as"
-	flagHosting        = "hosting"
+	flagInitializeAs = "initialize-as"
+	flagHosting      = "hosting"
+	flagName         = "name"
+	flagPlan         = "plan"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -42,29 +43,24 @@ func createManagerCommand() *cobra.Command {
 		Run:   nil,
 	}
 
-	orderCmd := &cobra.Command{
-		Use:   "order [name]",
-		Short: "orders new i2i",
-		Long:  `orders new i2i`,
-		Run:   order,
+	quickOrderCmd := &cobra.Command{
+		Use:   "quick-order",
+		Short: "orders and initializes i2i",
+		Long:  `orders and initializes i2i`,
+		Run:   managerQuickOrder,
 	}
 
-	orderCmd.Flags().Bool(flagSkipInitialize, false, "skip i2i initialization, order only")
-	orderCmd.Flags().String(flagInitializeAs, "DME", "initialize ordered i2i as [DME|DORG]")
-	orderCmd.Flags().String(flagHosting, "", "hosting provider address")
+	quickOrderCmd.Flags().String(flagInitializeAs, "DME", "initialize ordered i2i as [DME|DORG]")
+	quickOrderCmd.Flags().String(flagName, "", "local name of ordered i2i instance")
+	quickOrderCmd.MarkFlagRequired(flagName)
 
-	plansCmd := &cobra.Command{
-		Use:   "plans",
-		Short: "show available plans",
-		Long:  `show available plans`,
-		Run:   managerPlans,
-	}
+	quickOrderCmd.Flags().String(flagHosting, "", "hosting provider address")
+	quickOrderCmd.MarkFlagRequired(flagHosting)
 
-	plansCmd.Flags().String(flagHosting, "", "hosting provider address")
-	plansCmd.MarkFlagRequired(flagHosting)
+	quickOrderCmd.Flags().String(flagPlan, "", "hosting plan to use")
+	quickOrderCmd.MarkFlagRequired(flagPlan)
 
-	managerCmd.AddCommand(orderCmd)
-	managerCmd.AddCommand(plansCmd)
+	managerCmd.AddCommand(quickOrderCmd)
 
 	return managerCmd
 }
@@ -84,7 +80,24 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgInit,
 	}
 
+	setActive := &cobra.Command{
+		Use:   "set-active [node]",
+		Short: "set active node",
+		Long:  `set active node`,
+		Args:  cobra.ExactArgs(1),
+		Run:   cfgSetActive,
+	}
+
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list configured nodes",
+		Long:  `list configured nodes`,
+		Run:   cfgList,
+	}
+
 	cfgCmd.AddCommand(initCmd)
+	cfgCmd.AddCommand(setActive)
+	cfgCmd.AddCommand(listCmd)
 
 	return cfgCmd
 }

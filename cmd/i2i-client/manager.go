@@ -1,32 +1,18 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/planet-platform/i2i-sdk-go/manager"
+	"github.com/planet-platform/i2i-sdk-go/app"
 	"github.com/spf13/cobra"
 )
 
-func register(cmd *cobra.Command, args []string) {
-
-}
-
-func order(cmd *cobra.Command, args []string) {
-
-}
-
-func managerPlans(cmd *cobra.Command, args []string) {
-	hostingAddr, err := cmd.Flags().GetString(flagHosting)
+func managerQuickOrder(cmd *cobra.Command, args []string) {
+	appHandler, err := app.NewApp()
 	if err != nil {
 		fail(err)
 	}
 
-	managerClient := manager.NewClient(manager.ClientOpt{Address: hostingAddr})
-
-	plans, err := managerClient.PlanList()
-	if err != nil {
+	if err := appHandler.LoadConfig(); err != nil {
 		fail(err)
 	}
 
-	fmt.Println(plans)
 }

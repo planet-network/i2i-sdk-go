@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -25,6 +26,7 @@ func NewApp() (*App, error) {
 	}
 
 	return &App{
+		config:         Config{Nodes: map[string]*Node{}},
 		workdir:        filepath.Join(homeDir, i2iClientDir),
 		nodesDataPath:  filepath.Join(homeDir, i2iClientDir, nodesDirName),
 		configFilePath: filepath.Join(homeDir, i2iClientDir, configFilename),
@@ -40,5 +42,30 @@ func (a *App) Initialize() error {
 		return err
 	}
 
+	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) LoadConfig() error {
+	return loadConfig(a.configFilePath, &a.config)
+}
+
+func (a *App) Config() Config {
+	return a.config
+}
+
+func (a *App) WriteConfig() error {
+	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) NodePut(node *Node) error {
+	a.config.Nodes[node.Name] = node
+	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) NodeSetDefault(name string) error {
+	if _, ok := a.config.Nodes[name]; !ok {
+		return fmt.Errorf("not found")
+	}
+	a.config.SelectedNode = name
 	return a.config.Store(a.configFilePath)
 }

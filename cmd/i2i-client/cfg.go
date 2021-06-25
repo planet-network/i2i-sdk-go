@@ -19,3 +19,41 @@ func cfgInit(cmd *cobra.Command, args []string) {
 
 	fmt.Println("done")
 }
+
+func cfgSetActive(cmd *cobra.Command, args []string) {
+	appHandler, err := app.NewApp()
+	if err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.LoadConfig(); err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.NodeSetDefault(args[0]); err != nil {
+		fail(err)
+	}
+}
+
+func cfgList(cmd *cobra.Command, args []string) {
+	appHandler, err := app.NewApp()
+	if err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.LoadConfig(); err != nil {
+		fail(err)
+	}
+
+	cfg := appHandler.Config()
+
+	fmt.Println("nodes:")
+	for k, _ := range cfg.Nodes {
+		if k == cfg.SelectedNode {
+			fmt.Printf(" -> %s\n", k)
+		} else {
+			fmt.Printf("    %s\n", k)
+		}
+	}
+
+}

@@ -12,22 +12,20 @@ type Config struct {
 }
 
 type Node struct {
+	Name           string `json:"name"`
 	ManagerAddress string `json:"manager_address"`
 	NodeAddress    string `json:"node_address"`
 	UnlockToken    string `json:"unlock_token"`
 	APIToken       string `json:"api_token"`
 }
 
-func LoadConfig(filename string) (*Config, error) {
+func loadConfig(filename string, config *Config) error {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	config := &Config{}
-	err = json.Unmarshal(data, config)
-
-	return config, err
+	return json.Unmarshal(data, config)
 }
 
 func (c *Config) Store(filename string) error {
