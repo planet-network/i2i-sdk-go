@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/planet-platform/i2i-sdk-go/client"
 )
 
 const (
@@ -57,7 +59,35 @@ func (a *App) WriteConfig() error {
 	return a.config.Store(a.configFilePath)
 }
 
-func (a *App) nodePut(node *Node) error {
+func (a *App) NodeUpdate(node *Node) error {
+	a.config.Nodes[node.Name] = node
+	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) keychainPath(name string) string {
+	return filepath.Join(a.workdir, name, "keychain.i2i")
+}
+
+func (a *App) NodeCreateWithKeychain(node *Node) error {
+	if _, ok := a.config.Nodes[node.Name]; ok {
+		return fmt.Errorf("already exist")
+	}
+
+	nodeDir := filepath.Join(a.workdir, node.Name)
+	if err := os.Mkdir(nodeDir, 0700); err != nil {
+		return err
+	}
+
+	keychain, err := client.GenerateFullKeychain()
+	if err != nil {
+		return err
+	}
+
+	if err := keychain.SaveToFileSafe(a.keychainPath(node.Name)); err != nil {
+		return err
+	}
+	node.Keychain = keychain
+
 	a.config.Nodes[node.Name] = node
 	return a.config.Store(a.configFilePath)
 }

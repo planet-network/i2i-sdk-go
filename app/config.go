@@ -3,6 +3,8 @@ package app
 import (
 	"encoding/json"
 	"io/ioutil"
+
+	"github.com/planet-platform/i2i-sdk-go/client"
 )
 
 // Config contains i2i parameters
@@ -11,13 +13,25 @@ type Config struct {
 	Nodes        map[string]*Node `json:"address"`
 }
 
-type Node struct {
-	Name           string `json:"name"`
+type NodeHosting struct {
 	Plan           string `json:"plan"`
 	ManagerAddress string `json:"manager_address"`
-	NodeAddress    string `json:"node_address"`
 	UnlockToken    string `json:"unlock_token"`
-	APIToken       string `json:"api_token"`
+}
+
+type Node struct {
+	// unique name of the node
+	Name string `json:"-"`
+	// keychain of the i2i node
+	Keychain *client.FullKeychain `json:"-"`
+	// i2i metadata, storable on the disk
+	Meta NodeMeta `json:"meta"`
+}
+
+type NodeMeta struct {
+	Hosting     NodeHosting `json:"hosting"`
+	NodeAddress string      `json:"node_address"`
+	APIToken    string      `json:"api_token"`
 }
 
 func loadConfig(filename string, config *Config) error {

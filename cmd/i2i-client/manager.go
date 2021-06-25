@@ -30,18 +30,23 @@ func managerQuickOrder(cmd *cobra.Command, args []string) {
 		fail(err)
 	}
 
-	initializeAs, err := cmd.Flags().GetString(flagInitializeAs)
-	if err != nil {
-		fail(err)
+	//initializeAs, err := cmd.Flags().GetString(flagInitializeAs)
+	//if err != nil {
+	//	fail(err)
+	//}
+
+	node := &app.Node{
+		Meta: app.NodeMeta{
+			Hosting: app.NodeHosting{
+				Plan:           nodePlan,
+				ManagerAddress: hostingAddr,
+			},
+		},
+		Name: nodeName,
 	}
 
-	node := app.Node{
-		Plan:           nodePlan,
-		Name:           nodeName,
-		ManagerAddress: hostingAddr,
-		NodeAddress:    "",
-		UnlockToken:    "",
-		APIToken:       "",
+	if err := appHandler.NodeCreateWithKeychain(node); err != nil {
+		fail(err)
 	}
 
 }
