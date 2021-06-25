@@ -10,7 +10,7 @@ import (
 // Config contains i2i parameters
 type Config struct {
 	SelectedNode string           `json:"selected_node"`
-	Nodes        map[string]*Node `json:"address"`
+	Nodes        map[string]*Node `json:"nodes"`
 }
 
 type NodeHosting struct {
@@ -48,6 +48,5 @@ func (c *Config) Store(filename string) error {
 	if err != nil {
 		return err
 	}
-
 	return ioutil.WriteFile(filename, data, 0600)
 }
