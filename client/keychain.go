@@ -20,6 +20,14 @@ type FullKeychain struct {
 	SignaturePrivateKey Key64
 }
 
+type KeychainListenerProvider struct {
+	NetworkPublicKey   string `json:"network_public_key"`
+	NetworkPrivateKey  string `json:"network_private_key"`
+	StoragePublicKey   string `json:"storage_public_key"`
+	StoragePrivateKey  string `json:"storage_private_key"`
+	SignaturePublicKey string `json:"signature_public_key"`
+}
+
 // GenerateFullKeychain creates keychain with new keys
 func GenerateFullKeychain() (*FullKeychain, error) {
 	signer, err := GenerateSigner()

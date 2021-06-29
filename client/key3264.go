@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/hex"
 	"fmt"
 )
@@ -88,4 +89,16 @@ func Key64FromString(raw string) (k Key64, err error) {
 
 	copy(k[:], decoded)
 	return k, nil
+}
+
+// RandomKey32 returns key with random data
+func RandomKey32() (k Key32) {
+	_, _ = rand.Read(k[:])
+	return k
+}
+
+// RandomString32 returns 32 byte key stored in 64 character hex string
+func RandomString32() string {
+	k := RandomKey32()
+	return k.String()
 }

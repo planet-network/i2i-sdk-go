@@ -9,6 +9,7 @@ const (
 	flagHosting      = "hosting"
 	flagName         = "name"
 	flagPlan         = "plan"
+	flagPassword     = "password"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -59,6 +60,8 @@ func createManagerCommand() *cobra.Command {
 
 	quickOrderCmd.Flags().String(flagPlan, "", "hosting plan to use")
 	quickOrderCmd.MarkFlagRequired(flagPlan)
+
+	quickOrderCmd.Flags().String(flagPassword, "password_0123456789", "client password")
 
 	managerCmd.AddCommand(quickOrderCmd)
 

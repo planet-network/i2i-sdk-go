@@ -17,6 +17,8 @@ type NodeHosting struct {
 	Plan           string `json:"plan"`
 	ManagerAddress string `json:"manager_address"`
 	UnlockToken    string `json:"unlock_token"`
+	ClientID       string `json:"client_id"`
+	Password       string `json:"password"`
 }
 
 type Node struct {
