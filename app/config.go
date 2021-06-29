@@ -23,7 +23,9 @@ type NodeHosting struct {
 
 type Node struct {
 	// unique name of the node
-	Name string `json:"-"`
+	Name string `json:"name"`
+	// HasKeychain describes if node has keychain set
+	HasKeychain bool `json:"has_keychain"`
 	// keychain of the i2i node
 	Keychain *client.FullKeychain `json:"-"`
 	// i2i metadata, storable on the disk

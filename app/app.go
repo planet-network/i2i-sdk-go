@@ -87,6 +87,7 @@ func (a *App) NodeCreateWithKeychain(node *Node) error {
 		return err
 	}
 	node.Keychain = keychain
+	node.HasKeychain = true
 
 	a.config.Nodes[node.Name] = node
 	return a.config.Store(a.configFilePath)
@@ -98,4 +99,21 @@ func (a *App) NodeSetDefault(name string) error {
 	}
 	a.config.SelectedNode = name
 	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) NodeDefaultWithKeychain() (*Node, error) {
+	node, ok := a.config.Nodes[a.config.SelectedNode]
+	if !ok {
+		return nil, fmt.Errorf("node %q not found", a.config.SelectedNode)
+	}
+
+	if node.HasKeychain {
+		keychain, err := client.LoadFullKeychainFromFile(a.keychainPath(a.config.SelectedNode))
+		if err != nil {
+			return nil, err
+		}
+		node.Keychain = keychain
+	}
+
+	return node, nil
 }

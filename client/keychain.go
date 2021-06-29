@@ -63,3 +63,17 @@ func (k *FullKeychain) SaveToFileSafe(path string) error {
 
 	return ioutil.WriteFile(path, raw, 0600)
 }
+
+func LoadFullKeychainFromFile(path string) (*FullKeychain, error) {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	keychain := &FullKeychain{}
+	if err := json.Unmarshal(data, keychain); err != nil {
+		return nil, err
+	}
+
+	return keychain, nil
+}

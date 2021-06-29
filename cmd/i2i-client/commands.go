@@ -23,6 +23,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createManagerCommand())
 	rootCmd.AddCommand(createCfgCommand())
 	rootCmd.AddCommand(createTuiCommand())
+	rootCmd.AddCommand(createStateCommand())
 
 	return rootCmd
 }
@@ -98,9 +99,28 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgList,
 	}
 
+	showCmd := &cobra.Command{
+		Use:   "show [name]",
+		Short: "show details about node",
+		Long:  `show details about node`,
+		Run:   cfgShow,
+	}
+
 	cfgCmd.AddCommand(initCmd)
 	cfgCmd.AddCommand(setActive)
 	cfgCmd.AddCommand(listCmd)
+	cfgCmd.AddCommand(showCmd)
 
 	return cfgCmd
+}
+
+func createStateCommand() *cobra.Command {
+	stateCmd := &cobra.Command{
+		Use:   "state",
+		Short: "show i2i state",
+		Long:  `show i2i state`,
+		Run:   state,
+	}
+
+	return stateCmd
 }
