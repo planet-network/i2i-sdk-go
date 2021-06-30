@@ -9,6 +9,9 @@ const (
 	flagHosting      = "hosting"
 	flagName         = "name"
 	flagPlan         = "plan"
+	flagScope        = "scope"
+	flagPrivateScope = "private-scope"
+	flagUUID         = "uuid"
 	flagPassword     = "password"
 )
 
@@ -24,6 +27,8 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createCfgCommand())
 	rootCmd.AddCommand(createTuiCommand())
 	rootCmd.AddCommand(createStateCommand())
+	rootCmd.AddCommand(createInfoCommand())
+	rootCmd.AddCommand(createAclCommand())
 
 	return rootCmd
 }
@@ -123,4 +128,47 @@ func createStateCommand() *cobra.Command {
 	}
 
 	return stateCmd
+}
+
+func createInfoCommand() *cobra.Command {
+	infoCmd := &cobra.Command{
+		Use:   "info",
+		Short: "show i2i internal details",
+		Long:  `show i2i internal details`,
+		Run:   info,
+	}
+
+	return infoCmd
+}
+
+func createAclCommand() *cobra.Command {
+	aclCmd := &cobra.Command{
+		Use:   "acl",
+		Short: "manage i2i acl",
+		Long:  `manage i2i acl`,
+		Run:   nil,
+	}
+
+	aclAddCmd := &cobra.Command{
+		Use:   "add",
+		Short: "create new acl",
+		Long:  `create new acl`,
+		Run:   aclAdd,
+	}
+
+	aclAddCmd.Flags().Bool(flagPrivateScope, false, "use private scope for the acl")
+	aclAddCmd.Flags().String(flagName, "i2i-sdk-go", "name of the acl")
+	aclAddCmd.Flags().String(flagUUID, "qwerty01234567890", "client device unique identifier")
+
+	aclListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "manage i2i acl",
+		Long:  `manage i2i acl`,
+		Run:   aclList,
+	}
+
+	aclCmd.AddCommand(aclListCmd)
+	aclCmd.AddCommand(aclAddCmd)
+
+	return aclCmd
 }

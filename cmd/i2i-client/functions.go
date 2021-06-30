@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -34,4 +35,9 @@ func activeNode() (*app.Node, error) {
 	}
 
 	return node, nil
+}
+
+func printResult(r interface{}) {
+	data, _ := json.Marshal(r)
+	fmt.Println(string(data))
 }

@@ -11,6 +11,7 @@ type Client struct {
 	address    string
 	acl        string
 	keychain   *FullKeychain
+	debug      bool
 }
 
 type Opt struct {
@@ -36,6 +37,10 @@ func (c *Client) SetKeychain(k *FullKeychain) {
 
 func (c *Client) SetToken(token string) {
 	c.token = token
+}
+
+func (c *Client) SetDebug(enabled bool) {
+	c.debug = enabled
 }
 
 func (c *Client) nodeAddress() string {
