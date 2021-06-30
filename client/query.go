@@ -20,3 +20,17 @@ mutation($input:AclInput!){
 	}
 }
 `
+
+const queryAclList = `
+query {
+  aclList {
+    name
+    UUID
+    permissions
+    authorization
+    device_token
+    notification_provider
+    private_pl_scope
+  }
+}
+`

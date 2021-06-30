@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/planet-platform/i2i-sdk-go/app"
 
 	"github.com/planet-platform/i2i-sdk-go/client"
@@ -22,12 +20,12 @@ func aclList(cmd *cobra.Command, args []string) {
 		Keychain: node.Keychain,
 	})
 
-	state, err := i2iClient.State()
+	aclList, err := i2iClient.AclList()
 	if err != nil {
 		fail(err)
 	}
 
-	fmt.Println(state)
+	printResult(aclList)
 }
 
 func aclAdd(cmd *cobra.Command, args []string) {
