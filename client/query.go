@@ -34,3 +34,9 @@ query {
   }
 }
 `
+
+const mutationInitialize = `
+mutation ($type: I2IType!) {
+    initialize(input:{type: $type})
+  }
+`

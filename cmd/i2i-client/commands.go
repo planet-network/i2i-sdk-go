@@ -32,6 +32,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createInfoCommand())
 	rootCmd.AddCommand(createAclCommand())
 	rootCmd.AddCommand(createExecCommand())
+	rootCmd.AddCommand(createInitializeCommand())
 
 	return rootCmd
 }
@@ -107,6 +108,13 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgList,
 	}
 
+	deleteCmd := &cobra.Command{
+		Use:   "delete [name]",
+		Short: "remove node from configuration",
+		Long:  `remove node from configuration`,
+		Run:   cfgDelete,
+	}
+
 	showCmd := &cobra.Command{
 		Use:   "show [name]",
 		Short: "show details about node",
@@ -118,6 +126,7 @@ func createCfgCommand() *cobra.Command {
 	cfgCmd.AddCommand(setActive)
 	cfgCmd.AddCommand(listCmd)
 	cfgCmd.AddCommand(showCmd)
+	cfgCmd.AddCommand(deleteCmd)
 
 	return cfgCmd
 }
@@ -189,4 +198,15 @@ func createExecCommand() *cobra.Command {
 	execCmd.Flags().Int(flagPort, 9090, "graphql listener port")
 
 	return execCmd
+}
+
+func createInitializeCommand() *cobra.Command {
+	initializeCmd := &cobra.Command{
+		Use:   "initialize [type]",
+		Short: "initialize node as DME|DORG|SUPERNODE",
+		Long:  `run i2i on local machine`,
+		Run:   initialize,
+	}
+
+	return initializeCmd
 }

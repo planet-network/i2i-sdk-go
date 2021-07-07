@@ -33,7 +33,9 @@ type ClientOpt struct {
 	// Address is either http or https url
 	// https://manager.example.com
 	// http://1.2.3.4
-	Address string
+	Address  string
+	ClientID string
+	Password string
 }
 
 func NewClient(opt ClientOpt) *Client {
@@ -224,4 +226,26 @@ func (c *Client) NodeShow() (*CustomerNode, error) {
 	})
 
 	return node, err
+}
+
+func (c *Client) ClientRemove() error {
+	err := c.apiCallDo(&apiCall{
+		method:   http.MethodPost,
+		httpPath: clientRemove,
+		payload:  nil,
+		response: nil,
+	})
+
+	return err
+}
+
+func (c *Client) NodeRemove() error {
+	err := c.apiCallDo(&apiCall{
+		method:   http.MethodPost,
+		httpPath: clientNodeRemove,
+		payload:  nil,
+		response: nil,
+	})
+
+	return err
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/planet-platform/i2i-sdk-go/manager"
+
 	"github.com/planet-platform/i2i-sdk-go/app"
 	"github.com/spf13/cobra"
 )
@@ -97,4 +99,45 @@ func cfgShow(cmd *cobra.Command, args []string) {
 	fmt.Println("  unlock token :", node.Meta.Hosting.UnlockToken)
 	fmt.Println("  client ID    :", node.Meta.Hosting.ClientID)
 	fmt.Println("  password     :", node.Meta.Hosting.Password)
+}
+
+func cfgDelete(cmd *cobra.Command, args []string) {
+	if len(args) == 0 {
+		fail("missing node name")
+	}
+
+	appHandler, err := app.NewApp()
+	if err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.LoadConfig(); err != nil {
+		fail(err)
+	}
+
+	node, err := appHandler.NodeByName(args[0])
+	if err != nil {
+		fail(err)
+	}
+
+	if node.Meta.Hosting.ClientID != "" {
+		client := manager.NewClient(manager.ClientOpt{
+			Address:  node.Meta.Hosting.ManagerAddress,
+			ClientID: node.Meta.Hosting.ClientID,
+			Password: node.Meta.Hosting.Password,
+		})
+
+		if err := client.NodeRemove(); err != nil {
+			fmt.Println(err)
+		}
+
+		if err := client.ClientRemove(); err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	if err := appHandler.RemoveNode(args[0]); err != nil {
+		fail(err)
+	}
+
 }

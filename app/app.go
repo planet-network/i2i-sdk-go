@@ -65,7 +65,7 @@ func (a *App) NodeUpdate(node *Node) error {
 }
 
 func (a *App) keychainPath(name string) string {
-	return filepath.Join(a.workdir, name, "keychain.i2i")
+	return filepath.Join(a.workdir, nodesDirName, name, "keychain.i2i")
 }
 
 func (a *App) keychainSourceFile(name string) string {
@@ -73,7 +73,7 @@ func (a *App) keychainSourceFile(name string) string {
 }
 
 func (a *App) workdirPath(name string) string {
-	return filepath.Join(a.workdir, name)
+	return filepath.Join(a.workdir, nodesDirName, name)
 }
 
 func (a *App) NodeCreateWithKeychain(node *Node) error {
@@ -81,7 +81,7 @@ func (a *App) NodeCreateWithKeychain(node *Node) error {
 		return fmt.Errorf("already exist")
 	}
 
-	nodeDir := filepath.Join(a.workdir, node.Name)
+	nodeDir := a.workdirPath(node.Name)
 	if err := os.Mkdir(nodeDir, 0700); err != nil {
 		return err
 	}
@@ -98,6 +98,11 @@ func (a *App) NodeCreateWithKeychain(node *Node) error {
 	node.HasKeychain = true
 
 	a.config.Nodes[node.Name] = node
+
+	if a.config.SelectedNode == "" {
+		a.config.SelectedNode = node.Name
+	}
+
 	return a.config.Store(a.configFilePath)
 }
 
@@ -146,4 +151,26 @@ func (a *App) NodeByName(name string) (*Node, error) {
 func (a *App) NodeExist(name string) bool {
 	_, ok := a.config.Nodes[name]
 	return ok
+}
+
+func (a *App) RemoveNode(name string) error {
+	_, ok := a.config.Nodes[name]
+	if !ok {
+		return fmt.Errorf("node %q not found", a.config.SelectedNode)
+	}
+
+	if a.config.SelectedNode == name {
+		a.config.SelectedNode = ""
+	}
+
+	delete(a.config.Nodes, name)
+	if a.config.SelectedNode == name {
+		a.config.SelectedNode = ""
+	}
+
+	if err := a.WriteConfig(); err != nil {
+		return err
+	}
+
+	return os.RemoveAll(a.workdirPath(name))
 }
