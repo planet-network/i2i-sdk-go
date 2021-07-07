@@ -8,6 +8,8 @@ const (
 	flagInitializeAs = "initialize-as"
 	flagHosting      = "hosting"
 	flagName         = "name"
+	flagPort         = "port"
+	flagI2iPath      = "i2i-path"
 	flagPlan         = "plan"
 	flagScope        = "scope"
 	flagPrivateScope = "private-scope"
@@ -29,6 +31,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createStateCommand())
 	rootCmd.AddCommand(createInfoCommand())
 	rootCmd.AddCommand(createAclCommand())
+	rootCmd.AddCommand(createExecCommand())
 
 	return rootCmd
 }
@@ -171,4 +174,19 @@ func createAclCommand() *cobra.Command {
 	aclCmd.AddCommand(aclAddCmd)
 
 	return aclCmd
+}
+
+func createExecCommand() *cobra.Command {
+	execCmd := &cobra.Command{
+		Use:   "exec",
+		Short: "run i2i on local machine",
+		Long:  `run i2i on local machine`,
+		Run:   execute,
+	}
+
+	execCmd.Flags().String(flagName, "", "name of the local i2i")
+	execCmd.Flags().String(flagI2iPath, "", "path to i2i executable")
+	execCmd.Flags().Int(flagPort, 9090, "graphql listener port")
+
+	return execCmd
 }

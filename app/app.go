@@ -68,6 +68,14 @@ func (a *App) keychainPath(name string) string {
 	return filepath.Join(a.workdir, name, "keychain.i2i")
 }
 
+func (a *App) keychainSourceFile(name string) string {
+	return fmt.Sprintf("file://%s", a.keychainPath(name))
+}
+
+func (a *App) workdirPath(name string) string {
+	return filepath.Join(a.workdir, name)
+}
+
 func (a *App) NodeCreateWithKeychain(node *Node) error {
 	if _, ok := a.config.Nodes[node.Name]; ok {
 		return fmt.Errorf("already exist")
@@ -116,4 +124,26 @@ func (a *App) NodeDefaultWithKeychain() (*Node, error) {
 	}
 
 	return node, nil
+}
+
+func (a *App) NodeByName(name string) (*Node, error) {
+	node, ok := a.config.Nodes[name]
+	if !ok {
+		return nil, fmt.Errorf("node %q not found", a.config.SelectedNode)
+	}
+
+	if node.HasKeychain {
+		keychain, err := client.LoadFullKeychainFromFile(a.keychainPath(a.config.SelectedNode))
+		if err != nil {
+			return nil, err
+		}
+		node.Keychain = keychain
+	}
+
+	return node, nil
+}
+
+func (a *App) NodeExist(name string) bool {
+	_, ok := a.config.Nodes[name]
+	return ok
 }

@@ -21,6 +21,10 @@ type NodeHosting struct {
 	Password       string `json:"password"`
 }
 
+type NodeLocalExec struct {
+	I2IPath string `json:"i2i_path"`
+}
+
 type Node struct {
 	// unique name of the node
 	Name string `json:"name"`
@@ -33,9 +37,10 @@ type Node struct {
 }
 
 type NodeMeta struct {
-	Hosting     NodeHosting `json:"hosting"`
-	NodeAddress string      `json:"node_address"`
-	APIToken    string      `json:"api_token"`
+	LocalExec   NodeLocalExec `json:"local_exec"`
+	Hosting     NodeHosting   `json:"hosting"`
+	NodeAddress string        `json:"node_address"`
+	APIToken    string        `json:"api_token"`
 }
 
 func loadConfig(filename string, config *Config) error {
