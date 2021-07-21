@@ -48,6 +48,7 @@ func managerQuickOrder(cmd *cobra.Command, args []string) {
 
 	node := &app.Node{
 		Meta: app.NodeMeta{
+			Type: app.NodeTypeHosted,
 			Hosting: app.NodeHosting{
 				Plan:           nodePlan,
 				ManagerAddress: hostingAddr,

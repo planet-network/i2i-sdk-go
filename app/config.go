@@ -36,11 +36,17 @@ type Node struct {
 	Meta NodeMeta `json:"meta"`
 }
 
+const (
+	NodeTypeLocal  = "local"
+	NodeTypeHosted = "hosted"
+)
+
 type NodeMeta struct {
 	LocalExec   NodeLocalExec `json:"local_exec"`
 	Hosting     NodeHosting   `json:"hosting"`
 	NodeAddress string        `json:"node_address"`
 	APIToken    string        `json:"api_token"`
+	Type        string        `json:"type"`
 }
 
 func loadConfig(filename string, config *Config) error {

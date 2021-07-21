@@ -46,6 +46,7 @@ func execute(cmd *cobra.Command, args []string) {
 		err := appHandler.NodeCreateWithKeychain(&app.Node{
 			Name: nodeName,
 			Meta: app.NodeMeta{
+				Type: app.NodeTypeLocal,
 				LocalExec: app.NodeLocalExec{
 					I2IPath: i2iPath,
 				},

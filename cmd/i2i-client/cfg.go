@@ -50,13 +50,19 @@ func cfgList(cmd *cobra.Command, args []string) {
 	cfg := appHandler.Config()
 
 	fmt.Println("nodes:")
-	for k, _ := range cfg.Nodes {
+	for k, node := range cfg.Nodes {
 		if k == cfg.SelectedNode {
-			fmt.Printf(" -> %s\n", k)
+			fmt.Printf(" * %s\n", nodeString(node))
 		} else {
-			fmt.Printf("    %s\n", k)
+			fmt.Printf("   %s\n", nodeString(node))
 		}
 	}
+}
+
+func nodeString(n *app.Node) string {
+	typeStr := fmt.Sprintf("[%s]", n.Meta.Type)
+	return fmt.Sprintf("%-9s %s", typeStr, n.Name)
+
 }
 
 func cfgShow(cmd *cobra.Command, args []string) {
