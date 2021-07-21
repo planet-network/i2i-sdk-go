@@ -33,6 +33,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createAclCommand())
 	rootCmd.AddCommand(createExecCommand())
 	rootCmd.AddCommand(createInitializeCommand())
+	rootCmd.AddCommand(createFileCommand())
 
 	return rootCmd
 }
@@ -44,6 +45,58 @@ func createTuiCommand() *cobra.Command {
 		Long:  `run terminal ui`,
 		Run:   tui,
 	}
+}
+
+func createFileCommand() *cobra.Command {
+	fileCmd := &cobra.Command{
+		Use:   "file",
+		Short: "file management command",
+		Long:  `file management command`,
+		Run:   nil,
+	}
+
+	fileUploadCmd := &cobra.Command{
+		Use:   "up [local-file]",
+		Short: "upload local file to i2i",
+		Long:  `upload local file to i2i`,
+		Run:   fileUpload,
+	}
+
+	fileDownloadCmd := &cobra.Command{
+		Use:   "dl [directory]",
+		Short: "download file from i2i to local directory",
+		Long:  `download file from i2i to local directory`,
+		Run:   fileDownload,
+	}
+
+	fileListCmd := &cobra.Command{
+		Use:   "ls",
+		Short: "list files hosted on i2i",
+		Long:  `list files hosted on i2i`,
+		Run:   fileList,
+	}
+
+	fileRemoveCmd := &cobra.Command{
+		Use:   "rm [id]",
+		Short: "remove file from i2i node",
+		Long:  `remove file form i2i node`,
+		Run:   fileRemove,
+	}
+
+	fileTransferCmd := &cobra.Command{
+		Use:   "transfer [id] [connection]",
+		Short: "transfer file to connection",
+		Long:  `transfer file to connection`,
+		Run:   fileTransfer,
+	}
+
+	fileCmd.AddCommand(fileUploadCmd)
+	fileCmd.AddCommand(fileDownloadCmd)
+	fileCmd.AddCommand(fileListCmd)
+	fileCmd.AddCommand(fileRemoveCmd)
+	fileCmd.AddCommand(fileTransferCmd)
+
+	return fileCmd
 }
 
 func createManagerCommand() *cobra.Command {
