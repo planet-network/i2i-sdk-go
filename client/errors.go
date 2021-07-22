@@ -15,3 +15,7 @@ var ErrAlreadyExist = errors.New("already exist")
 func ErrHttpWithCode(code int) error {
 	return fmt.Errorf("failed with http code: %d", code)
 }
+
+func ErrNotADir() error {
+	return errors.New("not a directory3")
+}

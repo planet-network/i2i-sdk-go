@@ -57,13 +57,15 @@ func createFileCommand() *cobra.Command {
 
 	fileUploadCmd := &cobra.Command{
 		Use:   "up [local-file]",
+		Args:  cobra.ExactArgs(1),
 		Short: "upload local file to i2i",
 		Long:  `upload local file to i2i`,
 		Run:   fileUpload,
 	}
 
 	fileDownloadCmd := &cobra.Command{
-		Use:   "dl [directory]",
+		Use:   "dl [id] [directory]",
+		Args:  cobra.ExactArgs(2),
 		Short: "download file from i2i to local directory",
 		Long:  `download file from i2i to local directory`,
 		Run:   fileDownload,
@@ -78,23 +80,43 @@ func createFileCommand() *cobra.Command {
 
 	fileRemoveCmd := &cobra.Command{
 		Use:   "rm [id]",
+		Args:  cobra.ExactArgs(1),
 		Short: "remove file from i2i node",
 		Long:  `remove file form i2i node`,
 		Run:   fileRemove,
 	}
 
+	fileStatCmd := &cobra.Command{
+		Use:   "stat [id]",
+		Args:  cobra.ExactArgs(1),
+		Short: "show information about file",
+		Long:  `show information about file`,
+		Run:   fileStat,
+	}
+
 	fileTransferCmd := &cobra.Command{
 		Use:   "transfer [id] [connection]",
+		Args:  cobra.ExactArgs(2),
 		Short: "transfer file to connection",
 		Long:  `transfer file to connection`,
 		Run:   fileTransfer,
 	}
 
+	fileRenameCmd := &cobra.Command{
+		Use:   "rename [id] [name]",
+		Args:  cobra.ExactArgs(2),
+		Short: "rename remote file",
+		Long:  `rename remote file`,
+		Run:   fileRename,
+	}
+
 	fileCmd.AddCommand(fileUploadCmd)
+	fileCmd.AddCommand(fileStatCmd)
 	fileCmd.AddCommand(fileDownloadCmd)
 	fileCmd.AddCommand(fileListCmd)
 	fileCmd.AddCommand(fileRemoveCmd)
 	fileCmd.AddCommand(fileTransferCmd)
+	fileCmd.AddCommand(fileRenameCmd)
 
 	return fileCmd
 }

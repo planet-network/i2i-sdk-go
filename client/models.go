@@ -29,3 +29,17 @@ type ACLInput struct {
 	PrivatePlScope       *bool    `json:"private_pl_scope"`
 	Permissions          []string `json:"permissions"`
 }
+
+type File struct {
+	// id is the database id of the object
+	ID string `json:"id"`
+	// name contains original file name
+	Name string `json:"name"`
+	// size is files size in bytes after encryption
+	Size int `json:"size"`
+	// mime contains MIME information
+	Mime string `json:"mime"`
+	Key  string `json:"key"`
+	// location of file on the i2i node
+	Path string `json:"path"`
+}

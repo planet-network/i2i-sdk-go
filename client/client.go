@@ -54,3 +54,11 @@ func (c *Client) nodeStateAddress() string {
 func (c *Client) nodeGraphqlAddress() string {
 	return fmt.Sprintf("http://%s/query", c.address)
 }
+
+func (c *Client) nodeFileUploadAddress() string {
+	return fmt.Sprintf("http://%s/fu", c.address)
+}
+
+func (c *Client) nodeFileDownloadAddress() string {
+	return fmt.Sprintf("http://%s/fd", c.address)
+}
