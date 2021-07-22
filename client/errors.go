@@ -16,6 +16,7 @@ func ErrHttpWithCode(code int) error {
 	return fmt.Errorf("failed with http code: %d", code)
 }
 
+// ErrNotADir is returned when expected to have directory
 func ErrNotADir() error {
 	return errors.New("not a directory3")
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// State shows state about i2i. There are two values which can be returned by the call: locked and unlocked.
 func (c *Client) State() (string, error) {
 	response, err := c.httpClient.Get(c.nodeStateAddress())
 	if err != nil {

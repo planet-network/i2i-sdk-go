@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// AclAdd creates new access token, which is used to authorize application in i2i.
 func (c *Client) AclAdd(aclInput *ACLInput) (*ACL, error) {
 	response := struct {
 		AclAdd ACL `json:"aclAdd"`
@@ -23,6 +24,7 @@ func (c *Client) AclAdd(aclInput *ACLInput) (*ACL, error) {
 	return &response.AclAdd, nil
 }
 
+// AclList lists acl tokens known by i2i
 func (c *Client) AclList() ([]*ACL, error) {
 	response := struct {
 		AclList []*ACL `json:"aclList"`

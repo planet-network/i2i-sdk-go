@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// Unlock provides needed cryptographic keys to i2i to unlock it.
 func (c *Client) Unlock() error {
 	var (
 		httpClient = http.Client{

@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// FileUpload uploads local file to i2i.
 func (c *Client) FileUpload(path string) (*File, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -62,6 +63,9 @@ func (c *Client) FileUpload(path string) (*File, error) {
 	}, nil
 }
 
+// FileDownload downloads file from i2i to local host.
+// Path argument is directory and resulting file is stored as path/{file_name}
+// Note: if destination file already exist, error is returned.
 func (c *Client) FileDownload(id string, path string) (*File, error) {
 	file, err := c.file(id)
 	if err != nil {
@@ -111,6 +115,7 @@ func (c *Client) FileDownload(id string, path string) (*File, error) {
 	return file, nil
 }
 
+// FileRemove removes file with id from i2i.
 func (c *Client) FileRemove(id string) (*File, error) {
 	file := struct {
 		File *File `json:"fileRemove"`
@@ -130,6 +135,7 @@ func (c *Client) FileRemove(id string) (*File, error) {
 	return file.File, nil
 }
 
+// File shows metadata of file with id.
 func (c *Client) File(id string) (*File, error) {
 	return c.file(id)
 }
@@ -153,6 +159,7 @@ func (c *Client) file(id string) (*File, error) {
 	return file.File, nil
 }
 
+// FileList lists files stored by the i2i
 func (c *Client) FileList() ([]*File, error) {
 	files := struct {
 		Files []*File `json:"fileList"`
@@ -172,6 +179,7 @@ func (c *Client) FileList() ([]*File, error) {
 	return files.Files, nil
 }
 
+// FileRename changes name of the file
 func (c *Client) FileRename(id string, name string) (*File, error) {
 	file := struct {
 		File *File `json:"fileRename"`
@@ -191,6 +199,8 @@ func (c *Client) FileRename(id string, name string) (*File, error) {
 	return file.File, nil
 }
 
+// FileTransfer transfers file with id to connection.
+// Connection is identified by its signature key.
 func (c *Client) FileTransfer(id string, connection string) (*File, error) {
 	file := struct {
 		File *File `json:"fileTransfer"`

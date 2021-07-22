@@ -20,6 +20,7 @@ type FullKeychain struct {
 	SignaturePrivateKey Key64
 }
 
+// KeychainListenerProvider is structure send to i2i on unlocking operation
 type KeychainListenerProvider struct {
 	NetworkPublicKey   string `json:"network_public_key"`
 	NetworkPrivateKey  string `json:"network_private_key"`
@@ -64,6 +65,7 @@ func (k *FullKeychain) SaveToFileSafe(path string) error {
 	return ioutil.WriteFile(path, raw, 0600)
 }
 
+// LoadFullKeychainFromFile reads keychain from a file and parses into FullKeychain structure.
 func LoadFullKeychainFromFile(path string) (*FullKeychain, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {

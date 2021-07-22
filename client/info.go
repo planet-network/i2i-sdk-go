@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// Info shows basic information about i2i.
 func (c *Client) Info() (*Info, error) {
 	response := struct {
 		Info Info `json:"info"`
