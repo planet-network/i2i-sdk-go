@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -46,7 +47,8 @@ func execute(cmd *cobra.Command, args []string) {
 		err := appHandler.NodeCreateWithKeychain(&app.Node{
 			Name: nodeName,
 			Meta: app.NodeMeta{
-				Type: app.NodeTypeLocal,
+				NodeAddress: fmt.Sprintf("0.0.0.0:%d", port),
+				Type:        app.NodeTypeLocal,
 				LocalExec: app.NodeLocalExec{
 					I2IPath: i2iPath,
 				},

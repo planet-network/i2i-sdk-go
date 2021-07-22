@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/planet-platform/i2i-sdk-go/client"
 	"github.com/spf13/cobra"
 )
@@ -124,7 +122,7 @@ func fileRemove(cmd *cobra.Command, args []string) {
 	if err != nil {
 		fail(err)
 	}
-	fmt.Println(fileInfo)
+	printResult(fileInfo)
 }
 
 func fileTransfer(cmd *cobra.Command, args []string) {

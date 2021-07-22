@@ -40,16 +40,35 @@ func (c *Client) FileUpload(path string) (*File, error) {
 		return nil, err
 	}
 
-	fileModel := &File{}
+	var nonGraphQlFileModel = struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+		Size int    `json:"size"`
+		Mime string `json:"mime"`
+		Path string `json:"path"`
+	}{}
 
-	if err := json.Unmarshal(respData, fileModel); err != nil {
+	if err := json.Unmarshal(respData, &nonGraphQlFileModel); err != nil {
 		return nil, err
 	}
 
-	return fileModel, nil
+	return &File{
+		ID:   nonGraphQlFileModel.ID,
+		Name: nonGraphQlFileModel.Name,
+		Size: nonGraphQlFileModel.Size,
+		Mime: nonGraphQlFileModel.Mime,
+		Key:  "",
+		Path: nonGraphQlFileModel.Path,
+	}, nil
 }
 
 func (c *Client) FileDownload(id string, path string) (*File, error) {
+	file, err := c.file(id)
+	if err != nil {
+		return nil, err
+	}
+	localFilePath := filepath.Join(path, file.Name)
+
 	stat, err := os.Stat(path)
 	if err != nil {
 		return nil, err
@@ -57,6 +76,10 @@ func (c *Client) FileDownload(id string, path string) (*File, error) {
 
 	if !stat.IsDir() {
 		return nil, ErrNotADir()
+	}
+
+	if _, err := os.Stat(localFilePath); err == nil {
+		return nil, ErrAlreadyExist
 	}
 
 	address := fmt.Sprintf("%s/%s", c.nodeFileDownloadAddress(), id)
@@ -81,16 +104,16 @@ func (c *Client) FileDownload(id string, path string) (*File, error) {
 		return nil, err
 	}
 
-	if err := ioutil.WriteFile(path, data, 0644); err != nil {
+	if err := ioutil.WriteFile(localFilePath, data, 0644); err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	return file, nil
 }
 
-func (c *Client) FileRemove(id string) (string, error) {
+func (c *Client) FileRemove(id string) (*File, error) {
 	file := struct {
-		ID string `json:"fileRemove"`
+		File *File `json:"fileRemove"`
 	}{}
 
 	_, err := c.query(&query{
@@ -101,10 +124,10 @@ func (c *Client) FileRemove(id string) (string, error) {
 	})
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return file.ID, nil
+	return file.File, nil
 }
 
 func (c *Client) File(id string) (*File, error) {
