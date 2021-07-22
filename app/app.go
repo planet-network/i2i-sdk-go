@@ -134,7 +134,7 @@ func (a *App) NodeDefaultWithKeychain() (*Node, error) {
 func (a *App) NodeByName(name string) (*Node, error) {
 	node, ok := a.config.Nodes[name]
 	if !ok {
-		return nil, fmt.Errorf("node %q not found", a.config.SelectedNode)
+		return nil, fmt.Errorf("node %q not found", name)
 	}
 
 	if node.HasKeychain {
