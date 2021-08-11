@@ -138,7 +138,7 @@ func (a *App) NodeByName(name string) (*Node, error) {
 	}
 
 	if node.HasKeychain {
-		keychain, err := client.LoadFullKeychainFromFile(a.keychainPath(a.config.SelectedNode))
+		keychain, err := client.LoadFullKeychainFromFile(a.keychainPath(name))
 		if err != nil {
 			return nil, err
 		}

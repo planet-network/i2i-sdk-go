@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os"
+	"runtime"
+
 	"github.com/planet-platform/i2i-sdk-go/app"
 
 	"github.com/planet-platform/i2i-sdk-go/client"
@@ -28,18 +31,35 @@ func aclList(cmd *cobra.Command, args []string) {
 	printResult(aclList)
 }
 
+func aclRemove(cmd *cobra.Command, args []string) {
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
+
+	i2iClient := client.New(client.Opt{
+		Token:    node.Meta.Hosting.UnlockToken,
+		Address:  node.Meta.NodeAddress,
+		Acl:      node.Meta.APIToken,
+		Keychain: node.Keychain,
+	})
+
+	aclList, err := i2iClient.AclRemove(args[0])
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(aclList)
+}
+
 func aclAdd(cmd *cobra.Command, args []string) {
-	scope, err := cmd.Flags().GetBool(flagPrivateScope)
-	if err != nil {
-		fail(err)
-	}
+	var (
+		applicationName = "i2i-client-go"
+		version         = client.Version
+		osName          = runtime.GOOS
+	)
 
-	uuid, err := cmd.Flags().GetString(flagUUID)
-	if err != nil {
-		fail(err)
-	}
-
-	aclName, err := cmd.Flags().GetString(flagName)
+	scope, err := cmd.Flags().GetString(flagPrivateScope)
 	if err != nil {
 		fail(err)
 	}
@@ -71,9 +91,18 @@ func aclAdd(cmd *cobra.Command, args []string) {
 	})
 
 	input := &client.ACLInput{
-		UUID:           uuid,
-		Name:           &aclName,
-		PrivatePlScope: &scope,
+		ApplicationName:    &applicationName,
+		ApplicationVersion: &version,
+		OsName:             &osName,
+	}
+
+	hostName, err := os.Hostname()
+	if err == nil {
+		input.DeviceName = &hostName
+	}
+
+	if scope != "" {
+		input.PrivatePlScopeName = &scope
 	}
 
 	acl, err := i2iClient.AclAdd(input)

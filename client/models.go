@@ -1,5 +1,7 @@
 package client
 
+import "time"
+
 type NetworkInfo struct {
 	Running bool `json:"running"`
 }
@@ -11,23 +13,68 @@ type Info struct {
 	Network NetworkInfo `json:"network"`
 }
 
-type ACL struct {
-	Name                 *string  `json:"name"`
-	UUID                 string   `json:"UUID"`
-	Permissions          []string `json:"permissions"`
-	Authorization        string   `json:"authorization"`
-	DeviceToken          *string  `json:"device_token"`
-	NotificationProvider *string  `json:"notification_provider"`
-	PrivatePlScope       *bool    `json:"private_pl_scope"`
+type ACLInput struct {
+	//  id is id of the token to be updates, the value is not meant to be used for token creation
+	ID *string `json:"id"`
+	//  name of application which will use the token
+	ApplicationName *string `json:"application_name"`
+	//  version of the application
+	ApplicationVersion *string `json:"application_version"`
+	//  name of the operating system
+	OsName *string `json:"os_name"`
+	//  version of the operating system
+	OsVersion *string `json:"os_version"`
+	//  current location of the device
+	Location *LocationInput `json:"location"`
+	//  hardware unique identifier
+	UUID *string `json:"uuid"`
+	//  device token for notification provider
+	DeviceToken *string `json:"device_token"`
+	//  notification provider is determine where notification will be sent
+	NotificationProvider *string `json:"notification_provider"`
+	//  name of the device, eg Apple iPhone 8
+	DeviceName *string `json:"device_name"`
+	//  name of the private scope to create, preferably name of the app
+	PrivatePlScopeName *string  `json:"private_pl_scope_name"`
+	Permissions        []string `json:"permissions"`
 }
 
-type ACLInput struct {
-	DeviceToken          *string  `json:"device_token"`
-	NotificationProvider *string  `json:"notification_provider"`
-	UUID                 string   `json:"uuid"`
-	Name                 *string  `json:"name"`
-	PrivatePlScope       *bool    `json:"private_pl_scope"`
-	Permissions          []string `json:"permissions"`
+type Location struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+type LocationInput struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+type ACL struct {
+	ID string `json:"id"`
+	//  name of application which will use the token
+	ApplicationName *string `json:"application_name"`
+	//  version of the application
+	ApplicationVersion *string `json:"application_version"`
+	//  name of the operating system
+	OsName *string `json:"os_name"`
+	//  version of the operating system
+	OsVersion *string `json:"os_version"`
+	//  current location of the device
+	Location *Location `json:"location"`
+	//  hardware unique identifier
+	UUID *string `json:"uuid"`
+	//  device token for notification provider
+	DeviceToken          *string `json:"device_token"`
+	NotificationProvider *string `json:"notification_provider"`
+	//  name of the device, eg Apple iPhone 8
+	DeviceName *string `json:"device_name"`
+	//  name of the private scope to create, preferably name of the app
+	PrivatePlScopeName *string  `json:"private_pl_scope_name"`
+	Permissions        []string `json:"permissions"`
+	//  value of the token
+	Authorization string    `json:"authorization"`
+	CreatedAt     time.Time `json:"created_at"`
+	LastUsage     time.Time `json:"last_usage"`
 }
 
 type File struct {

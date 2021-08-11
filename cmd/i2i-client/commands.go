@@ -11,9 +11,7 @@ const (
 	flagPort         = "port"
 	flagI2iPath      = "i2i-path"
 	flagPlan         = "plan"
-	flagScope        = "scope"
 	flagPrivateScope = "private-scope"
-	flagUUID         = "uuid"
 	flagPassword     = "password"
 )
 
@@ -243,9 +241,8 @@ func createAclCommand() *cobra.Command {
 		Run:   aclAdd,
 	}
 
-	aclAddCmd.Flags().Bool(flagPrivateScope, false, "use private scope for the acl")
+	aclAddCmd.Flags().String(flagPrivateScope, "", "name of private scope to use")
 	aclAddCmd.Flags().String(flagName, "i2i-sdk-go", "name of the acl")
-	aclAddCmd.Flags().String(flagUUID, "qwerty01234567890", "client device unique identifier")
 
 	aclListCmd := &cobra.Command{
 		Use:   "list",
@@ -254,8 +251,16 @@ func createAclCommand() *cobra.Command {
 		Run:   aclList,
 	}
 
+	aclDeleteCmd := &cobra.Command{
+		Use:   "remove [id]",
+		Short: "remove acl",
+		Long:  `remove alc`,
+		Run:   aclRemove,
+	}
+
 	aclCmd.AddCommand(aclListCmd)
 	aclCmd.AddCommand(aclAddCmd)
+	aclCmd.AddCommand(aclDeleteCmd)
 
 	return aclCmd
 }
@@ -278,6 +283,7 @@ func createExecCommand() *cobra.Command {
 func createInitializeCommand() *cobra.Command {
 	initializeCmd := &cobra.Command{
 		Use:   "initialize [type]",
+		Args:  cobra.ExactArgs(1),
 		Short: "initialize node as DME|DORG|SUPERNODE",
 		Long:  `run i2i on local machine`,
 		Run:   initialize,

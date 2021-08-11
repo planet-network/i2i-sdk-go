@@ -42,3 +42,22 @@ func (c *Client) AclList() ([]*ACL, error) {
 
 	return response.AclList, nil
 }
+
+func (c *Client) AclRemove(id string) (string, error) {
+	response := struct {
+		ID string `json:"aclRemove"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     mutationAclRemove,
+		variables: map[string]interface{}{"id": id},
+		timeout:   time.Second * 2,
+		response:  &response,
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return response.ID, nil
+}

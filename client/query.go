@@ -21,16 +21,31 @@ mutation($input:AclInput!){
 }
 `
 
+const mutationAclRemove = `
+mutation ($id: ID!) {
+    aclRemove(id: $id)
+  }
+`
+
 const queryAclList = `
 query {
   aclList {
-    name
-    UUID
-    permissions
-    authorization
+    id
+    application_name
+    application_version
+    os_version
+    location {
+      latitude
+      longitude
+    }
+    uuid
     device_token
     notification_provider
-    private_pl_scope
+    device_name
+    private_pl_scope_name
+    permissions
+    created_at
+    last_usage
   }
 }
 `
