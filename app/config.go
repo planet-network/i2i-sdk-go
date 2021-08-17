@@ -9,8 +9,16 @@ import (
 
 // Config contains i2i parameters
 type Config struct {
-	SelectedNode string           `json:"selected_node"`
-	Nodes        map[string]*Node `json:"nodes"`
+	SelectedNode    string              `json:"selected_node"`
+	SelectedManager string              `json:"selected_manager"`
+	Nodes           map[string]*Node    `json:"nodes"`
+	Managers        map[string]*Manager `json:"managers"`
+}
+type Manager struct {
+	Address  string `json:"address"`
+	Token    string `json:"token"`
+	User     string `json:"user"`
+	Password string `json:"password"`
 }
 
 type NodeHosting struct {

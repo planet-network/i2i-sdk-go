@@ -134,6 +134,59 @@ func createManagerCommand() *cobra.Command {
 		Run:   managerQuickOrder,
 	}
 
+	versionGetCmd := &cobra.Command{
+		Use:   "version",
+		Short: "show current version of hosted i2i",
+		Long:  `show current version of hosted i2i`,
+		Run:   versionShow,
+	}
+
+	versionSetCmd := &cobra.Command{
+		Use:   "set",
+		Short: "orders and initializes i2i",
+		Long:  `orders and initializes i2i`,
+		Run:   versionSet,
+	}
+	versionGetCmd.AddCommand(versionSetCmd)
+
+	loginCmd := &cobra.Command{
+		Use:   "login [address] [user] [pass]",
+		Args:  cobra.ExactArgs(3),
+		Short: "login to i2i-manager",
+		Long:  `login to i2i-manager`,
+		Run:   managerLogin,
+	}
+
+	clientCmd := &cobra.Command{
+		Use:   "client",
+		Short: "manage i2i-manager clients",
+		Long:  `manage i2i-manager clients`,
+		Run:   nil,
+	}
+
+	clientUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Args:  cobra.ExactArgs(1),
+		Short: "update client i2i",
+		Long:  `update client i2i`,
+		Run:   clientUpdate,
+	}
+
+	clientListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list clients",
+		Long:  `list clients`,
+		Run:   clientList,
+	}
+	clientListCmd.Flags().Int(flagPort, 0, "show only client with given port")
+
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list configured managers",
+		Long:  `list configured managers`,
+		Run:   managerList,
+	}
+
 	quickOrderCmd.Flags().String(flagInitializeAs, "DME", "initialize ordered i2i as [DME|DORG]")
 	quickOrderCmd.Flags().String(flagName, "", "local name of ordered i2i instance")
 	quickOrderCmd.MarkFlagRequired(flagName)
@@ -147,6 +200,13 @@ func createManagerCommand() *cobra.Command {
 	quickOrderCmd.Flags().String(flagPassword, "password_0123456789", "client password")
 
 	managerCmd.AddCommand(quickOrderCmd)
+
+	clientCmd.AddCommand(clientUpdateCmd)
+	clientCmd.AddCommand(clientListCmd)
+	managerCmd.AddCommand(clientCmd)
+	managerCmd.AddCommand(loginCmd)
+	managerCmd.AddCommand(listCmd)
+	managerCmd.AddCommand(versionGetCmd)
 
 	return managerCmd
 }

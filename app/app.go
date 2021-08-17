@@ -28,7 +28,10 @@ func NewApp() (*App, error) {
 	}
 
 	return &App{
-		config:         Config{Nodes: map[string]*Node{}},
+		config: Config{
+			Nodes:    map[string]*Node{},
+			Managers: map[string]*Manager{},
+		},
 		workdir:        filepath.Join(homeDir, i2iClientDir),
 		nodesDataPath:  filepath.Join(homeDir, i2iClientDir, nodesDirName),
 		configFilePath: filepath.Join(homeDir, i2iClientDir, configFilename),
@@ -61,6 +64,12 @@ func (a *App) WriteConfig() error {
 
 func (a *App) NodeUpdate(node *Node) error {
 	a.config.Nodes[node.Name] = node
+	return a.config.Store(a.configFilePath)
+}
+
+func (a *App) ManagerUpdate(mng *Manager) error {
+	a.config.Managers[mng.Address] = mng
+	a.config.SelectedManager = mng.Address
 	return a.config.Store(a.configFilePath)
 }
 
@@ -129,6 +138,19 @@ func (a *App) NodeDefaultWithKeychain() (*Node, error) {
 	}
 
 	return node, nil
+}
+
+func (a *App) DefaultManager() (*Manager, error) {
+	if a.config.SelectedManager == "" {
+		return nil, fmt.Errorf("no active manager found")
+	}
+
+	manager, ok := a.config.Managers[a.config.SelectedManager]
+	if !ok {
+		return nil, fmt.Errorf("manager %q not found", a.config.SelectedManager)
+	}
+
+	return manager, nil
 }
 
 func (a *App) NodeByName(name string) (*Node, error) {
