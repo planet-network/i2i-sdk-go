@@ -32,6 +32,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createExecCommand())
 	rootCmd.AddCommand(createInitializeCommand())
 	rootCmd.AddCommand(createFileCommand())
+	rootCmd.AddCommand(createUnlockCommand())
 
 	return rootCmd
 }
@@ -42,6 +43,15 @@ func createTuiCommand() *cobra.Command {
 		Short: "run terminal ui",
 		Long:  `run terminal ui`,
 		Run:   tui,
+	}
+}
+
+func createUnlockCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "unlock",
+		Short: "unlocks i2i",
+		Long:  `unlocks i2i`,
+		Run:   unlock,
 	}
 }
 

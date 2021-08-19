@@ -115,3 +115,9 @@ mutation($fileID: String!) {
   }
 }
 `
+
+const queryPlDataRead = `
+query($input: PlDataReadInput!) {
+  plDataRead(input: $input)
+}
+`

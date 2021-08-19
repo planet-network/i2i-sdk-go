@@ -90,3 +90,9 @@ type File struct {
 	// location of file on the i2i node
 	Path string `json:"path"`
 }
+
+type PlDataReadInput struct {
+	Dst            string `json:"dst"`
+	Instance       string `json:"instance"`
+	Characteristic string `json:"characteristic"`
+}
