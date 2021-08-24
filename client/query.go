@@ -21,6 +21,14 @@ mutation($input:AclInput!){
 }
 `
 
+const mutationDMeUpdate = `
+mutation($input:DMeInput!){
+	dMeUpdate(input: $input){
+		first_name
+	}
+}
+`
+
 const mutationAclRemove = `
 mutation ($id: ID!) {
     aclRemove(id: $id)
@@ -119,5 +127,39 @@ mutation($fileID: String!) {
 const queryPlDataRead = `
 query($input: PlDataReadInput!) {
   plDataRead(input: $input)
+}
+`
+
+const mutationAddConnection = `
+mutation ($input: ConnectionInput!){
+	connectionAdd(input:$input)
+}
+`
+
+const interactiveActionsQry = `
+query {
+	interactiveActions {
+		... on FriendRequest {
+			id
+			source
+			time
+			full_name
+		}
+	}
+}
+`
+
+const mutationInteractiveAction = `
+mutation($input: NotificationAction!) {
+  interactiveActionUpdate(action: $input)
+}
+`
+
+const mutationDMeProfileAdd = `
+mutation($input:DMeProfileInput!){
+	dMeProfileAdd(input: $input) {
+		avatar_file_id
+		profile_name
+	}
 }
 `

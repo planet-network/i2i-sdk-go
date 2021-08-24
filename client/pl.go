@@ -3,9 +3,9 @@ package client
 import "time"
 
 // PlDataRead reads data on remote i2i
-func (c *Client) PlDataRead(input *PlDataReadInput) (*ACL, error) {
+func (c *Client) PlDataRead(input *PlDataReadInput) ([]string, error) {
 	response := struct {
-		Values ACL `json:"plDataRead"`
+		Values []string `json:"plDataRead"`
 	}{}
 
 	_, err := c.query(&query{
@@ -19,5 +19,5 @@ func (c *Client) PlDataRead(input *PlDataReadInput) (*ACL, error) {
 		return nil, err
 	}
 
-	return &response.Values, nil
+	return response.Values, nil
 }
