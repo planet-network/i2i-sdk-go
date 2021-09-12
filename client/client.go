@@ -43,6 +43,10 @@ func (c *Client) SetDebug(enabled bool) {
 	c.debug = enabled
 }
 
+func (c *Client) SetACL(acl string) {
+	c.acl = acl
+}
+
 func (c *Client) nodeAddress() string {
 	return fmt.Sprintf("http://%s", c.address)
 }
