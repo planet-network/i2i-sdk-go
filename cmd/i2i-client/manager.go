@@ -243,7 +243,6 @@ func managerLogin(cmd *cobra.Command, args []string) {
 		Password: args[2],
 	}); err != nil {
 		fail(err)
-
 	}
 
 }
@@ -291,4 +290,63 @@ func activeManager() (*app.Manager, error) {
 	}
 
 	return mng, nil
+}
+
+func planAdd(cmd *cobra.Command, args []string) {
+	planDescription, err := cmd.Flags().GetString(flagDescription)
+	if err != nil {
+		fail(err)
+	}
+
+	planDuration, err := cmd.Flags().GetInt64(flagDuration)
+	if err != nil {
+		fail(err)
+	}
+
+	mng, err := activeManager()
+	if err != nil {
+		fail(err)
+	}
+
+	managerClient := manager.NewFeClient(manager.FeOpt{
+		Address:  mng.Address,
+		Login:    mng.User,
+		Password: mng.Password,
+		Jwt:      mng.Token,
+	})
+
+	err = managerClient.PlanAdd(&manager.FePlan{
+		ID:          args[0],
+		Name:        args[0],
+		Description: planDescription,
+		Currency:    "",
+		Price:       0,
+		Duration:    planDuration * 3600,
+		StorageSize: 0,
+	})
+
+	if err != nil {
+		fail(err)
+	}
+}
+
+func planList(cmd *cobra.Command, args []string) {
+	mng, err := activeManager()
+	if err != nil {
+		fail(err)
+	}
+
+	managerClient := manager.NewFeClient(manager.FeOpt{
+		Address:  mng.Address,
+		Login:    mng.User,
+		Password: mng.Password,
+		Jwt:      mng.Token,
+	})
+
+	plans, err := managerClient.PlanList()
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(plans)
 }

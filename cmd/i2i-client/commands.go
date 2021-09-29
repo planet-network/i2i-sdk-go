@@ -8,6 +8,8 @@ const (
 	flagInitializeAs = "initialize-as"
 	flagHosting      = "hosting"
 	flagName         = "name"
+	flagDescription  = "description"
+	flagDuration     = "duration"
 	flagPort         = "port"
 	flagI2iPath      = "i2i-path"
 	flagPlan         = "plan"
@@ -190,6 +192,32 @@ func createManagerCommand() *cobra.Command {
 	}
 	clientListCmd.Flags().Int(flagPort, 0, "show only client with given port")
 
+	planCmd := &cobra.Command{
+		Use:   "plan",
+		Short: "manage i2i-manager plans",
+		Long:  `manage i2i-manager plans`,
+		Run:   nil,
+	}
+
+	planAddCmd := &cobra.Command{
+		Use:   "add [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "create new plan",
+		Long:  `create new plan`,
+		Run:   planAdd,
+	}
+
+	planAddCmd.Flags().String(flagDescription, "", "plan description")
+	planAddCmd.Flags().Int64(flagDuration, 0, "duration in hours")
+	planAddCmd.MarkFlagRequired(flagDuration)
+
+	planListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list plans",
+		Long:  `list plans`,
+		Run:   planList,
+	}
+
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "list configured managers",
@@ -213,6 +241,9 @@ func createManagerCommand() *cobra.Command {
 
 	clientCmd.AddCommand(clientUpdateCmd)
 	clientCmd.AddCommand(clientListCmd)
+
+	planCmd.AddCommand(planListCmd)
+	planCmd.AddCommand(planAddCmd)
 	managerCmd.AddCommand(clientCmd)
 	managerCmd.AddCommand(loginCmd)
 	managerCmd.AddCommand(listCmd)
