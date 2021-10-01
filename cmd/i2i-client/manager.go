@@ -319,10 +319,10 @@ func planAdd(cmd *cobra.Command, args []string) {
 		ID:          args[0],
 		Name:        args[0],
 		Description: planDescription,
-		Currency:    "",
+		Currency:    "USD",
 		Price:       0,
 		Duration:    planDuration * 3600,
-		StorageSize: 0,
+		StorageSize: 1024,
 	})
 
 	if err != nil {

@@ -248,6 +248,7 @@ func createManagerCommand() *cobra.Command {
 	managerCmd.AddCommand(loginCmd)
 	managerCmd.AddCommand(listCmd)
 	managerCmd.AddCommand(versionGetCmd)
+	managerCmd.AddCommand(planCmd)
 
 	return managerCmd
 }
