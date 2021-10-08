@@ -36,10 +36,7 @@ type FriendRequest struct {
 	Time time.Time `json:"time"`
 }
 
-type InteractiveActions struct {
-	FriendRequests []FriendRequest `json:"interactiveActions"`
-}
-
+// NotificationAction is action done on notification which require manual input from owner
 type NotificationAction struct {
 	ID     string `json:"id"`
 	Action string `json:"action"`
@@ -48,7 +45,7 @@ type NotificationAction struct {
 func (c *Client) ConnectionAdd(profile string, publicKey string) error {
 	input := ConnectionInput{
 		Profile:   []string{profile},
-		PublicKey: publickey,
+		PublicKey: publicKey,
 	}
 	var response interface{}
 	_, err := c.query(&query{
@@ -107,4 +104,23 @@ func (c *Client) InteractiveActionUpdate(id string, action InterActiveAction) er
 	})
 
 	return err
+}
+
+func (c *Client) ConnectionList(profile string) ([]*Connection, error) {
+	response := struct {
+		Connections []*Connection `json:"connectionList"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     queryConnectionList,
+		variables: map[string]interface{}{"profile": profile},
+		timeout:   2 * time.Second,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Connections, nil
 }

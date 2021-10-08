@@ -163,3 +163,19 @@ mutation($input:DMeProfileInput!){
 	}
 }
 `
+
+const queryConnectionList = `
+query($profile: ID!) {
+  connectionList(profile: $profile) {
+    avatar_url
+    id
+    profile
+    public_key
+    signature_key
+    display_name
+    name
+    surname
+    transactions
+  }
+}
+`

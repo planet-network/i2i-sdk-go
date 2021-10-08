@@ -96,3 +96,20 @@ type PlDataReadInput struct {
 	Instance       string `json:"instance"`
 	Characteristic string `json:"characteristic"`
 }
+
+// Connection represents other entity in the network which interacts
+type Connection struct {
+	AvatarURL string `json:"avatar_url"`
+	// id is the database id of the object
+	ID string `json:"id"`
+	// profile contains id of the profiles to which connection is related
+	Profile      []string `json:"profile"`
+	PublicKey    string   `json:"public_key"`
+	SignatureKey string   `json:"signature_key"`
+	// display_name is string value under which contact is displayed in contact list
+	DisplayName string `json:"display_name"`
+	Name        string `json:"name"`
+	Surname     string `json:"surname"`
+	// transactions contains list of transactions related to given contact
+	Transactions []string `json:"transactions"`
+}

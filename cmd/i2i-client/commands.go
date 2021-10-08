@@ -15,6 +15,7 @@ const (
 	flagPlan         = "plan"
 	flagPrivateScope = "private-scope"
 	flagPassword     = "password"
+	flagProfile      = "profile"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -416,6 +417,7 @@ func createConnectionCommand() *cobra.Command {
 		Long:  `list i2i connections (contacts)`,
 		Run:   connectionList,
 	}
+	connectionListCmd.Flags().String(flagProfile, "", "name of profile to display connections from")
 
 	connectionCmd.AddCommand(connectionAddCmd)
 	connectionCmd.AddCommand(connectionListCmd)
