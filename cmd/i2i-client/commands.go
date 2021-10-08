@@ -37,6 +37,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createFileCommand())
 	rootCmd.AddCommand(createUnlockCommand())
 	rootCmd.AddCommand(createConnectionCommand())
+	rootCmd.AddCommand(createProfileCommand())
 
 	return rootCmd
 }

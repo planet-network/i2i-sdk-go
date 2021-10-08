@@ -2,15 +2,6 @@ package client
 
 import "time"
 
-type DMeProfileInput struct {
-	ProfileName   string  `json:"profile_name"`
-	AvatarFileID  *string `json:"avatar_file_id"`
-	HideFirstName *bool   `json:"hide_first_name"`
-	HideSurname   *bool   `json:"hide_surname"`
-	Pseudonym     *string `json:"pseudonym"`
-	Bio           *string `json:"bio"`
-}
-
 // DMeProfileAdd creates new profile for DMe type of i2i
 // The i2i must be previously initialized as DMe.
 func (c *Client) DMeProfileAdd(profile *DMeProfileInput) (*Profile, error) {

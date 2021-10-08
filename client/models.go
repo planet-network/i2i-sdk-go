@@ -118,3 +118,12 @@ type Profile struct {
 	AvatarURL   string `json:"avatar_url"`
 	ProfileName string `json:"profile_name"`
 }
+
+type DMeProfileInput struct {
+	ProfileName   string  `json:"profile_name"`
+	AvatarURL     *string `json:"avatar_url"`
+	HideFirstName *bool   `json:"hide_first_name"`
+	HideSurname   *bool   `json:"hide_surname"`
+	Pseudonym     *string `json:"pseudonym"`
+	Bio           *string `json:"bio"`
+}
