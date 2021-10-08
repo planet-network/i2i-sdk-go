@@ -35,6 +35,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createInitializeCommand())
 	rootCmd.AddCommand(createFileCommand())
 	rootCmd.AddCommand(createUnlockCommand())
+	rootCmd.AddCommand(createConnectionCommand())
 
 	return rootCmd
 }
@@ -392,4 +393,32 @@ func createInitializeCommand() *cobra.Command {
 	}
 
 	return initializeCmd
+}
+
+func createConnectionCommand() *cobra.Command {
+	connectionCmd := &cobra.Command{
+		Use:   "connection",
+		Short: "manage i2i connections (contacts)",
+		Long:  `manage i2i connections (contacts)`,
+		Run:   nil,
+	}
+
+	connectionAddCmd := &cobra.Command{
+		Use:   "add",
+		Short: "add new i2i connection (contact)",
+		Long:  `add new i2i connection (contact)`,
+		Run:   connectionAdd,
+	}
+
+	connectionListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list i2i connections (contacts)",
+		Long:  `list i2i connections (contacts)`,
+		Run:   connectionList,
+	}
+
+	connectionCmd.AddCommand(connectionAddCmd)
+	connectionCmd.AddCommand(connectionListCmd)
+
+	return connectionCmd
 }

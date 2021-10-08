@@ -1,7 +1,6 @@
 package client
 
 import (
-	"errors"
 	"time"
 )
 
@@ -46,7 +45,7 @@ type NotificationAction struct {
 	Action string `json:"action"`
 }
 
-func (c *Client) AddConnection(profile string, publickey string) error {
+func (c *Client) ConnectionAdd(profile string, publicKey string) error {
 	input := ConnectionInput{
 		Profile:   []string{profile},
 		PublicKey: publickey,
@@ -61,37 +60,51 @@ func (c *Client) AddConnection(profile string, publickey string) error {
 	return err
 }
 
-func (c *Client) QueryFriendRequests() (string, error) {
-	var response InteractiveActions
+func (c *Client) QueryFriendRequests() ([]FriendRequest, error) {
+	response := struct {
+		FriendRequests []FriendRequest `json:"interactiveActions"`
+	}{}
+
 	_, err := c.query(&query{
 		query:     interactiveActionsQry,
 		variables: nil,
 		timeout:   time.Second * 2,
 		response:  &response,
 	})
-	if err != nil {
-		return "", err
-	}
-	if len(response.FriendRequests) == 1 {
-		return response.FriendRequests[0].ID, nil
-	}
-	if len(response.FriendRequests) > 1 {
-		return "", errors.New("multiple friend requests")
-	}
-	return "", errors.New("no friend requests")
+
+	return response.FriendRequests, err
 }
 
-func (c *Client) InterActiveActionAccept(id string) error {
-	var response interface{}
+type InterActiveAction uint
+
+const (
+	InterActiveActionAccept InterActiveAction = iota
+	InterActiveActionDeny
+)
+
+func (i InterActiveAction) String() string {
+	switch i {
+	case InterActiveActionAccept:
+		return "ACCEPT"
+	case InterActiveActionDeny:
+		return "DENY"
+	default:
+		return ""
+	}
+}
+
+func (c *Client) InteractiveActionUpdate(id string, action InterActiveAction) error {
 	input := NotificationAction{
 		ID:     id,
-		Action: "ACCEPT",
+		Action: action.String(),
 	}
+
 	_, err := c.query(&query{
 		query:     mutationInteractiveAction,
 		variables: map[string]interface{}{"input": input},
 		timeout:   time.Second * 2,
-		response:  &response,
+		response:  nil,
 	})
+
 	return err
 }
