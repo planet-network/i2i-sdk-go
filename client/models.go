@@ -113,3 +113,8 @@ type Connection struct {
 	// transactions contains list of transactions related to given contact
 	Transactions []string `json:"transactions"`
 }
+
+type Profile struct {
+	AvatarURL   string `json:"avatar_url"`
+	ProfileName string `json:"profile_name"`
+}

@@ -140,6 +140,23 @@ func (a *App) NodeDefaultWithKeychain() (*Node, error) {
 	return node, nil
 }
 
+func (a *App) NodeWithKeychain(name string) (*Node, error) {
+	node, ok := a.config.Nodes[name]
+	if !ok {
+		return nil, fmt.Errorf("node %q not found", a.config.SelectedNode)
+	}
+
+	if node.HasKeychain {
+		keychain, err := client.LoadFullKeychainFromFile(a.keychainPath(a.config.SelectedNode))
+		if err != nil {
+			return nil, err
+		}
+		node.Keychain = keychain
+	}
+
+	return node, nil
+}
+
 func (a *App) DefaultManager() (*Manager, error) {
 	if a.config.SelectedManager == "" {
 		return nil, fmt.Errorf("no active manager found")

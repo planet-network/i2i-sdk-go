@@ -411,6 +411,14 @@ func createConnectionCommand() *cobra.Command {
 		Run:   connectionAdd,
 	}
 
+	connectionAddLocalCmd := &cobra.Command{
+		Use:   "add-by-cfg [name1] [name2]",
+		Args:  cobra.ExactArgs(2),
+		Short: "connects two i2i from local cfg",
+		Long:  `connects two i2i from local cfg`,
+		Run:   connectionAddLocal,
+	}
+
 	connectionListCmd := &cobra.Command{
 		Use:   "list",
 		Short: "list i2i connections (contacts)",
@@ -421,6 +429,36 @@ func createConnectionCommand() *cobra.Command {
 
 	connectionCmd.AddCommand(connectionAddCmd)
 	connectionCmd.AddCommand(connectionListCmd)
+	connectionCmd.AddCommand(connectionAddLocalCmd)
 
 	return connectionCmd
+}
+
+func createProfileCommand() *cobra.Command {
+	profileCmd := &cobra.Command{
+		Use:   "profile",
+		Short: "manage i2i profiles",
+		Long:  `manage i2i profiles`,
+		Run:   nil,
+	}
+
+	profileAddCmd := &cobra.Command{
+		Use:   "add [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "add new profile",
+		Long:  `add new profile`,
+		Run:   profileAdd,
+	}
+
+	profileListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list added profiles",
+		Long:  `list added profiles`,
+		Run:   profileList,
+	}
+
+	profileCmd.AddCommand(profileListCmd)
+	profileCmd.AddCommand(profileAddCmd)
+
+	return profileCmd
 }

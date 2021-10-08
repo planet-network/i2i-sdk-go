@@ -158,8 +158,8 @@ mutation($input: NotificationAction!) {
 const mutationDMeProfileAdd = `
 mutation($input:DMeProfileInput!){
 	dMeProfileAdd(input: $input) {
-		avatar_file_id
-		profile_name
+		avatar_url
+    	profile_name
 	}
 }
 `
@@ -176,6 +176,15 @@ query($profile: ID!) {
     name
     surname
     transactions
+  }
+}
+`
+
+const queryProfileList = `
+query {
+  profileList {
+    avatar_url
+    profile_name
   }
 }
 `
