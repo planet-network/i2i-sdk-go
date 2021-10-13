@@ -3,14 +3,18 @@ package client
 import "time"
 
 type NetworkInfo struct {
-	Running bool `json:"running"`
+	Running     bool    `json:"running"`
+	IP          *string `json:"ip"`
+	NetworkPort *int    `json:"network_port"`
+	APIPort     *int    `json:"api_port"`
+	VpnPort     *int    `json:"vpn_port"`
 }
 
-// Info contains i2i related information
+// contains i2i related intofmation
 type Info struct {
 	// i2i version
-	Version string      `json:"version"`
-	Network NetworkInfo `json:"network"`
+	Version string       `json:"version"`
+	Network *NetworkInfo `json:"network"`
 }
 
 type ACLInput struct {
