@@ -36,11 +36,15 @@ type ClientOpt struct {
 	Address  string
 	ClientID string
 	Password string
+	JWT      string
 }
 
 func NewClient(opt ClientOpt) *Client {
 	return &Client{
-		address: opt.Address,
+		address:  opt.Address,
+		jwt:      opt.JWT,
+		clientID: opt.ClientID,
+		password: opt.Password,
 	}
 }
 
@@ -195,6 +199,18 @@ func (c *Client) NodeOrder(order *NodeOrderRequest) (*NodeOrderReply, error) {
 	})
 
 	return response, err
+}
+
+func (c *Client) NodeUpdate() error {
+
+	err := c.apiCallDo(&apiCall{
+		method:   http.MethodPost,
+		httpPath: fmt.Sprintf("/client/update/%s", c.clientID),
+		payload:  nil,
+		response: nil,
+	})
+
+	return err
 }
 
 func (c *Client) WaitNodeProvisioned(timeout time.Duration) error {

@@ -350,3 +350,25 @@ func planList(cmd *cobra.Command, args []string) {
 
 	printResult(plans)
 }
+
+func managerNodeUpdate(cmd *cobra.Command, args []string) {
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
+
+	if node.Meta.Hosting.ClientID == "" {
+		fail("missing client id")
+	}
+
+	managerClient := manager.NewClient(manager.ClientOpt{
+		Address:  node.Meta.Hosting.ManagerAddress,
+		ClientID: node.Meta.Hosting.ClientID,
+		Password: node.Meta.Hosting.Password,
+	})
+
+	if err := managerClient.NodeUpdate(); err != nil {
+		fail(err)
+	}
+
+}

@@ -142,6 +142,13 @@ func createManagerCommand() *cobra.Command {
 		Run:   nil,
 	}
 
+	nodeUpdateCmd := &cobra.Command{
+		Use:   "node-update",
+		Short: "update remote node",
+		Long:  `update remote node`,
+		Run:   managerNodeUpdate,
+	}
+
 	quickOrderCmd := &cobra.Command{
 		Use:   "quick-order",
 		Short: "orders and initializes i2i",
@@ -252,6 +259,7 @@ func createManagerCommand() *cobra.Command {
 	managerCmd.AddCommand(listCmd)
 	managerCmd.AddCommand(versionGetCmd)
 	managerCmd.AddCommand(planCmd)
+	managerCmd.AddCommand(nodeUpdateCmd)
 
 	return managerCmd
 }

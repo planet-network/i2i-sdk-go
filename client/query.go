@@ -4,8 +4,12 @@ const queryInfo = `
 query {
   info {
     version
-    network {
+    network{
       running
+      ip
+      network_port
+      api_port
+      vpn_port
     }
   }
 }
