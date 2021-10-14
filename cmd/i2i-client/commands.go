@@ -148,13 +148,6 @@ func createManagerCommand() *cobra.Command {
 		Run:   nil,
 	}
 
-	nodeUpdateCmd := &cobra.Command{
-		Use:   "node-update",
-		Short: "update remote node",
-		Long:  `update remote node`,
-		Run:   managerNodeUpdate,
-	}
-
 	versionGetCmd := &cobra.Command{
 		Use:   "version",
 		Short: "show current version of hosted i2i",
@@ -244,7 +237,6 @@ func createManagerCommand() *cobra.Command {
 	managerCmd.AddCommand(listCmd)
 	managerCmd.AddCommand(versionGetCmd)
 	managerCmd.AddCommand(planCmd)
-	managerCmd.AddCommand(nodeUpdateCmd)
 
 	return managerCmd
 }
@@ -472,6 +464,13 @@ func createNodeCommand() *cobra.Command {
 		Run:   nodeShow,
 	}
 
+	updateCmd := &cobra.Command{
+		Use:   "update [name]",
+		Short: "update version of remote node",
+		Long:  `update version of remote node`,
+		Run:   nodeUpdate,
+	}
+
 	addCmd := &cobra.Command{
 		Use:   "add [name] [ip:port]",
 		Args:  cobra.ExactArgs(2),
@@ -512,6 +511,7 @@ func createNodeCommand() *cobra.Command {
 	nodeCmd.AddCommand(addCmd)
 	nodeCmd.AddCommand(execCmd)
 	nodeCmd.AddCommand(orderCmd)
+	nodeCmd.AddCommand(updateCmd)
 
 	return nodeCmd
 }
