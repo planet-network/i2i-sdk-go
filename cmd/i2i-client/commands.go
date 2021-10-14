@@ -308,6 +308,15 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgShow,
 	}
 
+	addCmd := &cobra.Command{
+		Use:   "add [name] [ip:port]",
+		Args:  cobra.ExactArgs(2),
+		Short: "add new node",
+		Long:  `add new node`,
+		Run:   cfgAdd,
+	}
+
+	cfgCmd.AddCommand(addCmd)
 	cfgCmd.AddCommand(initCmd)
 	cfgCmd.AddCommand(setActive)
 	cfgCmd.AddCommand(listCmd)

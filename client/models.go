@@ -10,7 +10,7 @@ type NetworkInfo struct {
 	VpnPort     *int    `json:"vpn_port"`
 }
 
-// contains i2i related intofmation
+// Info contains i2i related intofmation
 type Info struct {
 	// i2i version
 	Version string       `json:"version"`

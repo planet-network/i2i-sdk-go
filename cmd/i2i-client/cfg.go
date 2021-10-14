@@ -147,3 +147,25 @@ func cfgDelete(cmd *cobra.Command, args []string) {
 	}
 
 }
+
+func cfgAdd(cmd *cobra.Command, args []string) {
+	appHandler, err := app.NewApp()
+	if err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.LoadConfig(); err != nil {
+		fail(err)
+	}
+
+	if err := appHandler.NodeAddNoKeychain(&app.Node{
+		Name:        args[1],
+		HasKeychain: false,
+		Meta: app.NodeMeta{
+			Type:        "remote",
+			NodeAddress: args[0],
+		},
+	}); err != nil {
+		fail(err)
+	}
+}

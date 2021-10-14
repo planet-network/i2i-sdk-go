@@ -192,3 +192,12 @@ query {
   }
 }
 `
+
+const mutationDMeProfileUpdate = `
+mutation($input:DMeProfileInput!){
+	dMeProfileUpdate(input: $input) {
+		avatar_url
+    	profile_name
+	}
+}
+`

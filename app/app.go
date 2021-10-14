@@ -115,6 +115,26 @@ func (a *App) NodeCreateWithKeychain(node *Node) error {
 	return a.config.Store(a.configFilePath)
 }
 
+func (a *App) NodeAddNoKeychain(node *Node) error {
+	if _, ok := a.config.Nodes[node.Name]; ok {
+		return fmt.Errorf("already exist")
+	}
+
+	nodeDir := a.workdirPath(node.Name)
+	if err := os.Mkdir(nodeDir, 0700); err != nil {
+		return err
+	}
+
+	node.HasKeychain = false
+	a.config.Nodes[node.Name] = node
+
+	if a.config.SelectedNode == "" {
+		a.config.SelectedNode = node.Name
+	}
+
+	return a.config.Store(a.configFilePath)
+}
+
 func (a *App) NodeSetDefault(name string) error {
 	if _, ok := a.config.Nodes[name]; !ok {
 		return fmt.Errorf("not found")
