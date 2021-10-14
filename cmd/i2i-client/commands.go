@@ -5,17 +5,23 @@ import (
 )
 
 const (
-	flagInitializeAs = "initialize-as"
-	flagHosting      = "hosting"
-	flagName         = "name"
-	flagDescription  = "description"
-	flagDuration     = "duration"
-	flagPort         = "port"
-	flagI2iPath      = "i2i-path"
-	flagPlan         = "plan"
-	flagPrivateScope = "private-scope"
-	flagPassword     = "password"
-	flagProfile      = "profile"
+	flagInitializeAs  = "initialize-as"
+	flagHosting       = "hosting"
+	flagName          = "name"
+	flagDescription   = "description"
+	flagDuration      = "duration"
+	flagPort          = "port"
+	flagI2iPath       = "i2i-path"
+	flagPlan          = "plan"
+	flagPrivateScope  = "private-scope"
+	flagPassword      = "password"
+	flagProfile       = "profile"
+	flagAvatarUrl     = "avatar-url"
+	flagFileID        = "avatar-file-id"
+	flagBio           = "bio"
+	flagPseudonym     = "pseudonym"
+	flagHideFirstName = "hide-first-name"
+	flagHideSurname   = "hide-surname"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -468,6 +474,21 @@ func createProfileCommand() *cobra.Command {
 		Run:   profileAdd,
 	}
 
+	profileUpdateCmd := &cobra.Command{
+		Use:   "update [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "update profile fields",
+		Long:  `update profile fields`,
+		Run:   profileUpdate,
+	}
+
+	profileUpdateCmd.Flags().String(flagAvatarUrl, "", "url of the avatar to use")
+	profileUpdateCmd.Flags().String(flagFileID, "", "id of i2i hosted file to use")
+	profileUpdateCmd.Flags().String(flagBio, "", "change bio info")
+	profileUpdateCmd.Flags().String(flagPseudonym, "", "custom pseudonym")
+	profileUpdateCmd.Flags().Bool(flagHideFirstName, false, "hide first name")
+	profileUpdateCmd.Flags().Bool(flagHideSurname, false, "hide surname")
+
 	profileListCmd := &cobra.Command{
 		Use:   "list",
 		Short: "list added profiles",
@@ -475,6 +496,7 @@ func createProfileCommand() *cobra.Command {
 		Run:   profileList,
 	}
 
+	profileCmd.AddCommand(profileUpdateCmd)
 	profileCmd.AddCommand(profileListCmd)
 	profileCmd.AddCommand(profileAddCmd)
 

@@ -31,3 +31,18 @@ func (c *Client) ProfileList() ([]*Profile, error) {
 	})
 	return response.Profiles, err
 }
+
+// DMeProfileUpdate updates profile fields
+func (c *Client) DMeProfileUpdate(input *DMeProfileInput, file string) (*Profile, error) {
+	response := struct {
+		Profile Profile `json:"dMeProfileUpdate"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     mutationDMeProfileUpdate,
+		variables: map[string]interface{}{"input": input},
+		timeout:   time.Second * 2,
+		response:  &response,
+	})
+	return &response.Profile, err
+}
