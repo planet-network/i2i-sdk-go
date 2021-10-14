@@ -38,12 +38,12 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createStateCommand())
 	rootCmd.AddCommand(createInfoCommand())
 	rootCmd.AddCommand(createAclCommand())
-	rootCmd.AddCommand(createExecCommand())
 	rootCmd.AddCommand(createInitializeCommand())
 	rootCmd.AddCommand(createFileCommand())
 	rootCmd.AddCommand(createUnlockCommand())
 	rootCmd.AddCommand(createConnectionCommand())
 	rootCmd.AddCommand(createProfileCommand())
+	rootCmd.AddCommand(createNodeCommand())
 
 	return rootCmd
 }
@@ -155,13 +155,6 @@ func createManagerCommand() *cobra.Command {
 		Run:   managerNodeUpdate,
 	}
 
-	quickOrderCmd := &cobra.Command{
-		Use:   "quick-order",
-		Short: "orders and initializes i2i",
-		Long:  `orders and initializes i2i`,
-		Run:   managerQuickOrder,
-	}
-
 	versionGetCmd := &cobra.Command{
 		Use:   "version",
 		Short: "show current version of hosted i2i",
@@ -241,20 +234,6 @@ func createManagerCommand() *cobra.Command {
 		Run:   managerList,
 	}
 
-	quickOrderCmd.Flags().String(flagInitializeAs, "DME", "initialize ordered i2i as [DME|DORG]")
-	quickOrderCmd.Flags().String(flagName, "", "local name of ordered i2i instance")
-	quickOrderCmd.MarkFlagRequired(flagName)
-
-	quickOrderCmd.Flags().String(flagHosting, "", "hosting provider address")
-	quickOrderCmd.MarkFlagRequired(flagHosting)
-
-	quickOrderCmd.Flags().String(flagPlan, "", "hosting plan to use")
-	quickOrderCmd.MarkFlagRequired(flagPlan)
-
-	quickOrderCmd.Flags().String(flagPassword, "password_0123456789", "client password")
-
-	managerCmd.AddCommand(quickOrderCmd)
-
 	clientCmd.AddCommand(clientUpdateCmd)
 	clientCmd.AddCommand(clientListCmd)
 
@@ -285,49 +264,7 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgInit,
 	}
 
-	setActive := &cobra.Command{
-		Use:   "set-active [node]",
-		Short: "set active node",
-		Long:  `set active node`,
-		Args:  cobra.ExactArgs(1),
-		Run:   cfgSetActive,
-	}
-
-	listCmd := &cobra.Command{
-		Use:   "list",
-		Short: "list configured nodes",
-		Long:  `list configured nodes`,
-		Run:   cfgList,
-	}
-
-	deleteCmd := &cobra.Command{
-		Use:   "delete [name]",
-		Short: "remove node from configuration",
-		Long:  `remove node from configuration`,
-		Run:   cfgDelete,
-	}
-
-	showCmd := &cobra.Command{
-		Use:   "show [name]",
-		Short: "show details about node",
-		Long:  `show details about node`,
-		Run:   cfgShow,
-	}
-
-	addCmd := &cobra.Command{
-		Use:   "add [name] [ip:port]",
-		Args:  cobra.ExactArgs(2),
-		Short: "add new node",
-		Long:  `add new node`,
-		Run:   cfgAdd,
-	}
-
-	cfgCmd.AddCommand(addCmd)
 	cfgCmd.AddCommand(initCmd)
-	cfgCmd.AddCommand(setActive)
-	cfgCmd.AddCommand(listCmd)
-	cfgCmd.AddCommand(showCmd)
-	cfgCmd.AddCommand(deleteCmd)
 
 	return cfgCmd
 }
@@ -391,21 +328,6 @@ func createAclCommand() *cobra.Command {
 	aclCmd.AddCommand(aclDeleteCmd)
 
 	return aclCmd
-}
-
-func createExecCommand() *cobra.Command {
-	execCmd := &cobra.Command{
-		Use:   "exec",
-		Short: "run i2i on local machine",
-		Long:  `run i2i on local machine`,
-		Run:   execute,
-	}
-
-	execCmd.Flags().String(flagName, "", "name of the local i2i")
-	execCmd.Flags().String(flagI2iPath, "", "path to i2i executable")
-	execCmd.Flags().Int(flagPort, 9090, "graphql listener port")
-
-	return execCmd
 }
 
 func createInitializeCommand() *cobra.Command {
@@ -501,4 +423,86 @@ func createProfileCommand() *cobra.Command {
 	profileCmd.AddCommand(profileAddCmd)
 
 	return profileCmd
+}
+
+func createNodeCommand() *cobra.Command {
+	nodeCmd := &cobra.Command{
+		Use:   "node",
+		Short: "manage i2i nodes",
+		Long:  `manage i2i nodes`,
+		Run:   nodeInfo,
+	}
+
+	setActive := &cobra.Command{
+		Use:   "set-active [node]",
+		Short: "set active node",
+		Long:  `set active node`,
+		Args:  cobra.ExactArgs(1),
+		Run:   nodeSetActive,
+	}
+
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list configured nodes",
+		Long:  `list configured nodes`,
+		Run:   nodeList,
+	}
+
+	deleteCmd := &cobra.Command{
+		Use:   "delete [name]",
+		Short: "remove node from configuration",
+		Long:  `remove node from configuration`,
+		Run:   nodeRemove,
+	}
+
+	showCmd := &cobra.Command{
+		Use:   "show [name]",
+		Short: "show details about node",
+		Long:  `show details about node`,
+		Run:   nodeShow,
+	}
+
+	addCmd := &cobra.Command{
+		Use:   "add [name] [ip:port]",
+		Args:  cobra.ExactArgs(2),
+		Short: "add new node",
+		Long:  `add new node`,
+		Run:   nodeAdd,
+	}
+
+	execCmd := &cobra.Command{
+		Use:   "exec",
+		Args:  cobra.ExactArgs(2),
+		Short: "run i2i node locally",
+		Long:  `run i2i node locally`,
+		Run:   nodeExec,
+	}
+	execCmd.Flags().String(flagName, "", "name of the local i2i")
+	execCmd.Flags().String(flagI2iPath, "", "path to i2i executable")
+	execCmd.Flags().Int(flagPort, 9090, "graphql listener port")
+
+	orderCmd := &cobra.Command{
+		Use:   "order",
+		Short: "orders and initializes i2i",
+		Long:  `orders and initializes i2i`,
+		Run:   nodeOrder,
+	}
+	orderCmd.Flags().String(flagInitializeAs, "DME", "initialize ordered i2i as [DME|DORG]")
+	orderCmd.Flags().String(flagName, "", "local name of ordered i2i instance")
+	orderCmd.MarkFlagRequired(flagName)
+	orderCmd.Flags().String(flagHosting, "", "hosting provider address")
+	orderCmd.MarkFlagRequired(flagHosting)
+	orderCmd.Flags().String(flagPlan, "", "hosting plan to use")
+	orderCmd.MarkFlagRequired(flagPlan)
+	orderCmd.Flags().String(flagPassword, "password_0123456789", "client password")
+
+	nodeCmd.AddCommand(setActive)
+	nodeCmd.AddCommand(listCmd)
+	nodeCmd.AddCommand(showCmd)
+	nodeCmd.AddCommand(deleteCmd)
+	nodeCmd.AddCommand(addCmd)
+	nodeCmd.AddCommand(execCmd)
+	nodeCmd.AddCommand(orderCmd)
+
+	return nodeCmd
 }

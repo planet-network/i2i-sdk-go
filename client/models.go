@@ -124,7 +124,7 @@ type Profile struct {
 }
 
 type DMeProfileInput struct {
-	//	AvatarFileID  *string `json:"avatar_file_id"`
+	AvatarFileID  *string `json:"avatar_file_id"`
 	ProfileName   string  `json:"profile_name"`
 	AvatarURL     *string `json:"avatar_url"`
 	HideFirstName *bool   `json:"hide_first_name"`
