@@ -458,6 +458,7 @@ func createNodeCommand() *cobra.Command {
 
 	deleteCmd := &cobra.Command{
 		Use:   "delete [name]",
+		Args:  cobra.ExactArgs(1),
 		Short: "remove node from configuration",
 		Long:  `remove node from configuration`,
 		Run:   nodeRemove,
@@ -465,6 +466,7 @@ func createNodeCommand() *cobra.Command {
 
 	showCmd := &cobra.Command{
 		Use:   "show [name]",
+		Args:  cobra.ExactArgs(1),
 		Short: "show details about node",
 		Long:  `show details about node`,
 		Run:   nodeShow,
@@ -480,7 +482,6 @@ func createNodeCommand() *cobra.Command {
 
 	execCmd := &cobra.Command{
 		Use:   "exec",
-		Args:  cobra.ExactArgs(2),
 		Short: "run i2i node locally",
 		Long:  `run i2i node locally`,
 		Run:   nodeExec,
