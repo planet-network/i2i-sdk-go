@@ -8,6 +8,7 @@ i2i-client:
 
 install: i2i-client
 	mv ./i2i-client ~/go/bin/
+	~/go/bin/i2i-client cfg  completion zsh > ~/.oh-my-zsh/completions/_i2i-client
 
 clean:
 	@rm -f i2i-client

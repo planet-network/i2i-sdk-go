@@ -264,7 +264,15 @@ func createCfgCommand() *cobra.Command {
 		Run:   cfgInit,
 	}
 
+	completion := &cobra.Command{
+		Use:   "completion [bash|zsh|fish|powershell]",
+		Short: "generate completions for shell",
+		Long:  `generate completions for shell`,
+		Run:   completion,
+	}
+
 	cfgCmd.AddCommand(initCmd)
+	cfgCmd.AddCommand(completion)
 
 	return cfgCmd
 }
