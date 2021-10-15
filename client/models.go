@@ -132,3 +132,38 @@ type DMeProfileInput struct {
 	Pseudonym     *string `json:"pseudonym"`
 	Bio           *string `json:"bio"`
 }
+
+type WireguardConfig struct {
+	Running    bool   `json:"running"`
+	Name       string `json:"name"`
+	Address    string `json:"address"`
+	ListenPort int    `json:"listen_port"`
+	PrivateKey string `json:"private_key"`
+	PublicKey  string `json:"public_key"`
+	PostUp     string `json:"post_up"`
+	PostDown   string `json:"post_down"`
+	DNS        string `json:"dns"`
+}
+
+type WireguardConfigInput struct {
+	Name       string  `json:"name"`
+	PrivateKey *string `json:"privateKey"`
+	Address    *string `json:"address"`
+}
+
+type WireguardPeerConfig struct {
+	Name          string `json:"name"`
+	Address       string `json:"address"`
+	Endpoint      string `json:"endpoint"`
+	PrivateKey    string `json:"private_key"`
+	PeerPublicKey string `json:"peer_public_key"`
+	DNS           string `json:"dns"`
+	AllowedIps    string `json:"allowed_ips"`
+}
+
+type WireguardPeerInput struct {
+	NetworkName string  `json:"network_name"`
+	PeerName    string  `json:"peer_name"`
+	PrivateKey  *string `json:"privateKey"`
+	Address     *string `json:"address"`
+}

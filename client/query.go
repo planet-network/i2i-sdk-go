@@ -201,3 +201,65 @@ mutation($input:DMeProfileInput!){
 	}
 }
 `
+
+const mutationVnfWireguardCreate = `
+mutation($input:WireguardConfigInput!) {
+  vnfWireguardCreate(input: $input) {
+    running
+    name
+    address
+    listen_port
+    private_key
+    public_key
+    post_up
+    post_down
+    dns
+  }
+}
+`
+
+const mutationVnfWireguardStop = `
+mutation($input:String!) {
+  vnfWireguardStop(name: $input) {
+    running
+    name
+    address
+    listen_port
+    private_key
+    public_key
+    post_up
+    post_down
+    dns
+  }
+}
+`
+
+const mutationVnfWireguardStart = `
+mutation($input:String!) {
+  vnfWireguardStart(name: $input) {
+    running
+    name
+    address
+    listen_port
+    private_key
+    public_key
+    post_up
+    post_down
+    dns
+  }
+}
+`
+
+const mutationVnfWireguardCreatePeerConfig = `
+mutation($input: WireguardPeerInput!) {
+  vnfWireguardCreatePeerConfig(input: $input ) {
+    name
+    address
+    endpoint
+    private_key
+    peer_public_key
+    dns
+    allowed_ips
+  }
+}
+`

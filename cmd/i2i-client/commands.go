@@ -5,23 +5,24 @@ import (
 )
 
 const (
-	flagInitializeAs  = "initialize-as"
-	flagHosting       = "hosting"
-	flagName          = "name"
-	flagDescription   = "description"
-	flagDuration      = "duration"
-	flagPort          = "port"
-	flagI2iPath       = "i2i-path"
-	flagPlan          = "plan"
-	flagPrivateScope  = "private-scope"
-	flagPassword      = "password"
-	flagProfile       = "profile"
-	flagAvatarUrl     = "avatar-url"
-	flagFileID        = "avatar-file-id"
-	flagBio           = "bio"
-	flagPseudonym     = "pseudonym"
-	flagHideFirstName = "hide-first-name"
-	flagHideSurname   = "hide-surname"
+	flagInitializeAs    = "initialize-as"
+	flagHosting         = "hosting"
+	flagName            = "name"
+	flagDescription     = "description"
+	flagDuration        = "duration"
+	flagPort            = "port"
+	flagI2iPath         = "i2i-path"
+	flagPlan            = "plan"
+	flagPrivateScope    = "private-scope"
+	flagPassword        = "password"
+	flagProfile         = "profile"
+	flagAvatarUrl       = "avatar-url"
+	flagFileID          = "avatar-file-id"
+	flagBio             = "bio"
+	flagPseudonym       = "pseudonym"
+	flagHideFirstName   = "hide-first-name"
+	flagHideSurname     = "hide-surname"
+	flagWireguardFormat = "wireguard-format"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -44,6 +45,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createConnectionCommand())
 	rootCmd.AddCommand(createProfileCommand())
 	rootCmd.AddCommand(createNodeCommand())
+	rootCmd.AddCommand(createVpnCommand())
 
 	return rootCmd
 }
@@ -514,4 +516,61 @@ func createNodeCommand() *cobra.Command {
 	nodeCmd.AddCommand(updateCmd)
 
 	return nodeCmd
+}
+
+func createVpnCommand() *cobra.Command {
+	vpnCmd := &cobra.Command{
+		Use:   "vpn",
+		Short: "manage vpn provided by i2i",
+		Long:  `manage vpn provided by i2i`,
+		Run:   nil,
+	}
+
+	peerCmd := &cobra.Command{
+		Use:   "peer",
+		Short: "manage vpn peers",
+		Long:  `manage vpn peers`,
+		Run:   nil,
+	}
+
+	addCmd := &cobra.Command{
+		Use:   "add [network] [peer-name]",
+		Args:  cobra.ExactArgs(2),
+		Short: "add new vpn peer",
+		Long:  `add new vpn peer`,
+		Run:   vpnCreatePeerConfig,
+	}
+	addCmd.Flags().Bool(flagWireguardFormat, false, "generate wireguard format config")
+
+	vpnStartCmd := &cobra.Command{
+		Use:   "start [network]",
+		Args:  cobra.ExactArgs(1),
+		Short: "start vpn service",
+		Long:  `start vpn service`,
+		Run:   vpnStart,
+	}
+
+	vpnStopCmd := &cobra.Command{
+		Use:   "stop [network]",
+		Args:  cobra.ExactArgs(1),
+		Short: "stop vpn service",
+		Long:  `stop vpn service`,
+		Run:   vpnStop,
+	}
+
+	vpnCreateCmd := &cobra.Command{
+		Use:   "create [network]",
+		Args:  cobra.ExactArgs(1),
+		Short: "create vpn service",
+		Long:  `create vpn service`,
+		Run:   vpnCreate,
+	}
+
+	peerCmd.AddCommand(addCmd)
+	vpnCmd.AddCommand(peerCmd)
+	vpnCmd.AddCommand(vpnCreateCmd)
+	vpnCmd.AddCommand(vpnStopCmd)
+	vpnCmd.AddCommand(vpnStartCmd)
+
+	return vpnCmd
 }
