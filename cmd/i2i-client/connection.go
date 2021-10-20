@@ -7,7 +7,22 @@ import (
 )
 
 func connectionAdd(cmd *cobra.Command, args []string) {
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
 
+	i2iClient := client.New(client.Opt{
+		Token:    node.Meta.Hosting.UnlockToken,
+		Address:  node.Meta.NodeAddress,
+		Acl:      node.Meta.APIToken,
+		Keychain: node.Keychain,
+	})
+
+	err = i2iClient.ConnectionAdd(args[0], args[1])
+	if err != nil {
+		fail(err)
+	}
 }
 
 func connectionAddLocal(cmd *cobra.Command, args []string) {

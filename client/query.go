@@ -140,7 +140,7 @@ mutation ($input: ConnectionInput!){
 }
 `
 
-const interactiveActionsQry = `
+const interactiveActionsFriendRequestQry = `
 query {
 	interactiveActions {
 		... on FriendRequest {
@@ -149,6 +149,16 @@ query {
 			time
 			full_name
 		}
+	}
+}
+`
+
+const interactiveActionsQry = `
+query {
+	interactiveActions {
+		id
+		source
+		time
 	}
 }
 `

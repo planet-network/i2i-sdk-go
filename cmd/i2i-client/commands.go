@@ -23,6 +23,7 @@ const (
 	flagHideFirstName   = "hide-first-name"
 	flagHideSurname     = "hide-surname"
 	flagWireguardFormat = "wireguard-format"
+	flagType            = "type"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -334,11 +335,12 @@ func createAclCommand() *cobra.Command {
 
 func createInitializeCommand() *cobra.Command {
 	initializeCmd := &cobra.Command{
-		Use:   "initialize [type]",
-		Args:  cobra.ExactArgs(1),
-		Short: "initialize node as DME|DORG|SUPERNODE",
-		Long:  `run i2i on local machine`,
-		Run:   initialize,
+		Use:       "initialize [type]",
+		ValidArgs: []string{"dme", "dorg", "supernode"},
+		Args:      cobra.ExactArgs(1),
+		Short:     "initialize node as dme|dorg|supernode",
+		Long:      `run i2i on local machine`,
+		Run:       initialize,
 	}
 
 	return initializeCmd
@@ -353,7 +355,7 @@ func createConnectionCommand() *cobra.Command {
 	}
 
 	connectionAddCmd := &cobra.Command{
-		Use:   "add",
+		Use:   "add [profile] [public key]",
 		Short: "add new i2i connection (contact)",
 		Long:  `add new i2i connection (contact)`,
 		Run:   connectionAdd,
@@ -573,4 +575,34 @@ func createVpnCommand() *cobra.Command {
 	vpnCmd.AddCommand(vpnStartCmd)
 
 	return vpnCmd
+}
+
+func createActionCommand() *cobra.Command {
+	actionCmd := &cobra.Command{
+		Use:   "action",
+		Short: "interactive actions",
+		Long:  `interactive actions`,
+		Run:   nil,
+	}
+
+	actionListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list interactive actions",
+		Long:  `list interactive actions`,
+		Run:   actionList,
+	}
+	actionListCmd.Flags().String(flagType, "", "action type expand")
+
+	actionUpdateCmd := &cobra.Command{
+		Use:   "update [id] [value]",
+		Args:  cobra.ExactArgs(2),
+		Short: "reply to interactive action",
+		Long:  `reply to interactive action`,
+		Run:   actionUpdate,
+	}
+
+	actionCmd.AddCommand(actionListCmd)
+	actionCmd.AddCommand(actionUpdateCmd)
+
+	return actionCmd
 }

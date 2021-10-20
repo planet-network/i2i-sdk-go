@@ -62,12 +62,15 @@ func nodeInfo(cmd *cobra.Command, args []string) {
 	fmt.Println("  name    :", config.SelectedNode)
 	fmt.Println("  address :", node.Meta.NodeAddress)
 	fmt.Println("  acl     :", node.Meta.APIToken)
-	fmt.Println("Hosting details:")
-	fmt.Println("  manager      :", node.Meta.Hosting.ManagerAddress)
-	fmt.Println("  plan         :", node.Meta.Hosting.Plan)
-	fmt.Println("  unlock token :", node.Meta.Hosting.UnlockToken)
-	fmt.Println("  client ID    :", node.Meta.Hosting.ClientID)
-	fmt.Println("  password     :", node.Meta.Hosting.Password)
+
+	if node.Meta.Hosting.ManagerAddress != "" {
+		fmt.Println("Hosting details:")
+		fmt.Println("  manager      :", node.Meta.Hosting.ManagerAddress)
+		fmt.Println("  plan         :", node.Meta.Hosting.Plan)
+		fmt.Println("  unlock token :", node.Meta.Hosting.UnlockToken)
+		fmt.Println("  client ID    :", node.Meta.Hosting.ClientID)
+		fmt.Println("  password     :", node.Meta.Hosting.Password)
+	}
 }
 
 func nodeAdd(cmd *cobra.Command, args []string) {
