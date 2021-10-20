@@ -214,3 +214,10 @@ type NotificationAction struct {
 	ID     string `json:"id"`
 	Action string `json:"action"`
 }
+
+type DMeInfo struct {
+	FirstName    string `json:"first_name"`
+	Surname      string `json:"surname"`
+	PublicKey    string `json:"public_key"`
+	SignatureKey string `json:"signature_key"`
+}

@@ -273,3 +273,20 @@ mutation($input: WireguardPeerInput!) {
   }
 }
 `
+
+const queryDMeInfo = `
+query {
+  dMeInfo {
+    first_name
+    surname
+    public_key
+    signature_key
+  }
+}
+`
+
+const mutationReset = `
+mutation {
+  reset
+}
+`

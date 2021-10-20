@@ -47,6 +47,9 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createProfileCommand())
 	rootCmd.AddCommand(createNodeCommand())
 	rootCmd.AddCommand(createVpnCommand())
+	rootCmd.AddCommand(createDmeCommand())
+	rootCmd.AddCommand(createActionCommand())
+	rootCmd.AddCommand(createResetCommand())
 
 	return rootCmd
 }
@@ -356,6 +359,7 @@ func createConnectionCommand() *cobra.Command {
 
 	connectionAddCmd := &cobra.Command{
 		Use:   "add [profile] [public key]",
+		Args:  cobra.ExactArgs(2),
 		Short: "add new i2i connection (contact)",
 		Long:  `add new i2i connection (contact)`,
 		Run:   connectionAdd,
@@ -605,4 +609,26 @@ func createActionCommand() *cobra.Command {
 	actionCmd.AddCommand(actionUpdateCmd)
 
 	return actionCmd
+}
+
+func createDmeCommand() *cobra.Command {
+	dmeCmd := &cobra.Command{
+		Use:   "dme",
+		Short: "manage dme type of i2i",
+		Long:  `manage dme type of i2i`,
+		Run:   dmeInfo,
+	}
+
+	return dmeCmd
+}
+
+func createResetCommand() *cobra.Command {
+	resetCmd := &cobra.Command{
+		Use:   "reset",
+		Short: "clean i2i database",
+		Long:  `clean i2i database`,
+		Run:   reset,
+	}
+
+	return resetCmd
 }

@@ -55,7 +55,7 @@ func actionUpdate(cmd *cobra.Command, args []string) {
 
 	var action client.InterActiveAction
 
-	switch args[0] {
+	switch args[1] {
 	case "accept", "ACCEPT":
 		action = client.InterActiveActionAccept
 	case "deny", "DENY":
