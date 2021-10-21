@@ -221,3 +221,45 @@ type DMeInfo struct {
 	PublicKey    string `json:"public_key"`
 	SignatureKey string `json:"signature_key"`
 }
+
+type Relation struct {
+	ID              string            `json:"ID"`
+	As              string            `json:"as"`
+	Characteristics []*Characteristic `json:"characteristics"`
+	Relatives       []*Relative       `json:"relatives"`
+	Nbuckets        []string          `json:"nbuckets"`
+}
+
+type Instance struct {
+	ID              string            `json:"ID"`
+	As              string            `json:"as"`
+	Nbuckets        []string          `json:"nbuckets"`
+	Characteristics []*Characteristic `json:"characteristics"`
+}
+
+type InstanceFilterInput struct {
+	Scope *string `json:"scope"`
+	As    *string `json:"as"`
+}
+
+type Characteristic struct {
+	Name  string   `json:"name"`
+	Value []string `json:"value"`
+}
+
+type Relative struct {
+	Name string `json:"name"`
+	ID   string `json:"ID"`
+}
+
+type RelationFilterInput struct {
+	Scope *string `json:"scope"`
+	As    *string `json:"as"`
+}
+
+type PlReport struct {
+	Scope   string `json:"scope"`
+	Object  string `json:"object"`
+	Name    string `json:"name"`
+	Message string `json:"message"`
+}

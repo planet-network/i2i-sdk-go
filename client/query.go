@@ -290,3 +290,52 @@ mutation {
   reset
 }
 `
+
+const queryPlScopeList = `
+query {
+  plScopeList
+}
+`
+
+const queryPlVerify = `
+query {
+  plVerify {
+    scope
+    object
+    name
+    message
+  }
+}
+`
+
+const queryPlInstances = `
+query($filter: InstanceFilterInput ) {
+  plInstances(filter: $filter) {
+    ID
+    as
+    nbuckets
+    characteristics {
+      name
+      value
+    }
+  }
+}
+`
+
+const queryPlRelations = `
+query($filter: RelationFilterInput) {
+  plRelations(filter: $filter) {
+    ID
+    as
+    characteristics {
+      name
+      value
+    }
+    relatives {
+      name
+      ID
+    }
+    nbuckets
+  }
+}
+`

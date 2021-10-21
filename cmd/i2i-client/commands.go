@@ -24,6 +24,7 @@ const (
 	flagHideSurname     = "hide-surname"
 	flagWireguardFormat = "wireguard-format"
 	flagType            = "type"
+	flagAs              = "as"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -50,6 +51,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createDmeCommand())
 	rootCmd.AddCommand(createActionCommand())
 	rootCmd.AddCommand(createResetCommand())
+	rootCmd.AddCommand(createPlCommand())
 
 	return rootCmd
 }
@@ -631,4 +633,76 @@ func createResetCommand() *cobra.Command {
 	}
 
 	return resetCmd
+}
+
+func createPlCommand() *cobra.Command {
+	plCmd := &cobra.Command{
+		Use:   "pl",
+		Short: "planet language operation",
+		Long:  `planet language operation`,
+		Run:   nil,
+	}
+
+	scopeCmd := &cobra.Command{
+		Use:   "scope",
+		Short: "scopes manipulation",
+		Long:  `scopes manipulation`,
+		Run:   nil,
+	}
+
+	scopeListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list planet language scopes",
+		Long:  `list planet language scopes`,
+		Run:   scopeList,
+	}
+
+	instanceCmd := &cobra.Command{
+		Use:   "instance",
+		Short: "instances manipulation",
+		Long:  `instances manipulation`,
+		Run:   nil,
+	}
+
+	instanceListCmd := &cobra.Command{
+		Use:   "list [scope]",
+		Short: "list planet language instances",
+		Long:  `list planet language instances`,
+		Run:   instancesList,
+	}
+	instanceListCmd.Flags().String(flagAs, "", "filter instances by AS metadata")
+
+	relationCmd := &cobra.Command{
+		Use:   "relation",
+		Short: "relations manipulation",
+		Long:  `relations manipulation`,
+		Run:   nil,
+	}
+
+	relationListCmd := &cobra.Command{
+		Use:   "list [scope]",
+		Short: "list planet language relations",
+		Long:  `list planet language relations`,
+		Run:   relationsList,
+	}
+	relationListCmd.Flags().String(flagAs, "", "filter relations by AS metadata")
+
+	verifyCmd := &cobra.Command{
+		Use:   "verify",
+		Short: "verify planet language objects",
+		Long:  `verify planet language objects`,
+		Run:   plVerify,
+	}
+
+	instanceCmd.AddCommand(instanceListCmd)
+	relationCmd.AddCommand(relationListCmd)
+
+	scopeCmd.AddCommand(scopeListCmd)
+
+	plCmd.AddCommand(instanceCmd)
+	plCmd.AddCommand(relationCmd)
+	plCmd.AddCommand(scopeCmd)
+	plCmd.AddCommand(verifyCmd)
+
+	return plCmd
 }
