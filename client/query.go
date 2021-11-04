@@ -73,7 +73,8 @@ query {
   fileList {
     id
     name
-    size
+    encrypted_size
+	decrypted_size
     mime
     key
   }
@@ -85,7 +86,8 @@ query($fileID: String!) {
   file(id: $fileID){
     id
     name
-    size
+    encrypted_size
+	decrypted_size
     mime
     key
   }
@@ -97,7 +99,8 @@ mutation($fileID: String!, $connectionKey: String!) {
   fileTransfer(id: $fileID, connection: $connectionKey) {
     id
     name
-    size
+    encrypted_size
+	decrypted_size
     mime
     key
   }
@@ -109,7 +112,8 @@ mutation($fileID: String!, $fileName: String!) {
   fileRename(id: $fileID, name: $fileName) {
     id
     name
-    size
+    encrypted_size
+	decrypted_size
     mime
     key
   }
@@ -121,7 +125,8 @@ mutation($fileID: String!) {
   fileRemove(id: $fileID) {
     id
     name
-    size
+    encrypted_size
+	decrypted_size
     mime
     key
   }

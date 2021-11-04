@@ -84,11 +84,11 @@ func nodeAdd(cmd *cobra.Command, args []string) {
 	}
 
 	if err := appHandler.NodeAddNoKeychain(&app.Node{
-		Name:        args[1],
+		Name:        args[0],
 		HasKeychain: false,
 		Meta: app.NodeMeta{
 			Type:        "manual",
-			NodeAddress: args[0],
+			NodeAddress: args[1],
 		},
 	}); err != nil {
 		fail(err)

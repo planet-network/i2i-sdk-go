@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -12,19 +13,37 @@ import (
 )
 
 // FileUpload uploads local file to i2i.
-func (c *Client) FileUpload(path string) (*File, error) {
-	data, err := ioutil.ReadFile(path)
+func (c *Client) FileUpload(path string) (*FileRest, error) {
+
+	var (
+		filename = filepath.Base(path)
+		buffer   bytes.Buffer
+		writer   = multipart.NewWriter(&buffer)
+	)
+
+	fileContent, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	request, err := http.NewRequest(http.MethodPost, c.nodeFileUploadAddress(), bytes.NewBuffer(data))
+	part, err := writer.CreateFormFile("file", filename)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := part.Write(fileContent); err != nil {
+		return nil, err
+	}
+
+	if err := writer.Close(); err != nil {
+		return nil, err
+	}
+
+	request, err := http.NewRequest(http.MethodPost, c.nodeFileUploadAddress(), &buffer)
 	if err != nil {
 		return nil, err
 	}
 
-	_, fileName := filepath.Split(path)
-	request.Header.Set("filename", fileName)
+	request.Header.Set("Content-Type", writer.FormDataContentType())
 
 	resp, err := c.httpClient.Do(request)
 	if err != nil {
@@ -41,26 +60,13 @@ func (c *Client) FileUpload(path string) (*File, error) {
 		return nil, err
 	}
 
-	var nonGraphQlFileModel = struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
-		Size int    `json:"size"`
-		Mime string `json:"mime"`
-		Path string `json:"path"`
-	}{}
+	fileModel := &FileRest{}
 
-	if err := json.Unmarshal(respData, &nonGraphQlFileModel); err != nil {
+	if err := json.Unmarshal(respData, fileModel); err != nil {
 		return nil, err
 	}
 
-	return &File{
-		ID:   nonGraphQlFileModel.ID,
-		Name: nonGraphQlFileModel.Name,
-		Size: nonGraphQlFileModel.Size,
-		Mime: nonGraphQlFileModel.Mime,
-		Key:  "",
-		Path: nonGraphQlFileModel.Path,
-	}, nil
+	return fileModel, nil
 }
 
 // FileDownload downloads file from i2i to local host.

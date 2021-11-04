@@ -86,11 +86,30 @@ type File struct {
 	ID string `json:"id"`
 	// name contains original file name
 	Name string `json:"name"`
-	// size is files size in bytes after encryption
-	Size int `json:"size"`
+	// decrypted_size is files size in bytes before encryption
+	DecryptedSize int `json:"decrypted_size"`
+	// encrypted_size is files size in bytes after encryption
+	EncryptedSize int `json:"encrypted_size"`
 	// mime contains MIME information
 	Mime string `json:"mime"`
 	Key  string `json:"key"`
+	// location of file on the i2i node
+	Path string `json:"path"`
+}
+
+// FileRest is designed for for /fu endpoint
+type FileRest struct {
+	// id is the database id of the object
+	ID string `json:"id"`
+	// name contains original file name
+	Name string `json:"name"`
+	// decrypted_size is files size in bytes before encryption
+	DecryptedSize int `json:"decrypted_size"`
+	// encrypted_size is files size in bytes after encryption
+	EncryptedSize int `json:"encrypted_size"`
+	// mime contains MIME information
+	Mime string      `json:"mime"`
+	Key  interface{} `json:"key"`
 	// location of file on the i2i node
 	Path string `json:"path"`
 }
