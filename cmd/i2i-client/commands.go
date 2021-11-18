@@ -25,6 +25,8 @@ const (
 	flagWireguardFormat = "wireguard-format"
 	flagType            = "type"
 	flagAs              = "as"
+	flagAddress         = "address"
+	flagDockerImage     = "docker-image"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -240,6 +242,25 @@ func createManagerCommand() *cobra.Command {
 
 	planCmd.AddCommand(planListCmd)
 	planCmd.AddCommand(planAddCmd)
+
+	configCmd := &cobra.Command{
+		Use:   "config",
+		Short: "config show",
+		Long:  `config show`,
+		Run:   managerConfigShow,
+	}
+
+	configSetCmd := &cobra.Command{
+		Use:   "set",
+		Short: "update config value",
+		Long:  `update config value`,
+		Run:   managerConfigSet,
+	}
+	configSetCmd.Flags().String(flagAddress, "", "")
+	configSetCmd.Flags().String(flagDockerImage, "", "")
+	configCmd.AddCommand(configSetCmd)
+
+	managerCmd.AddCommand(configCmd)
 	managerCmd.AddCommand(clientCmd)
 	managerCmd.AddCommand(loginCmd)
 	managerCmd.AddCommand(listCmd)

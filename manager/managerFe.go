@@ -236,13 +236,13 @@ type FeConfigAdmin struct {
 // Config stores configuration options for the manager
 type FeConfig struct {
 	// Address is the IP address of the manager
-	Address string `json:"address,omitempty"`
+	Address string `json:"address"`
 	// DockerImage is the name of the docker image run by manager for clients
-	DockerImage string `json:"docker_image,omitempty"`
+	DockerImage string `json:"docker_image"`
 	// Company represents owner company name
 	Company   string           `json:"company,omitempty"`
 	Payments  FeConfigPayments `json:"payments,omitempty"`
-	AdminUser FeConfigAdmin    `json:"admin,omitempty"`
+	AdminUser FeConfigAdmin    `json:"admin"`
 }
 
 func (m *FeClient) ConfigGet() (*FeConfig, error) {

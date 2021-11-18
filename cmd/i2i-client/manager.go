@@ -244,3 +244,61 @@ func planList(cmd *cobra.Command, args []string) {
 
 	printResult(plans)
 }
+
+func managerConfigShow(cmd *cobra.Command, args []string) {
+	mng, err := activeManager()
+	if err != nil {
+		fail(err)
+	}
+
+	managerClient := manager.NewFeClient(manager.FeOpt{
+		Address:  mng.Address,
+		Login:    mng.User,
+		Password: mng.Password,
+		Jwt:      mng.Token,
+	})
+
+	config, err := managerClient.ConfigGet()
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(config)
+}
+
+func managerConfigSet(cmd *cobra.Command, args []string) {
+	address, err := cmd.Flags().GetString(flagAddress)
+	if err != nil {
+		fail(err)
+	}
+
+	image, err := cmd.Flags().GetString(flagDockerImage)
+	if err != nil {
+		fail(err)
+	}
+
+	mng, err := activeManager()
+	if err != nil {
+		fail(err)
+	}
+
+	managerClient := manager.NewFeClient(manager.FeOpt{
+		Address:  mng.Address,
+		Login:    mng.User,
+		Password: mng.Password,
+		Jwt:      mng.Token,
+	})
+
+	cfg := &manager.FeConfig{}
+	if address != "" {
+		cfg.Address = address
+	}
+
+	if image != "" {
+		cfg.DockerImage = image
+	}
+
+	if err := managerClient.ConfigUpdate(cfg); err != nil {
+		fail(err)
+	}
+}
