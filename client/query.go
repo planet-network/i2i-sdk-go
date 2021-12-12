@@ -15,6 +15,12 @@ query {
 }
 `
 
+const queryPing = `
+query {
+  ping
+}
+`
+
 const mutationAclAdd = `
 mutation($input:AclInput!){
 	aclAdd(input:{data: $input}){

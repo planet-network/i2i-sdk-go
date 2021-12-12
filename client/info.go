@@ -23,3 +23,13 @@ func (c *Client) Info() (*Info, error) {
 
 	return &response.Info, nil
 }
+
+func (c *Client) Ping() error {
+	_, err := c.query(&query{
+		query:     queryPing,
+		variables: nil,
+		timeout:   time.Second,
+	})
+
+	return err
+}

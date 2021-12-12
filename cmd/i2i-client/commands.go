@@ -54,6 +54,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createActionCommand())
 	rootCmd.AddCommand(createResetCommand())
 	rootCmd.AddCommand(createPlCommand())
+	rootCmd.AddCommand(createPingCommand())
 
 	return rootCmd
 }
@@ -318,6 +319,17 @@ func createInfoCommand() *cobra.Command {
 	}
 
 	return infoCmd
+}
+
+func createPingCommand() *cobra.Command {
+	pingCmd := &cobra.Command{
+		Use:   "ping",
+		Short: "ping i2i node",
+		Long:  `ping i2i node`,
+		Run:   info,
+	}
+
+	return pingCmd
 }
 
 func createAclCommand() *cobra.Command {
