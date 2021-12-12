@@ -7,11 +7,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/planet-platform/i2i-sdk-go/client"
+	"github.com/planet-network/i2i-sdk-go/client"
 
-	"github.com/planet-platform/i2i-sdk-go/manager"
+	"github.com/planet-network/i2i-sdk-go/manager"
 
-	"github.com/planet-platform/i2i-sdk-go/app"
+	"github.com/planet-network/i2i-sdk-go/app"
 	"github.com/spf13/cobra"
 )
 

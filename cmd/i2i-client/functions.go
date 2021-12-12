@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/planet-platform/i2i-sdk-go/app"
+	"github.com/planet-network/i2i-sdk-go/app"
 )
 
 // fail prints message and exists with code 1

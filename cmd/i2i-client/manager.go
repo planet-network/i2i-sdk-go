@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/planet-platform/i2i-sdk-go/app"
-	"github.com/planet-platform/i2i-sdk-go/manager"
+	"github.com/planet-network/i2i-sdk-go/app"
+	"github.com/planet-network/i2i-sdk-go/manager"
 	"github.com/spf13/cobra"
 )
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/planet-platform/i2i-sdk-go/client"
+	"github.com/planet-network/i2i-sdk-go/client"
 	"github.com/spf13/cobra"
 )
 

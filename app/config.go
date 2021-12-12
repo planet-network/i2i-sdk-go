@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/planet-platform/i2i-sdk-go/client"
+	"github.com/planet-network/i2i-sdk-go/client"
 )
 
 // Config contains i2i parameters

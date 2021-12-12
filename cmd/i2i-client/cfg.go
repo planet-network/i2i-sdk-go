@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/planet-platform/i2i-sdk-go/app"
+	"github.com/planet-network/i2i-sdk-go/app"
 	"github.com/spf13/cobra"
 )
 
