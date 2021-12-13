@@ -95,3 +95,22 @@ func (c *Client) PlVerify() ([]*PlReport, error) {
 
 	return response.Report, nil
 }
+
+func (c *Client) PlInstance(scope, id string) (*Instance, error) {
+	response := struct {
+		Instance *Instance `json:"plInstance"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     queryPlInstance,
+		variables: map[string]interface{}{"scope": scope, "id": id},
+		timeout:   time.Second * 2,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Instance, nil
+}

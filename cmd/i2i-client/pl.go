@@ -140,3 +140,24 @@ func scopeList(cmd *cobra.Command, args []string) {
 
 	printResult(scopes)
 }
+
+func instance(cmd *cobra.Command, args []string) {
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
+
+	i2iClient := client.New(client.Opt{
+		Token:    node.Meta.Hosting.UnlockToken,
+		Address:  node.Meta.NodeAddress,
+		Acl:      node.Meta.APIToken,
+		Keychain: node.Keychain,
+	})
+
+	instance, err := i2iClient.PlInstance(args[0], args[1])
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(instance)
+}

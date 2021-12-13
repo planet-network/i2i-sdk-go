@@ -350,3 +350,17 @@ query($filter: RelationFilterInput) {
   }
 }
 `
+
+const queryPlInstance = `
+query($scope:String!, $id:String!) {
+  plInstance(scope:$scope,id:$id) {
+    ID
+    as
+    nbuckets
+    characteristics {
+      name
+      value
+    }
+  }
+}
+`

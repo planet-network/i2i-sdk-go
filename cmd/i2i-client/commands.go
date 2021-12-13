@@ -691,10 +691,10 @@ func createPlCommand() *cobra.Command {
 	}
 
 	instanceCmd := &cobra.Command{
-		Use:   "instance",
-		Short: "instances manipulation",
-		Long:  `instances manipulation`,
-		Run:   nil,
+		Use:   "instance [scope] [id]",
+		Short: "read instance",
+		Long:  `read instance`,
+		Run:   instance,
 	}
 
 	instanceListCmd := &cobra.Command{
