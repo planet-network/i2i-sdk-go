@@ -364,3 +364,16 @@ query($scope:String!, $id:String!) {
   }
 }
 `
+
+const mutationPlInstanceAdd = `
+mutation($instance: InstanceInput) {
+  plInstanceAdd(instance:$instance) {
+    ID
+    as
+    nbuckets
+    characteristics {
+      name
+      value
+    }
+  }
+}`

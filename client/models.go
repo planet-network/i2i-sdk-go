@@ -282,3 +282,15 @@ type PlReport struct {
 	Name    string `json:"name"`
 	Message string `json:"message"`
 }
+
+type InstanceInput struct {
+	Scope           string                 `json:"scope"`
+	As              *string                `json:"as"`
+	ID              *string                `json:"id"`
+	Characteristics []*CharacteristicInput `json:"characteristics"`
+}
+
+type CharacteristicInput struct {
+	Name  string   `json:"name"`
+	Value []string `json:"value"`
+}

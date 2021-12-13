@@ -114,3 +114,22 @@ func (c *Client) PlInstance(scope, id string) (*Instance, error) {
 
 	return response.Instance, nil
 }
+
+func (c *Client) PlInstanceAdd(instance *InstanceInput) (*Instance, error) {
+	response := struct {
+		Instance *Instance `json:"plInstance"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     mutationPlInstanceAdd,
+		variables: map[string]interface{}{"instance": instance},
+		timeout:   time.Second * 2,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Instance, nil
+}
