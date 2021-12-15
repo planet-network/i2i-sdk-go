@@ -76,7 +76,7 @@ func (c *Client) InteractiveActionUpdate(id string, action InterActiveAction) er
 	_, err := c.query(&query{
 		query:     mutationInteractiveAction,
 		variables: map[string]interface{}{"input": input},
-		timeout:   time.Second * 2,
+		timeout:   time.Second * 5,
 		response:  nil,
 	})
 
