@@ -377,3 +377,60 @@ mutation($instance: InstanceInput!) {
     }
   }
 }`
+
+const mutationSendDirectMessage = `
+mutation($input: DirectMessageInput!) {
+  sendDirectMessage(input: $input) {
+    id
+    source
+    destination
+    content
+    read
+    time
+    star
+    reply
+    incoming
+  }
+}
+`
+
+const queryConversations = `
+query($profile: String!) {
+  conversations(profile:$profile) {
+    id
+    source
+    destination
+    time
+    content
+    avatar_url
+    message_type
+    display_name
+    unread_count
+    incoming
+    action_id
+    conversation_id
+    group_display_name
+    group_avatar_url
+  }
+}
+`
+
+const queryDirectMessage = `
+query($input: MessageViewInput!) {
+  directMessage(input: $input) {
+    totalCount
+    has_next_page
+    messages {
+      id
+      source
+      destination
+      content
+      read
+      time
+      star
+      reply
+      incoming
+    }
+  }
+}
+`

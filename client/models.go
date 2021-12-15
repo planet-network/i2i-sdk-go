@@ -294,3 +294,88 @@ type CharacteristicInput struct {
 	Name  string   `json:"name"`
 	Value []string `json:"value"`
 }
+
+type DirectMessageInput struct {
+	ID *string `json:"id"`
+	// destination is recipent public key
+	Destination string `json:"destination"`
+	// content is content of message to be delivered to recipent
+	Content string `json:"content"`
+	//  reply if set is reply to message with ID
+	Reply       *string            `json:"reply"`
+	Attachments []*AttachmentInput `json:"attachments"`
+}
+
+type AttachmentInput struct {
+	//  attachment_type is type of upload can be: video, image, gif, file
+	AttachmentType string `json:"attachment_type"`
+	// if uploaded from local device upload goes here
+	//Upload *graphql.Upload `json:"upload"`
+	//  if used from external source, url is provided
+	URL *string `json:"url"`
+	//  raw payload is used for case of some eg. JSON formatted data
+	RawPayload *string `json:"raw_payload"`
+}
+
+type DirectMessage struct {
+	// id is the database id of the object
+	ID string `json:"id"`
+	// source is public key of sender
+	Source string `json:"source"`
+	// destination is the public key of recipient
+	Destination string `json:"destination"`
+	// content is read content of the message
+	Content string `json:"content"`
+	// read is boolean value defining whether message was read or not
+	Read bool `json:"read"`
+	// time is time when message was send or received
+	Time time.Time `json:"time"`
+	// star is custom attribute set by user to mark message
+	Star bool `json:"star"`
+	// reply if set is ID of message it's reply to
+	Reply *string `json:"reply"`
+	//  incoming if set to true would mean that last message is incoming, otherwise outcoming
+	Incoming bool `json:"incoming"`
+}
+
+type DirectMessagePage struct {
+	TotalCount  int              `json:"totalCount"`
+	HasNextPage bool             `json:"has_next_page"`
+	Messages    []*DirectMessage `json:"messages"`
+}
+
+type MessageViewInput struct {
+	Conversation Key32   `json:"conversation"`
+	After        *string `json:"after"`
+	Before       *string `json:"before"`
+	Count        int     `json:"count"`
+}
+
+type Conversation struct {
+	// id is the database id of the message, in case of friend request it's transaction ID
+	ID string `json:"id"`
+	// source is public key of sender
+	Source string `json:"source"`
+	// destination is the public key of recipient
+	Destination string `json:"destination"`
+	// time is time when message was send or received
+	Time time.Time `json:"time"`
+	// content is read content of the message
+	Content string `json:"content"`
+	// url of the file containing avatar of
+	AvatarURL string `json:"avatar_url"`
+	// message_type is type of
+	MessageType string `json:"message_type"`
+	// display_name is string value under which contact is displayed in contact list
+	DisplayName string `json:"display_name"`
+	//  unread_count is number of unread messages in conversation
+	UnreadCount int `json:"unread_count"`
+	//  incoming if set to true would mean that last message is incoming, otherwise outcoming
+	Incoming bool `json:"incoming"`
+	//  action_id defines action
+	ActionID string `json:"action_id"`
+	//  conversation_id is id related to message conversation
+	ConversationID   string `json:"conversation_id"`
+	GroupDisplayName string `json:"group_display_name"`
+	GroupAvatarURL   string `json:"group_avatar_url"`
+}
