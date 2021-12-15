@@ -345,7 +345,7 @@ type DirectMessagePage struct {
 }
 
 type MessageViewInput struct {
-	Conversation Key32   `json:"conversation"`
+	Conversation string  `json:"conversation"`
 	After        *string `json:"after"`
 	Before       *string `json:"before"`
 	Count        int     `json:"count"`
