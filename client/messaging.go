@@ -42,7 +42,7 @@ func (c *Client) DirectMessage(input *MessageViewInput) (*DirectMessagePage, err
 
 func (c *Client) Conversations(profile string) ([]*Conversation, error) {
 	response := struct {
-		Messages []*Conversation `json:"directMessage"`
+		Messages []*Conversation `json:"conversations"`
 	}{}
 
 	_, err := c.query(&query{
