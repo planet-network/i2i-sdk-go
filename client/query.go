@@ -395,7 +395,7 @@ mutation($input: DirectMessageInput!) {
 `
 
 const queryConversations = `
-query($profile: String!) {
+query($profile: ID!) {
   conversations(profile:$profile) {
     id
     source
