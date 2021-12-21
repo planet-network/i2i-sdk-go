@@ -55,6 +55,8 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createResetCommand())
 	rootCmd.AddCommand(createPlCommand())
 	rootCmd.AddCommand(createPingCommand())
+	rootCmd.AddCommand(createConversationsCommand())
+	rootCmd.AddCommand(createBenchmarkCommand())
 
 	return rootCmd
 }
@@ -65,6 +67,15 @@ func createTuiCommand() *cobra.Command {
 		Short: "run terminal ui",
 		Long:  `run terminal ui`,
 		Run:   tui,
+	}
+}
+
+func createBenchmarkCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "benchmark",
+		Short: "run some benchmarks",
+		Long:  `run some benchmarks`,
+		Run:   benchmark,
 	}
 }
 
@@ -738,4 +749,14 @@ func createPlCommand() *cobra.Command {
 	plCmd.AddCommand(verifyCmd)
 
 	return plCmd
+}
+
+func createConversationsCommand() *cobra.Command {
+	conversationsCmd := &cobra.Command{
+		Use:   "conversations",
+		Short: "show latest conversations",
+		Long:  `show latest conversations`,
+		Run:   conversations,
+	}
+	return conversationsCmd
 }
