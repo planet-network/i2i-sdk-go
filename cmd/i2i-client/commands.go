@@ -272,6 +272,14 @@ func createManagerCommand() *cobra.Command {
 	configSetCmd.Flags().String(flagDockerImage, "", "")
 	configCmd.AddCommand(configSetCmd)
 
+	diagCmd := &cobra.Command{
+		Use:   "diagnostic",
+		Short: "run diagnostic",
+		Long:  `run diagnostic`,
+		Run:   managerDiagnostic,
+	}
+
+	managerCmd.AddCommand(diagCmd)
 	managerCmd.AddCommand(configCmd)
 	managerCmd.AddCommand(clientCmd)
 	managerCmd.AddCommand(loginCmd)

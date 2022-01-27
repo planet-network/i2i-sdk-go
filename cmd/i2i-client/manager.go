@@ -302,3 +302,21 @@ func managerConfigSet(cmd *cobra.Command, args []string) {
 		fail(err)
 	}
 }
+
+func managerDiagnostic(cmd *cobra.Command, args []string) {
+	mng, err := activeManager()
+	if err != nil {
+		fail(err)
+	}
+
+	managerClient := manager.NewFeClient(manager.FeOpt{
+		Address:  mng.Address,
+		Login:    mng.User,
+		Password: mng.Password,
+		Jwt:      mng.Token,
+	})
+
+	if err := managerClient.Diagnostic(); err != nil {
+		fail(err)
+	}
+}

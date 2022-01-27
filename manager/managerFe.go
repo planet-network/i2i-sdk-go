@@ -15,6 +15,7 @@ const (
 	fePlanRemove   = "/fe/plan/remove"
 	fePlanList     = "/fe/plan/list"
 	feConfigUpdate = "/fe/config/update"
+	feDiagnostic   = "/fe/diagnostic"
 
 	feConfigShow  = "/fe/config/show"
 	feClientList  = "/fe/client/list"
@@ -220,6 +221,15 @@ func (m *FeClient) VersionShow() (string, error) {
 	})
 
 	return version.Version, err
+}
+
+func (m *FeClient) Diagnostic() error {
+	err := m.apiCallDo(&apiCall{
+		method:   http.MethodGet,
+		httpPath: feDiagnostic,
+	})
+
+	return err
 }
 
 // ConfigPayments contains payments data
