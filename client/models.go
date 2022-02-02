@@ -379,3 +379,57 @@ type Conversation struct {
 	GroupDisplayName string `json:"group_display_name"`
 	GroupAvatarURL   string `json:"group_avatar_url"`
 }
+
+// GroupChat defines group chat
+type GroupChat struct {
+	// id is the database id of the object
+	ID string `json:"id"`
+	// public_key is identifier of the group chat
+	PublicKey string `json:"public_key"`
+	// private_key is per chat private key
+	PrivateKey string `json:"private_key"`
+	// name is human readable name of the group chat
+	GroupDisplayName string `json:"group_display_name"`
+	// participants is list of prublic key who participate in group chat
+	Participants []*ChatParticipant `json:"participants"`
+	// admin is public key of group chat admin
+	Admin *ChatParticipant `json:"admin"`
+	//  avatar of the group chat
+	GroupAvatarURL string `json:"group_avatar_url"`
+	// created_at is time when group chat was created
+	CreatedAt time.Time `json:"created_at"`
+	// joined_at is time when user joined group chat
+	JoinedAt time.Time `json:"joined_at"`
+	// left_at is time when user left group chat
+	LeftAt *time.Time `json:"left_at"`
+	// left defines if user has left group chat
+	Left bool `json:"left"`
+}
+
+type ChatParticipant struct {
+	AvatarURL    string `json:"avatar_url"`
+	PublicKey    string `json:"public_key"`
+	SignatureKey string `json:"signature_key"`
+	DisplayName  string `json:"display_name"`
+}
+
+// GroupchatAddUser is used as argument for mutations adding user to group chat.
+// The caller responsibility is to be sure that he has sufficient permissions to do so.
+// Otherwise error is returned
+type GroupchatAddUser struct {
+	// chat_public_key is public key of the chat
+	ChatPublicKey string `json:"chat_public_key"`
+	// user_signature_key is signature key of user which is added to group chat
+	UserSignatureKey []*string `json:"user_signature_key"`
+	// user_signature_key is network key of user which is added to group chat, it will be automatically set by i2i
+	UserNetworkKey []*string `json:"user_network_key"`
+}
+
+type GroupchatInput struct {
+	Profile          *string   `json:"profile"`
+	GroupDisplayName *string   `json:"group_display_name"`
+	ChatPublicKey    *string   `json:"chat_public_key"`
+	ChatPrivateKey   *string   `json:"chat_private_key"`
+	GroupAvatarURL   *string   `json:"group_avatar_url"`
+	Participants     []*string `json:"participants"`
+}

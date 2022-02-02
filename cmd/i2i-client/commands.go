@@ -37,6 +37,7 @@ func createCommandsStructure() *cobra.Command {
 		Run:   nil,
 	}
 
+	rootCmd.AddCommand(createGroupCommand())
 	rootCmd.AddCommand(createManagerCommand())
 	rootCmd.AddCommand(createCfgCommand())
 	rootCmd.AddCommand(createTuiCommand())
@@ -767,4 +768,51 @@ func createConversationsCommand() *cobra.Command {
 		Run:   conversations,
 	}
 	return conversationsCmd
+}
+
+func createGroupCommand() *cobra.Command {
+	groupCmd := &cobra.Command{
+		Use:   "group",
+		Short: "group chat manipulation",
+		Long:  `group chat manipulation`,
+		Run:   nil,
+	}
+
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "lists group chats",
+		Long:  `lists group chats`,
+		Run:   groupList,
+	}
+
+	createCmd := &cobra.Command{
+		Use:   "create [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "create new group chat",
+		Long:  `create new group chat`,
+		Run:   groupCreate,
+	}
+
+	addParticipantCmd := &cobra.Command{
+		Use:   "add-participant [group-id] [participant-key]",
+		Args:  cobra.ExactArgs(2),
+		Short: "add new participant to group",
+		Long:  `add new participant to group`,
+		Run:   groupAddParticipant,
+	}
+
+	leaveCmd := &cobra.Command{
+		Use:   "leave [group-id]",
+		Args:  cobra.ExactArgs(1),
+		Short: "leave group",
+		Long:  `leaveGroup`,
+		Run:   groupLeave,
+	}
+
+	groupCmd.AddCommand(listCmd)
+	groupCmd.AddCommand(createCmd)
+	groupCmd.AddCommand(leaveCmd)
+	groupCmd.AddCommand(addParticipantCmd)
+
+	return groupCmd
 }

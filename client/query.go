@@ -434,3 +434,96 @@ query($input: MessageViewInput!) {
   }
 }
 `
+
+const queryGroupChatList = `
+query($profile: ID!) {
+  groupChatList(profile:$profile) {
+    id
+    public_key
+    private_key
+    group_display_name
+    participants {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    admin {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    
+    group_avatar_url
+    created_at
+    joined_at
+    left
+    left_at
+  }
+}
+`
+
+const mutationGroupChatLeave = `
+mutation($input: Key32!) {
+  groupChatLeave(input: $input)
+}
+`
+
+const mutationGroupChatCreate = `
+mutation($input: GroupchatInput!) {
+  createGroupChat(input: $input) {
+    id
+    public_key
+    private_key
+    group_display_name
+    participants {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    admin {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    
+    group_avatar_url
+    created_at
+    joined_at
+    left
+    left_at
+  }
+}
+`
+
+const mutationAddUserToGroupChat = `
+mutation($input: GroupchatAddUser!) {
+  addUserToGroupChat(input:$input) {
+    id
+    public_key
+    private_key
+    group_display_name
+    participants {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    admin {
+      avatar_url
+      public_key
+      signature_key
+      display_name
+    }
+    
+    group_avatar_url
+    created_at
+    joined_at
+    left
+    left_at
+  }
+}
+`
