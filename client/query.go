@@ -201,6 +201,24 @@ query($profile: ID!) {
     name
     surname
     transactions
+    anonymous
+  }
+}
+`
+
+const queryConnectionListAnonymous = `
+query($profile: ID!) {
+  connectionListAnonymous(profile: $profile) {
+    avatar_url
+    id
+    profile
+    public_key
+    signature_key
+    display_name
+    name
+    surname
+    transactions
+    anonymous
   }
 }
 `
@@ -524,6 +542,52 @@ mutation($input: GroupchatAddUser!) {
     joined_at
     left
     left_at
+  }
+}
+`
+
+const queryGroupChat = `
+query($input: MessageViewInput!) {
+  groupChat(input:$input) {
+    totalCount
+    has_next_page
+    messages {
+      id
+      source
+      destination
+      display_name
+      avatar_url
+      group_display_name
+      group_avatar_url
+      content
+      feed
+      read
+      time
+      star
+      incoming
+      delivered
+    }
+  }
+}
+`
+
+const mutationSendGroupMessage = `
+mutation($input: GroupMessageInput!) {
+  sendGroupMessage(input:$input) {
+    id
+    source
+    destination
+    display_name
+    avatar_url
+    group_display_name
+    group_avatar_url
+    content
+    feed
+    read
+    time
+    star
+    incoming
+    delivered
   }
 }
 `

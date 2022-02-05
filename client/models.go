@@ -135,6 +135,7 @@ type Connection struct {
 	Surname     string `json:"surname"`
 	// transactions contains list of transactions related to given contact
 	Transactions []string `json:"transactions"`
+	Anonymous    bool     `json:"anonymous"`
 }
 
 type Profile struct {
@@ -432,4 +433,43 @@ type GroupchatInput struct {
 	ChatPrivateKey   *string   `json:"chat_private_key"`
 	GroupAvatarURL   *string   `json:"group_avatar_url"`
 	Participants     []*string `json:"participants"`
+}
+
+type GroupMessagePage struct {
+	TotalCount  int             `json:"totalCount"`
+	HasNextPage bool            `json:"has_next_page"`
+	Messages    []*GroupMessage `json:"messages"`
+}
+
+// GroupMessage is message exchanged withing group chat
+type GroupMessage struct {
+	// id is the database id of the object
+	ID string `json:"id"`
+	// source is public key of sender
+	Source string `json:"source"`
+	// destination is the key identifying group chat
+	Destination      string `json:"destination"`
+	DisplayName      string `json:"display_name"`
+	AvatarURL        string `json:"avatar_url"`
+	GroupDisplayName string `json:"group_display_name"`
+	GroupAvatarURL   string `json:"group_avatar_url"`
+	// content is read content of the message
+	Content string `json:"content"`
+	// feed - to be done
+	Feed *string `json:"feed"`
+	// read is boolean value defining whether message was read or not
+	Read bool `json:"read"`
+	// time is time when message was send or received
+	Time time.Time `json:"time"`
+	// star is custom attribute set by user to mark message
+	Star bool `json:"star"`
+	//  incoming if set to true would mean that last message is incoming, otherwise outcoming
+	Incoming bool `json:"incoming"`
+	//  if set to true, means that message was delivered to destination
+	Delivered bool `json:"delivered"`
+}
+
+type GroupMessageInput struct {
+	Destination string `json:"destination"`
+	Content     string `json:"content"`
 }

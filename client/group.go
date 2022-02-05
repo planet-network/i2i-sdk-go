@@ -23,7 +23,7 @@ func (c *Client) GroupChatList(profile string) ([]*GroupChat, error) {
 
 func (c *Client) GroupChatCreate(input *GroupchatInput) (*GroupChat, error) {
 	response := struct {
-		GroupChat *GroupChat `json:"groupChatCreate"`
+		GroupChat *GroupChat `json:"createGroupChat"`
 	}{}
 
 	_, err := c.query(&query{
@@ -76,4 +76,42 @@ func (c *Client) GroupChatLeave(id string) (string, error) {
 	}
 
 	return response.GroupChat, nil
+}
+
+func (c *Client) GroupSendMessage(input *GroupMessageInput) (*GroupMessage, error) {
+	response := struct {
+		Message *GroupMessage `json:"sendGroupMessage"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     mutationSendGroupMessage,
+		variables: map[string]interface{}{"input": input},
+		timeout:   5 * time.Second,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Message, nil
+}
+
+func (c *Client) GroupChat(input *MessageViewInput) (*GroupMessagePage, error) {
+	response := struct {
+		Chat *GroupMessagePage `json:"groupChat"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     queryGroupChat,
+		variables: map[string]interface{}{"input": input},
+		timeout:   5 * time.Second,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Chat, nil
 }

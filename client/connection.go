@@ -101,3 +101,22 @@ func (c *Client) ConnectionList(profile string) ([]*Connection, error) {
 
 	return response.Connections, nil
 }
+
+func (c *Client) ConnectionListAnonymous(profile string) ([]*Connection, error) {
+	response := struct {
+		Connections []*Connection `json:"connectionListAnonymous"`
+	}{}
+
+	_, err := c.query(&query{
+		query:     queryConnectionListAnonymous,
+		variables: map[string]interface{}{"profile": profile},
+		timeout:   2 * time.Second,
+		response:  &response,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Connections, nil
+}

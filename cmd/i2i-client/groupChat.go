@@ -113,3 +113,61 @@ func groupLeave(cmd *cobra.Command, args []string) {
 
 	printResult(id)
 }
+
+func groupMessageShow(cmd *cobra.Command, args []string) {
+	var (
+		chatID = args[0]
+	)
+
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
+
+	i2iClient := client.New(client.Opt{
+		Token:    node.Meta.Hosting.UnlockToken,
+		Address:  node.Meta.NodeAddress,
+		Acl:      node.Meta.APIToken,
+		Keychain: node.Keychain,
+	})
+
+	id, err := i2iClient.GroupChat(&client.MessageViewInput{
+		Conversation: chatID,
+		Count:        200,
+	})
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(id)
+}
+
+func groupMessageSend(cmd *cobra.Command, args []string) {
+	var (
+		chatID  = args[0]
+		content = args[1]
+	)
+
+	node, err := activeNode()
+	if err != nil {
+		fail(err)
+	}
+
+	i2iClient := client.New(client.Opt{
+		Token:    node.Meta.Hosting.UnlockToken,
+		Address:  node.Meta.NodeAddress,
+		Acl:      node.Meta.APIToken,
+		Keychain: node.Keychain,
+	})
+
+	id, err := i2iClient.GroupSendMessage(&client.GroupMessageInput{
+		Destination: chatID,
+		Content:     content,
+	})
+	if err != nil {
+		fail(err)
+	}
+
+	printResult(id)
+
+}

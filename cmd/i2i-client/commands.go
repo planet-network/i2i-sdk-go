@@ -436,6 +436,15 @@ func createConnectionCommand() *cobra.Command {
 	}
 	connectionListCmd.Flags().String(flagProfile, "", "name of profile to display connections from")
 
+	connectionListAnonymousCmd := &cobra.Command{
+		Use:   "list-anonymous",
+		Short: "list i2i anonymous connections (contacts)",
+		Long:  `list i2i anonymous connections (contacts)`,
+		Run:   connectionListAnonymous,
+	}
+	connectionListAnonymousCmd.Flags().String(flagProfile, "", "name of profile to display connections from")
+
+	connectionCmd.AddCommand(connectionListAnonymousCmd)
 	connectionCmd.AddCommand(connectionAddCmd)
 	connectionCmd.AddCommand(connectionListCmd)
 	connectionCmd.AddCommand(connectionAddLocalCmd)
@@ -809,10 +818,36 @@ func createGroupCommand() *cobra.Command {
 		Run:   groupLeave,
 	}
 
+	messageCmd := &cobra.Command{
+		Use:   "message",
+		Short: "message manipulation",
+		Long:  `message manipulation`,
+		Run:   nil,
+	}
+
+	messageShowCmd := &cobra.Command{
+		Use:   "show [id]",
+		Args:  cobra.ExactArgs(1),
+		Short: "show messages from group chat",
+		Long:  `show messages from group chat`,
+		Run:   groupMessageShow,
+	}
+
+	messageSendCmd := &cobra.Command{
+		Use:   "send [id] [content]",
+		Args:  cobra.ExactArgs(2),
+		Short: "send message to group",
+		Long:  `send message to group`,
+		Run:   groupMessageSend,
+	}
+	messageCmd.AddCommand(messageShowCmd)
+	messageCmd.AddCommand(messageSendCmd)
+
 	groupCmd.AddCommand(listCmd)
 	groupCmd.AddCommand(createCmd)
 	groupCmd.AddCommand(leaveCmd)
 	groupCmd.AddCommand(addParticipantCmd)
+	groupCmd.AddCommand(messageCmd)
 
 	return groupCmd
 }
