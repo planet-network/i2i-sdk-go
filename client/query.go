@@ -399,15 +399,19 @@ mutation($instance: InstanceInput!) {
 const mutationSendDirectMessage = `
 mutation($input: DirectMessageInput!) {
   sendDirectMessage(input: $input) {
-    id
-    source
-    destination
-    content
-    read
-    time
-    star
-    reply
-    incoming
+      id
+      source
+      destination
+      content
+      read
+      time
+      star
+      reply
+      reply_content
+      reply_display_name
+      reply_deleted
+      incoming
+      delivered
   }
 }
 `
@@ -429,6 +433,12 @@ query($profile: ID!) {
     conversation_id
     group_display_name
     group_avatar_url
+    delivered
+    left
+    reply
+    reply_content
+    reply_deleted
+    reply_display_name
   }
 }
 `
@@ -447,7 +457,11 @@ query($input: MessageViewInput!) {
       time
       star
       reply
+      reply_content
+      reply_display_name
+      reply_deleted
       incoming
+      delivered
     }
   }
 }

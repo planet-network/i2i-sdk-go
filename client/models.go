@@ -334,9 +334,14 @@ type DirectMessage struct {
 	// star is custom attribute set by user to mark message
 	Star bool `json:"star"`
 	// reply if set is ID of message it's reply to
-	Reply *string `json:"reply"`
+	Reply            *string `json:"reply"`
+	ReplyContent     *string `json:"reply_content"`
+	ReplyDisplayName *string `json:"reply_display_name"`
+	ReplyDeleted     *bool   `json:"reply_deleted"`
 	//  incoming if set to true would mean that last message is incoming, otherwise outcoming
 	Incoming bool `json:"incoming"`
+	//  if set to true, means that message was delivered to destination
+	Delivered bool `json:"delivered"`
 }
 
 type DirectMessagePage struct {
@@ -376,9 +381,15 @@ type Conversation struct {
 	//  action_id defines action
 	ActionID string `json:"action_id"`
 	//  conversation_id is id related to message conversation
-	ConversationID   string `json:"conversation_id"`
-	GroupDisplayName string `json:"group_display_name"`
-	GroupAvatarURL   string `json:"group_avatar_url"`
+	ConversationID   string  `json:"conversation_id"`
+	GroupDisplayName string  `json:"group_display_name"`
+	GroupAvatarURL   string  `json:"group_avatar_url"`
+	Delivered        bool    `json:"delivered"`
+	Left             bool    `json:"left"`
+	Reply            *string `json:"reply"`
+	ReplyContent     *string `json:"reply_content"`
+	ReplyDisplayName *string `json:"reply_display_name"`
+	ReplyDeleted     *bool   `json:"reply_deleted"`
 }
 
 // GroupChat defines group chat
