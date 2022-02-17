@@ -484,3 +484,8 @@ type GroupMessageInput struct {
 	Destination string `json:"destination"`
 	Content     string `json:"content"`
 }
+
+type DMeInput struct {
+	FirstName *string `json:"first_name"`
+	Surname   *string `json:"surname"`
+}

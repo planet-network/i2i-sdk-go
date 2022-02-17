@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func dmeInfo(cmd *cobra.Command, args []string) {
+func dmView(cmd *cobra.Command, args []string) {
 	node, err := activeNode()
 	if err != nil {
 		fail(err)
@@ -18,21 +18,18 @@ func dmeInfo(cmd *cobra.Command, args []string) {
 		Keychain: node.Keychain,
 	})
 
-	dmeInfo, err := i2iClient.DMeInfo()
+	c, err := i2iClient.DirectMessage(&client.MessageViewInput{
+		Conversation: args[0],
+		Count:        100,
+	})
 	if err != nil {
 		fail(err)
 	}
-
-	printResult(dmeInfo)
+	printResult(c)
 }
 
-func dmeUpdate(cmd *cobra.Command, args []string) {
-	firstName, err := cmd.Flags().GetString(flagFirstName)
-	if err != nil {
-		fail(err)
-	}
-
-	surname, err := cmd.Flags().GetString(flagSurname)
+func dmSend(cmd *cobra.Command, args []string) {
+	reply, err := cmd.Flags().GetString(flagReply)
 	if err != nil {
 		fail(err)
 	}
@@ -49,16 +46,20 @@ func dmeUpdate(cmd *cobra.Command, args []string) {
 		Keychain: node.Keychain,
 	})
 
-	input := &client.DMeInput{}
-	if firstName != "" {
-		input.FirstName = &firstName
-	}
-	if surname != "" {
-		input.Surname = &surname
+	input := &client.DirectMessageInput{
+		Destination: args[0],
+		Content:     args[1],
+		Reply:       nil,
+		Attachments: nil,
 	}
 
-	err = i2iClient.DMeUpdate(input)
+	if reply != "" {
+		input.Reply = &reply
+	}
+
+	c, err := i2iClient.SendDirectMessage(input)
 	if err != nil {
 		fail(err)
 	}
+	printResult(c)
 }

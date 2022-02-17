@@ -35,6 +35,9 @@ const mutationDMeUpdate = `
 mutation($input:DMeInput!){
 	dMeUpdate(input: $input){
 		first_name
+    	surname
+    	public_key
+    	signature_key
 	}
 }
 `

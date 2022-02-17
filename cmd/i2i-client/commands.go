@@ -8,6 +8,8 @@ const (
 	flagInitializeAs    = "initialize-as"
 	flagHosting         = "hosting"
 	flagName            = "name"
+	flagFirstName       = "first-name"
+	flagSurname         = "surname"
 	flagDescription     = "description"
 	flagDuration        = "duration"
 	flagPort            = "port"
@@ -27,6 +29,7 @@ const (
 	flagAs              = "as"
 	flagAddress         = "address"
 	flagDockerImage     = "docker-image"
+	flagReply           = "reply"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -683,6 +686,18 @@ func createDmeCommand() *cobra.Command {
 		Run:   dmeInfo,
 	}
 
+	dmeUpdate := &cobra.Command{
+		Use:   "update",
+		Short: "update dme variables",
+		Long:  `update dme variables`,
+		Run:   dmeUpdate,
+	}
+
+	dmeUpdate.Flags().String(flagFirstName, "", "set first name")
+	dmeUpdate.Flags().String(flagSurname, "", "set surname")
+
+	dmeCmd.AddCommand(dmeUpdate)
+
 	return dmeCmd
 }
 
@@ -850,4 +865,35 @@ func createGroupCommand() *cobra.Command {
 	groupCmd.AddCommand(messageCmd)
 
 	return groupCmd
+}
+
+func createDirectMessageCommand() *cobra.Command {
+	dmCmd := &cobra.Command{
+		Use:   "direct-message",
+		Short: "direct message manipulation",
+		Long:  `direct message manipulation`,
+		Run:   nil,
+	}
+
+	dmSendCmd := &cobra.Command{
+		Use:   "send [destination] [content]",
+		Args:  cobra.ExactArgs(2),
+		Short: "send direct message",
+		Long:  `send direct message`,
+		Run:   dmSend,
+	}
+	dmSendCmd.Flags().String(flagReply, "", "reply to message with id")
+
+	dmViewCmd := &cobra.Command{
+		Use:   "view [conversation]",
+		Args:  cobra.ExactArgs(1),
+		Short: "view direct message",
+		Long:  `view direct message`,
+		Run:   dmView,
+	}
+
+	dmCmd.AddCommand(dmSendCmd)
+	dmCmd.AddCommand(dmViewCmd)
+
+	return dmCmd
 }
