@@ -61,6 +61,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createPingCommand())
 	rootCmd.AddCommand(createConversationsCommand())
 	rootCmd.AddCommand(createBenchmarkCommand())
+	rootCmd.AddCommand(createDirectMessageCommand())
 
 	return rootCmd
 }
