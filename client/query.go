@@ -608,3 +608,6 @@ mutation($input: GroupMessageInput!) {
   }
 }
 `
+
+const queryMixingGetId = ``
+const mutationMixinSetId = ``

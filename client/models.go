@@ -136,6 +136,7 @@ type Connection struct {
 	// transactions contains list of transactions related to given contact
 	Transactions []string `json:"transactions"`
 	Anonymous    bool     `json:"anonymous"`
+	MixinID      *string  `json:"mixin_id"`
 }
 
 type Profile struct {
