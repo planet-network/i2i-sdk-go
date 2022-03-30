@@ -262,7 +262,7 @@ mutation($input:WireguardConfigInput!) {
 
 const mutationVnfWireguardStop = `
 mutation($input:String!) {
-  vnfWireguardStop(name: $input) {
+  vnfWireguardStop(network: $input) {
     running
     name
     address
@@ -278,7 +278,7 @@ mutation($input:String!) {
 
 const mutationVnfWireguardStart = `
 mutation($input:String!) {
-  vnfWireguardStart(name: $input) {
+  vnfWireguardStart(network: $input) {
     running
     name
     address
