@@ -62,6 +62,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createConversationsCommand())
 	rootCmd.AddCommand(createBenchmarkCommand())
 	rootCmd.AddCommand(createDirectMessageCommand())
+	rootCmd.AddCommand(createMixinCommand())
 
 	return rootCmd
 }
@@ -82,6 +83,35 @@ func createBenchmarkCommand() *cobra.Command {
 		Long:  `run some benchmarks`,
 		Run:   benchmark,
 	}
+}
+
+func createMixinCommand() *cobra.Command {
+	mixinCmd := &cobra.Command{
+		Use:   "mixin",
+		Short: "manipulate mixin wallet",
+		Long:  `manipulate mixin wallet`,
+		Run:   nil,
+	}
+
+	setIDCmd := &cobra.Command{
+		Use:   "set-id [value]",
+		Args:  cobra.ExactArgs(1),
+		Short: "set mixin id",
+		Long:  `set mixin id"`,
+		Run:   mixinSetId,
+	}
+
+	getIDCmd := &cobra.Command{
+		Use:   "id",
+		Short: "get mixin id",
+		Long:  `get mixin id"`,
+		Run:   mixinGetId,
+	}
+
+	mixinCmd.AddCommand(setIDCmd)
+	mixinCmd.AddCommand(getIDCmd)
+
+	return mixinCmd
 }
 
 func createUnlockCommand() *cobra.Command {

@@ -609,5 +609,14 @@ mutation($input: GroupMessageInput!) {
 }
 `
 
-const queryMixingGetId = ``
-const mutationMixinSetId = ``
+const queryMixingGetId = `
+query {
+  mixinGetID
+}
+`
+
+const mutationMixinSetId = `
+mutation($id: String!) {
+  mixinSetID(id:$id)
+}
+`
