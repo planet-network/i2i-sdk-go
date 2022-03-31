@@ -205,6 +205,7 @@ query($profile: ID!) {
     surname
     transactions
     anonymous
+    mixin_id
   }
 }
 `
