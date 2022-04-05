@@ -2,7 +2,9 @@ package client
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/machinebox/graphql"
@@ -30,8 +32,15 @@ type GraphqlResponse struct {
 
 func (c *Client) query(query *query) (*GraphqlResponse, error) {
 	var (
+		client = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
+		}
 		address       = c.nodeGraphqlAddress()
-		graphQlClient = graphql.NewClient(address)
+		graphQlClient = graphql.NewClient(address, graphql.WithHTTPClient(client))
 	)
 
 	req := graphql.NewRequest(query.query)
