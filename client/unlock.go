@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -11,11 +12,11 @@ import (
 func (c *Client) Unlock() error {
 	var (
 		httpClient = http.Client{
-			//Transport: &http.Transport{
-			//	TLSClientConfig: &tls.Config{
-			//		InsecureSkipVerify: true,
-			//	},
-			//},
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
 		}
 	)
 
