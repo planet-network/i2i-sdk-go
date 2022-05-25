@@ -25,55 +25,6 @@ const (
 	privateKey = "5mkvZPhR993d4jbS5WQTrZ2cr9iq21Dcg_0bLUYuopPN-r0xmGWUb8VSMG2HQm9Gt0Wn7mNE_kwDsUWRBIydGQ"
 )
 
-// const (
-// 	userPin        = "424242"
-// 	userId         = "3a27dbcd-a7d9-394d-8c89-0318e1925b12"
-// 	userSessionId  = "780bf07e-4e3b-478a-a316-194f45ec7552"
-// 	userPinToken   = "FOHU2liGRvjB-vbwZ49dmQYoBUM0yUmnJsVS_V3yUhE"
-// 	userPrivateKey = "FtGW0MbVYdFFPHLfkl96Tooy789_zyCT98Iub0PRL86D9SJkIlYfiz5mp_c6TAjSKaiG0CNUtA1JRTIMmgWoGw"
-// )
-
-// func main() {
-// ctx := context.Background()
-// mixinKeychain, err := CreateNetworkUserWithPIN("111111")
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// fmt.Println(mixinKeychain)
-
-// encryptedPIN, err := EncryptPin(userPin, userPinToken, userSessionId, userPrivateKey)
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// fmt.Println(encryptedPIN)
-
-// data, err := json.Marshal(map[string]interface{}{
-// 	"pin": "18vpbqassu3joCdmqMEpcN_jb6N9UpSMvJZKCHdUESJIGePoOKnuX-tdiDGCABhe",
-// })
-
-// path := "/pin/verify"
-// token, err := bot.SignAuthenticationToken(userId, userSessionId, userPrivateKey, "POST", path, string(data))
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// body, err := bot.Request(ctx, "POST", path, data, token)
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// var resp struct {
-// 	Data  *bot.User `json:"data"`
-// 	Error bot.Error `json:"error"`
-// }
-// err = json.Unmarshal(body, &resp)
-// if err != nil {
-// 	fmt.Println(err)
-// }
-// if resp.Error.Code > 0 {
-// 	fmt.Println(resp.Error)
-// }
-// fmt.Println(resp.Data.UserId)
-// }
-
 func CreateNetworkUserWithPIN(pin string) (string, error) {
 	ctx := context.Background()
 
