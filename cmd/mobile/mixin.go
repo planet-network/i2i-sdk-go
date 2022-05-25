@@ -1,4 +1,4 @@
-package mixin
+package mobile
 
 import (
 	"context"
@@ -6,8 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
-
-	// "fmt"
+	bot "github.com/MixinNetwork/bot-api-go-client"
 	"time"
 )
 

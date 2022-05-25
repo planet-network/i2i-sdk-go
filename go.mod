@@ -3,6 +3,7 @@ module github.com/planet-network/i2i-sdk-go
 go 1.16
 
 require (
+	github.com/MixinNetwork/bot-api-go-client v1.4.3
 	github.com/go-openapi/runtime v0.24.1
 	github.com/machinebox/graphql v0.2.2
 	github.com/planet-network/i2i-manager v0.0.0-20220525110152-3428b8853200
