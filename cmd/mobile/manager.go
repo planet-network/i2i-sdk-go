@@ -66,7 +66,7 @@ func (m *Manager) Login(login string, password string) error {
 
 //not working yet
 func (m *Manager) PlanList() error {
-	response, err := m.client.Plan.PostClientPlanList(plan.NewPostClientPlanListParams())
+	response, err := m.client.Plan.GetClientPlanList(plan.NewGetClientPlanListParams())
 	if err != nil {
 		return err
 	}
