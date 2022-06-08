@@ -2,11 +2,9 @@ package manager
 
 import (
 	"context"
-	"fmt"
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/planet-network/i2i-manager/client"
 	"github.com/planet-network/i2i-manager/client/auth"
-	"github.com/planet-network/i2i-manager/client/plan"
 	"github.com/planet-network/i2i-manager/client/user"
 	"github.com/planet-network/i2i-manager/models"
 	"time"
@@ -64,18 +62,18 @@ func (c *ClientV1) Login(login string, password string) error {
 	return nil
 }
 
-func (c *ClientV1) PlanList() error {
-	response, err := c.c.Plan.PostClientPlanList(plan.NewPostClientPlanListParams())
-	if err != nil {
-		return err
-	}
-
-	for _, i := range response.Payload {
-		fmt.Println(i)
-	}
-
-	return nil
-}
+//func (c *ClientV1) PlanList() error {
+//	response, err := c.c.Plan.PostClientPlanList(plan.NewPostClientPlanListParams())
+//	if err != nil {
+//		return err
+//	}
+//
+//	for _, i := range response.Payload {
+//		fmt.Println(i)
+//	}
+//
+//	return nil
+//}
 
 func (c *ClientV1) UserRemove() error {
 	_, err := c.c.User.PostClientRemove(user.NewPostClientRemoveParams())
