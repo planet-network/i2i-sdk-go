@@ -30,6 +30,7 @@ const (
 	flagAddress         = "address"
 	flagDockerImage     = "docker-image"
 	flagReply           = "reply"
+	flagMethod          = "method"
 )
 
 func createCommandsStructure() *cobra.Command {
@@ -63,6 +64,7 @@ func createCommandsStructure() *cobra.Command {
 	rootCmd.AddCommand(createBenchmarkCommand())
 	rootCmd.AddCommand(createDirectMessageCommand())
 	rootCmd.AddCommand(createMixinCommand())
+	rootCmd.AddCommand(createPlanetConnectCommand())
 
 	return rootCmd
 }
@@ -927,4 +929,137 @@ func createDirectMessageCommand() *cobra.Command {
 	dmCmd.AddCommand(dmViewCmd)
 
 	return dmCmd
+}
+
+func createPlanetConnectCommand() *cobra.Command {
+	pcCmd := &cobra.Command{
+		Use:   "pc",
+		Short: "planet connect functions",
+		Long:  `planet connect functions`,
+		Run:   nil,
+	}
+
+	pcCmd.PersistentFlags().String(flagAddress, "http://localhost:20222", "address of the planet connect")
+
+	pcCmd.AddCommand(createPcAuthCommand())
+	pcCmd.AddCommand(createPcDataCommand())
+	pcCmd.AddCommand(createPcTableCommand())
+
+	return pcCmd
+}
+
+func createPcAuthCommand() *cobra.Command {
+	authCmd := &cobra.Command{
+		Use:   "auth",
+		Short: "manager user authorization",
+		Long:  `manager user authorization`,
+		Run:   nil,
+	}
+
+	registerCmd := &cobra.Command{
+		Use:   "register [login] [secret]",
+		Args:  cobra.ExactArgs(2),
+		Short: "register new user to planet connect",
+		Long:  `register new user to planet connect`,
+		Run:   pcRegister,
+	}
+	registerCmd.Flags().String(flagMethod, "email", "verification method to use")
+
+	loginCmd := &cobra.Command{
+		Use:   "login [login] [secret]",
+		Args:  cobra.ExactArgs(2),
+		Short: "login existing user",
+		Long:  `login existing user`,
+		Run:   pcLogin,
+	}
+
+	secureRandomCmd := &cobra.Command{
+		Use:   "secure-random [secret]",
+		Args:  cobra.ExactArgs(1),
+		Short: "obtain secure random",
+		Long:  `obtain secure random`,
+		Run:   pcSecureRandom,
+	}
+
+	authCmd.AddCommand(registerCmd)
+	authCmd.AddCommand(loginCmd)
+	authCmd.AddCommand(secureRandomCmd)
+
+	return authCmd
+}
+
+func createPcDataCommand() *cobra.Command {
+	dataCmd := &cobra.Command{
+		Use:   "data",
+		Short: "user data manipulation",
+		Long:  `user data manipulation`,
+		Run:   nil,
+	}
+
+	dataAddCmd := &cobra.Command{
+		Use:   "add [table] [key] [value]",
+		Args:  cobra.ExactArgs(3),
+		Short: "add new data to user database",
+		Long:  `add new data to user database`,
+		Run:   pcDataAdd,
+	}
+
+	dataGetCmd := &cobra.Command{
+		Use:   "get [table] [key]",
+		Args:  cobra.ExactArgs(2),
+		Short: "get value of user data identified by key",
+		Long:  `get value of user data identified by key`,
+		Run:   pcDataGet,
+	}
+
+	dataDeleteCmd := &cobra.Command{
+		Use:   "delete [table] [key]",
+		Args:  cobra.ExactArgs(2),
+		Short: "delete existing user data identified by key",
+		Long:  `delete existing user data identified by key`,
+		Run:   pcDataDelete,
+	}
+
+	dataUpdateCmd := &cobra.Command{
+		Use:   "update [table] [key] [value]",
+		Args:  cobra.ExactArgs(3),
+		Short: "update existing data with new value",
+		Long:  `update existing data with new value`,
+		Run:   pcDataUpdate,
+	}
+
+	dataListCmd := &cobra.Command{
+		Use:   "list [table...]",
+		Short: "list all data stored by the user in given tables. If no table is selected all data is returned.",
+		Long:  `list all data stored by the user in given tables. If no table is selected all data is returned.`,
+		Run:   pcDataListCmd,
+	}
+
+	dataCmd.AddCommand(dataAddCmd)
+	dataCmd.AddCommand(dataGetCmd)
+	dataCmd.AddCommand(dataDeleteCmd)
+	dataCmd.AddCommand(dataUpdateCmd)
+	dataCmd.AddCommand(dataListCmd)
+
+	return dataCmd
+}
+
+func createPcTableCommand() *cobra.Command {
+	tableCmd := &cobra.Command{
+		Use:   "table",
+		Short: "user table manipulation",
+		Long:  `user table manipulation`,
+		Run:   nil,
+	}
+
+	tableListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "list user data tables",
+		Long:  `list user data tables`,
+		Run:   pcTableList,
+	}
+
+	tableCmd.AddCommand(tableListCmd)
+
+	return tableCmd
 }
