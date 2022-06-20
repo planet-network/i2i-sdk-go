@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	client "github.com/planet-network/i2i-sdk-go/pc"
+	"github.com/planet-network/i2i-sdk-go/pc"
 	"github.com/planet-network/i2i-sdk-go/pc/cryptography"
 	"github.com/planet-network/i2i-sdk-go/pc/models"
 	"github.com/spf13/cobra"
@@ -15,13 +15,13 @@ const (
 	masterKeyEnv     = "PC_CLI_MASTER_KEY"
 )
 
-func createClient(cmd *cobra.Command, loadAuthFromEnv bool) *client.RestClient {
+func createClient(cmd *cobra.Command, loadAuthFromEnv bool) *pc.RestClient {
 	addr, err := cmd.Flags().GetString(flagAddress)
 	if err != nil {
 		fail("failed to read address flag:", err)
 	}
 
-	restClient, err := client.NewRestClient(addr)
+	restClient, err := pc.NewRestClient(addr)
 	if err != nil {
 		fail("failed to create client:", err)
 	}
@@ -96,7 +96,7 @@ func printForEval(secret string, response *models.LoginResponse) {
 	fmt.Printf("export %s=%s\n", masterKeyEnv, masterPassword.String())
 }
 
-func dataGet(cmd *cobra.Command, args []string) {
+func pcDataGet(cmd *cobra.Command, args []string) {
 	pcClient := createClient(cmd, true)
 
 	data, err := pcClient.DataGet(args[0], args[1])
@@ -156,10 +156,10 @@ func pcDataListCmd(cmd *cobra.Command, args []string) {
 		fail("failed to parse response:", err)
 	}
 
-	fmt.Println("   |    Table     |     Key      |      Value       |        Created      |      Modified")
+	fmt.Println("   |       Table        |     Key      |          Value           |        Created      |      Modified")
 	for i, data := range parsed {
-		fmt.Printf("%2d | %-12s | %-12s | %-16s | %-16s | %-16s\n",
-			i, byteCut(data.Table, 10), byteCut(data.Key, 12), byteCut(data.Value, 16),
+		fmt.Printf("%2d | %-16s | %-12s | %-24s | %-16s | %-16s\n",
+			i, byteCut(data.Table, 16), byteCut(data.Key, 12), byteCut(data.Value, 24),
 			time.Unix(data.CreatedAt, 0).Format("2006-01-02 15:04:05"),
 			time.Unix(data.CreatedAt, 0).Format("2006-01-02 15:04:05"))
 	}
@@ -191,5 +191,15 @@ func pcTableList(cmd *cobra.Command, args []string) {
 
 	for i := range parsed.Tables {
 		fmt.Println(string(parsed.Tables[i]))
+	}
+}
+
+func pcNodeOrder(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	manager := pc.NewManager(pcClient)
+
+	if err := manager.NodeOrder(args[0]); err != nil {
+		fail(err)
 	}
 }

@@ -1,4 +1,4 @@
-package client
+package pc
 
 import (
 	"github.com/planet-network/i2i-sdk-go/pc/cryptography"

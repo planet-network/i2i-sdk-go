@@ -944,8 +944,19 @@ func createPlanetConnectCommand() *cobra.Command {
 	pcCmd.AddCommand(createPcAuthCommand())
 	pcCmd.AddCommand(createPcDataCommand())
 	pcCmd.AddCommand(createPcTableCommand())
+	pcCmd.AddCommand(createPcNodeOrderCommand())
 
 	return pcCmd
+}
+
+func createPcNodeOrderCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "node-order [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "order i2i node",
+		Long:  `order i2i node`,
+		Run:   pcNodeOrder,
+	}
 }
 
 func createPcAuthCommand() *cobra.Command {
