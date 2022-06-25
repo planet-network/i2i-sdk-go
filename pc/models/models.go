@@ -23,10 +23,10 @@ type RegisterRequest struct {
 	Login            string   `json:"login"`
 	AuthorizationKey [32]byte `json:"authorization_key"`
 	// name of verification method which will be used for verifying user login
-	VerificationMethod       string   `json:"verification_method"`
-	SecureRandom             [32]byte `json:"secure_random"`
-	ExchangePublicKey        [32]byte `json:"share_public_key"`
-	EncryptedSharePrivateKey []byte   `json:"encrypted_share_private_key"`
+	VerificationMethod          string   `json:"verification_method"`
+	SecureRandom                [32]byte `json:"secure_random"`
+	ExchangePublicKey           [32]byte `json:"share_public_key"`
+	EncryptedExchangePrivateKey []byte   `json:"encrypted_exchange_private_key"`
 }
 
 type DataGetRequest struct {
@@ -86,4 +86,48 @@ type DataResponse struct {
 type TableListResponse struct {
 	// Tables is set of names of user tables
 	Tables [][]byte `json:"tables"`
+}
+
+type UserInfoResponse struct {
+	ID                          string   `json:"id"`
+	VerificationMethod          string   `json:"verification_method"`
+	CreatedAt                   int64    `json:"created_at"`
+	ExchangePublicKey           [32]byte `json:"exchange_public_key"`
+	EncryptedExchangePrivateKey []byte   `json:"encrypted_exchange_private_key"`
+}
+
+type CapabilitiesResponse struct {
+	Version             string   `json:"version"`
+	VerificationMethods []string `json:"verification_methods"`
+}
+
+type DataRequestPack struct {
+	Incoming DataRequestSendRequest `json:"incoming"`
+	Outgoing DataRequestSendRequest `json:"outgoing"`
+}
+
+type DataRequestSendRequest struct {
+	// ToUserID is user identifier who is recipient of the request
+	ToUserID [32]byte `json:"to_user_id"`
+	// Until is epoch seconds determining when data request will expire
+	Until int64 `json:"until"`
+	// EncryptedFrom is encrypted login with master or exchange key, this is used for storing info about sent requests
+	EncryptedFrom []byte `json:"encrypted_from"`
+	// EncryptedTo is encrypted login with master key or exchange, this is used for storing info about sent requests
+	EncryptedTo []byte `json:"encrypted_to"`
+	// EncryptedDescription is encrypted description, this is used for storing info about sent requests
+	EncryptedDescription []byte `json:"encrypted_description"`
+	// Items are collection of data which are being requested from destination
+	Items []*DataRequestItem `json:"items"`
+	// Incoming if set to true means that request is incoming one, otherwise outgoing
+	Incoming bool `json:"incoming"`
+	// Accepted if set to true, means that recipient has agreed to share the data
+	Accepted bool `json:"accepted"`
+}
+
+type DataRequestItem struct {
+	// EncryptedTable is name of the table in which the data is stored
+	EncryptedTable []byte `json:"encrypted_table"`
+	// EncryptedKey is data unique key per table data is stored in
+	EncryptedKey []byte `json:"encrypted_key"`
 }

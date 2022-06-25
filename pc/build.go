@@ -33,12 +33,12 @@ func (r *RestClient) BuildRegisterRequest(login, secret, method string) (*models
 	authorizationKey := cryptography.CalculateAuthKey(sKey)
 
 	return &models.RegisterRequest{
-		Login:                    login,
-		AuthorizationKey:         authorizationKey,
-		VerificationMethod:       method,
-		SecureRandom:             secureRandom,
-		ExchangePublicKey:        *publicExchangeKey,
-		EncryptedSharePrivateKey: encryptedPrivateExchangeKey,
+		Login:                       login,
+		AuthorizationKey:            authorizationKey,
+		VerificationMethod:          method,
+		SecureRandom:                secureRandom,
+		ExchangePublicKey:           *publicExchangeKey,
+		EncryptedExchangePrivateKey: encryptedPrivateExchangeKey,
 	}, nil
 }
 

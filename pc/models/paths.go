@@ -4,8 +4,10 @@ const (
 	/*
 	   common handlers
 	*/
-	PathRoot    = "/"
-	PathMetrics = "/metrics"
+	PathRoot         = "/"
+	PathMetrics      = "/metrics"
+	PathPing         = "/ping"
+	PathCapabilities = "/capabilities"
 	/*
 	   auth handlers
 	*/
@@ -16,6 +18,7 @@ const (
 	   user handlers
 	*/
 	PathUserRemove = "/user/remove"
+	PathUserInfo   = "/user/info"
 	/*
 	   data paths
 	*/
@@ -25,4 +28,17 @@ const (
 	PathDataDelete = "/data/delete"
 	PathDataList   = "/data/list"
 	PathTableList  = "/table/list"
+	/*
+	   enclave paths
+	*/
+
+	PathEnclaveRoot   = "/"
+	PathEnclaveAdd    = "/entry/add"
+	PathEnclaveGet    = "/entry/get"
+	PathEnclaveDelete = "/entry/delete"
+
+	/*
+		Request paths
+	*/
+	PathRequestSend = "/request/send"
 )
