@@ -17,8 +17,9 @@ const (
 	/*
 	   user handlers
 	*/
-	PathUserRemove = "/user/remove"
-	PathUserInfo   = "/user/info"
+	PathUserRemove      = "/user/remove"
+	PathUserInfo        = "/user/info"
+	PathUserExchangeKey = "/user/exchange-key"
 	/*
 	   data paths
 	*/

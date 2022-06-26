@@ -203,3 +203,23 @@ func pcNodeOrder(cmd *cobra.Command, args []string) {
 		fail(err)
 	}
 }
+
+func pcPing(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	if err := pcClient.Ping(); err != nil {
+		fail(err)
+	}
+}
+
+func pcCapabilities(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	capabilities, err := pcClient.Capabilities()
+	if err != nil {
+		fail(err)
+	}
+
+	fmt.Println("Verification methods :", capabilities.VerificationMethods)
+	fmt.Println("Version              :", capabilities.Version)
+}

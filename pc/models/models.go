@@ -131,3 +131,13 @@ type DataRequestItem struct {
 	// EncryptedKey is data unique key per table data is stored in
 	EncryptedKey []byte `json:"encrypted_key"`
 }
+
+type GetPublicExchangeKeyRequest struct {
+	// User is user identifier which public key is requested
+	User [32]byte `json:"user"`
+}
+
+type GetPublicExchangeKeyResponse struct {
+	// ExchangePublicKey is requested user public key
+	ExchangePublicKey [32]byte `json:"exchange_public_key"`
+}

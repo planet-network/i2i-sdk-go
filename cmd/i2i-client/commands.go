@@ -945,8 +945,28 @@ func createPlanetConnectCommand() *cobra.Command {
 	pcCmd.AddCommand(createPcDataCommand())
 	pcCmd.AddCommand(createPcTableCommand())
 	pcCmd.AddCommand(createPcNodeOrderCommand())
+	pcCmd.AddCommand(createPcPingCommand())
+	pcCmd.AddCommand(createPcCapabilitiesCommand())
 
 	return pcCmd
+}
+
+func createPcPingCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "ping",
+		Short: "authorized ping request to planet connect",
+		Long:  `authorized ping request to planet connect`,
+		Run:   pcPing,
+	}
+}
+
+func createPcCapabilitiesCommand() *cobra.Command {
+	return &cobra.Command{
+		Use:   "capabilities",
+		Short: "show planet connect capabilities",
+		Long:  `show planet connect capabilities`,
+		Run:   pcCapabilities,
+	}
 }
 
 func createPcNodeOrderCommand() *cobra.Command {
