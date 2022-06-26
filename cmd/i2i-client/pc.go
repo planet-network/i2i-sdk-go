@@ -156,7 +156,7 @@ func pcDataListCmd(cmd *cobra.Command, args []string) {
 		fail("failed to parse response:", err)
 	}
 
-	fmt.Println("   |       Table        |     Key      |          Value           |        Created      |      Modified")
+	fmt.Println("   |      Table       |     Key      |          Value           |        Created      |      Modified")
 	for i, data := range parsed {
 		fmt.Printf("%2d | %-16s | %-12s | %-24s | %-16s | %-16s\n",
 			i, byteCut(data.Table, 16), byteCut(data.Key, 12), byteCut(data.Value, 24),
