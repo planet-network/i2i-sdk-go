@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/golang-jwt/jwt"
+	"github.com/planet-network/i2i-sdk-go/pc/domain"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
-
-	"github.com/planet-network/i2i-sdk-go/pc/domain"
 )
 
 type RestClient struct {
@@ -73,6 +73,10 @@ func (r *RestClient) do(req call) error {
 		return err
 	}
 
+	if err := verifyAuthorization(r.authorization); err != nil {
+		return err
+	}
+
 	request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", r.authorization))
 
 	resp, err := r.httpClient.Do(request)
@@ -95,4 +99,9 @@ func (r *RestClient) do(req call) error {
 	}
 
 	return json.Unmarshal(data, req.response)
+}
+
+func verifyAuthorization(auth string) error {
+	jwt.lol()
+	return nil
 }
