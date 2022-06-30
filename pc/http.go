@@ -102,6 +102,20 @@ func (r *RestClient) do(req call) error {
 }
 
 func verifyAuthorization(auth string) error {
-	jwt.lol()
+	if auth == "" {
+		return nil
+	}
+
+	claims := &jwt.MapClaims{}
+
+	_, _, err := new(jwt.Parser).ParseUnverified(auth, claims)
+	if err != nil {
+		return err
+	}
+
+	if err := claims.Valid(); err != nil {
+		return err
+	}
+
 	return nil
 }
