@@ -240,3 +240,14 @@ func userInfo(cmd *cobra.Command, args []string) {
 	fmt.Println("Verification method :", userInfo.VerificationMethod)
 	fmt.Println("Exchange public key :", hex.EncodeToString(userInfo.ExchangePublicKey[:]))
 }
+
+func userExchangeKey(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	userKey, err := pcClient.UserExchangeKey(args[0])
+	if err != nil {
+		fail(err)
+	}
+
+	fmt.Println(hex.EncodeToString(userKey.ExchangePublicKey[:]))
+}

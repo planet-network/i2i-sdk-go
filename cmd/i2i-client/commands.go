@@ -976,7 +976,17 @@ func createUserCommand() *cobra.Command {
 		Run:   userInfo,
 	}
 
+	userExchangeKeyCmd := &cobra.Command{
+		Use:   "exchange-key [login]",
+		Args:  cobra.ExactArgs(1),
+		Short: "get other user exchange key",
+		Long:  `get other user exchange key`,
+		Run:   userExchangeKey,
+	}
+
 	userCmd.AddCommand(userInfoCmd)
+	userCmd.AddCommand(userExchangeKeyCmd)
+
 	return userCmd
 }
 
