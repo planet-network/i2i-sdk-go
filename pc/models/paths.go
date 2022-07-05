@@ -41,5 +41,13 @@ const (
 	/*
 		Request paths
 	*/
-	PathRequestSend = "/request/send"
+	PathRequestSend         = "/request/send"
+	PathRequestIncomingGet  = "/request/incoming/get"
+	PathRequestIncomingList = "/request/incoming/list"
+	PathRequestOutgoingList = "/request/outgoing/list"
+
+	PathShareSend     = "/share/send"
+	PathShareAccept   = "/share/accept"
+	PathDataSharedGet = "/data/shared/get"
+	PathDataSharedPut = "/data/shared/put"
 )

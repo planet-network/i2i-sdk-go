@@ -102,11 +102,15 @@ type CapabilitiesResponse struct {
 }
 
 type DataRequestPack struct {
-	Incoming DataRequestSendRequest `json:"incoming"`
-	Outgoing DataRequestSendRequest `json:"outgoing"`
+	Incoming DataRequest `json:"incoming"`
+	Outgoing DataRequest `json:"outgoing"`
 }
 
-type DataRequestSendRequest struct {
+type DataRequest struct {
+	// ID is unique data request identifier
+	ID [32]byte `json:"id"`
+	// ToUserID is user identifier who is creator of the request
+	FromUserID [32]byte `json:"from_user_id"`
 	// ToUserID is user identifier who is recipient of the request
 	ToUserID [32]byte `json:"to_user_id"`
 	// Until is epoch seconds determining when data request will expire
@@ -123,6 +127,8 @@ type DataRequestSendRequest struct {
 	Incoming bool `json:"incoming"`
 	// Accepted if set to true, means that recipient has agreed to share the data
 	Accepted bool `json:"accepted"`
+	// CreatedAt is epoch time determining when request was created
+	CreatedAt int64 `json:"created_at"`
 }
 
 type DataRequestItem struct {
@@ -140,4 +146,9 @@ type GetPublicExchangeKeyRequest struct {
 type GetPublicExchangeKeyResponse struct {
 	// ExchangePublicKey is requested user public key
 	ExchangePublicKey [32]byte `json:"exchange_public_key"`
+}
+
+type DataRequestGetRequest struct {
+	// ID is unique data request identifier
+	ID [32]byte `json:"id"`
 }

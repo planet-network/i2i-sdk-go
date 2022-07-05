@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
 	"github.com/planet-network/i2i-sdk-go/pc"
 	"github.com/planet-network/i2i-sdk-go/pc/cryptography"
@@ -222,4 +223,20 @@ func pcCapabilities(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Verification methods :", capabilities.VerificationMethods)
 	fmt.Println("Version              :", capabilities.Version)
+}
+
+func userInfo(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	userInfo, err := pcClient.UserInfo()
+	if err != nil {
+		fail(err)
+	}
+
+	createdAt := time.Unix(userInfo.CreatedAt, 0)
+
+	fmt.Println("ID                  :", userInfo.ID)
+	fmt.Println("Created at          :", createdAt.Format(createdAt.Format(time.RFC822)))
+	fmt.Println("Verification method :", userInfo.VerificationMethod)
+	fmt.Println("Exchange public key :", hex.EncodeToString(userInfo.ExchangePublicKey[:]))
 }
