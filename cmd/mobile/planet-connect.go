@@ -103,6 +103,50 @@ func (c *PCClient) DataGet(table string, key string) (*DataResponse, error) {
 	}, nil
 }
 
+func (c *PCClient) ManagerNodeOrder(project string, password string) error {
+	managerClient := pc.NewManager(c.client)
+
+	return managerClient.NodeOrder(project, password)
+}
+
+func (c *PCClient) ManagerNodeDelete(project string) error {
+	managerClient := pc.NewManager(c.client)
+
+	return managerClient.NodeDelete(project)
+}
+
+type CustomerNode struct {
+	ID string `json:"node_id,omitempty"`
+	// ApiAddress is the ip:port address of the graphql endpoint
+	ApiAddress string `json:"api_address,omitempty"`
+	// Plan contains name of the plan assigned to user
+	Plan string `json:"plan,omitempty"`
+	// Token is keychain unlocking token
+	Token      string `json:"token,omitempty"`
+	ValidUntil int64  `json:"valid_until,omitempty"`
+	CreatedAt  int64  `json:"created_at,omitempty"`
+	Live       bool   `json:"live"`
+}
+
+func (c *PCClient) ManagerNodeShow(project string) (*CustomerNode, error) {
+	managerClient := pc.NewManager(c.client)
+
+	node, err := managerClient.NodeGet(project)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CustomerNode{
+		ID:         node.ID,
+		ApiAddress: node.ApiAddress,
+		Plan:       node.Plan,
+		Token:      node.Token,
+		ValidUntil: node.ValidUntil,
+		CreatedAt:  node.CreatedAt,
+		Live:       node.Live,
+	}, nil
+}
+
 // VerifyAuthorization verifies JWT token
 func VerifyAuthorization(auth string) error {
 	return pc.VerifyAuthorization(auth)
