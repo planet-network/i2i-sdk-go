@@ -1042,6 +1042,14 @@ func createPcAuthCommand() *cobra.Command {
 		Run:   pcSecureRandom,
 	}
 
+	verifyCmd := &cobra.Command{
+		Use:   "verify",
+		Short: "verify authorization",
+		Long:  `verify authorization`,
+		Run:   pcVerify,
+	}
+
+	authCmd.AddCommand(verifyCmd)
 	authCmd.AddCommand(registerCmd)
 	authCmd.AddCommand(loginCmd)
 	authCmd.AddCommand(secureRandomCmd)

@@ -102,3 +102,8 @@ func (c *PCClient) DataGet(table string, key string) (*DataResponse, error) {
 		ModifiedAt: parsed.ModifiedAt,
 	}, nil
 }
+
+// VerifyAuthorization verifies JWT token
+func VerifyAuthorization(auth string) error {
+	return pc.VerifyAuthorization(auth)
+}

@@ -1,6 +1,7 @@
 package pc
 
 import (
+	jwt "github.com/golang-jwt/jwt/v4"
 	"github.com/planet-network/i2i-sdk-go/pc/cryptography"
 	"github.com/planet-network/i2i-sdk-go/pc/models"
 	"net/http"
@@ -19,6 +20,17 @@ func (r *RestClient) Register(login, secret, method string) (*models.RegisterReq
 	})
 
 	return request, err
+}
+
+func VerifyAuthorization(authorization string) error {
+	var mapClaims jwt.MapClaims
+
+	token, _, err := jwt.NewParser().ParseUnverified(authorization, &mapClaims)
+	if err != nil {
+		return err
+	}
+
+	return token.Claims.Valid()
 }
 
 func (r *RestClient) Login(login, secret string) (*models.LoginResponse, error) {

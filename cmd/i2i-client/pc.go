@@ -86,6 +86,17 @@ func pcSecureRandom(cmd *cobra.Command, args []string) {
 
 }
 
+func pcVerify(cmd *cobra.Command, args []string) {
+	authorization := os.Getenv(authorizationEnv)
+	if authorization == "" {
+		fail(authorizationEnv, "env not set")
+	}
+
+	if err := pc.VerifyAuthorization(authorization); err != nil {
+		fail(err)
+	}
+}
+
 func printForEval(secret string, response *models.LoginResponse) {
 	var (
 		derivedPassword = cryptography.DerivedPassword([]byte(secret))
