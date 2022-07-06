@@ -211,9 +211,35 @@ func pcNodeOrder(cmd *cobra.Command, args []string) {
 
 	manager := pc.NewManager(pcClient)
 
-	if err := manager.NodeOrder(args[0]); err != nil {
+	if err := manager.NodeOrder(args[0], "12309poiqwelkjaf,mnclkajds98hv"); err != nil {
 		fail(err)
 	}
+}
+
+func pcNodeDelete(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	manager := pc.NewManager(pcClient)
+
+	if err := manager.NodeDelete(args[0]); err != nil {
+		fail(err)
+	}
+}
+
+func pcNodeShow(cmd *cobra.Command, args []string) {
+	pcClient := createClient(cmd, true)
+
+	manager := pc.NewManager(pcClient)
+
+	node, err := manager.NodeGet(args[0])
+	if err != nil {
+		fail(err)
+	}
+
+	fmt.Println("ID      :", node.ID)
+	fmt.Println("Token   :", node.Token)
+	fmt.Println("Plan    :", node.Plan)
+	fmt.Println("Address :", node.ApiAddress)
 }
 
 func pcPing(cmd *cobra.Command, args []string) {

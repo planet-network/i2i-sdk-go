@@ -944,7 +944,7 @@ func createPlanetConnectCommand() *cobra.Command {
 	pcCmd.AddCommand(createPcAuthCommand())
 	pcCmd.AddCommand(createPcDataCommand())
 	pcCmd.AddCommand(createPcTableCommand())
-	pcCmd.AddCommand(createPcNodeOrderCommand())
+	pcCmd.AddCommand(createPcManagerCommand())
 	pcCmd.AddCommand(createPcPingCommand())
 	pcCmd.AddCommand(createPcCapabilitiesCommand())
 	pcCmd.AddCommand(createUserCommand())
@@ -999,14 +999,43 @@ func createPcCapabilitiesCommand() *cobra.Command {
 	}
 }
 
-func createPcNodeOrderCommand() *cobra.Command {
-	return &cobra.Command{
-		Use:   "node-order [name]",
+func createPcManagerCommand() *cobra.Command {
+	managerCmd := &cobra.Command{
+		Use:   "manager",
+		Short: "i2i-manager integration",
+		Long:  `i2i-manager integration`,
+		Run:   nil,
+	}
+
+	orderCmd := &cobra.Command{
+		Use:   "order [name]",
 		Args:  cobra.ExactArgs(1),
 		Short: "order i2i node",
 		Long:  `order i2i node`,
 		Run:   pcNodeOrder,
 	}
+
+	deleteCmd := &cobra.Command{
+		Use:   "delete [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "delete i2i node",
+		Long:  `delete i2i node`,
+		Run:   pcNodeDelete,
+	}
+
+	showCmd := &cobra.Command{
+		Use:   "show [name]",
+		Args:  cobra.ExactArgs(1),
+		Short: "show i2i node",
+		Long:  `show i2i node`,
+		Run:   pcNodeShow,
+	}
+
+	managerCmd.AddCommand(orderCmd)
+	managerCmd.AddCommand(deleteCmd)
+	managerCmd.AddCommand(showCmd)
+
+	return managerCmd
 }
 
 func createPcAuthCommand() *cobra.Command {

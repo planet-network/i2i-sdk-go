@@ -9,6 +9,15 @@ func (r *RestClient) DataGet(table, key string) (*models.DataResponse, error) {
 	return r.dataGet(table, key)
 }
 
+func (r *RestClient) DataGetParsed(table, key string) (*models.DataResponse, error) {
+	response, err := r.dataGet(table, key)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.parseDataResponse(response)
+}
+
 func (r *RestClient) dataGet(table, key string) (*models.DataResponse, error) {
 	var dataGetResponse models.DataResponse
 
