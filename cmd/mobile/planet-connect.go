@@ -1,54 +1,28 @@
 package mobile
 
 import (
-	"fmt"
-	"github.com/planet-network/planet-connect/client"
-	"github.com/planet-network/planet-connect/models"
-	"time"
+	"github.com/planet-network/i2i-sdk-go/pc"
+	"github.com/planet-network/i2i-sdk-go/pc/cryptography"
 )
 
 type PCClient struct {
-	client *client.Client
+	client *pc.RestClient
 }
 
 func New() *PCClient {
+	client, _ := pc.NewRestClient("https://pc.vlow.me")
+
 	return &PCClient{
-		client: client.New(),
+		client: client,
 	}
 }
 
-func (c *PCClient) Connect() error {
-	if err := c.client.Connect("wss://pc.vlow.me/api"); err != nil {
-		return err
-	}
-
-	go c.client.ReceiveLoop(32)
-
-	return nil
+func (c *PCClient) SetAuthorization(auth string) {
+	c.client.SetAuthorization(auth)
 }
 
 func (c *PCClient) Register(login string, secret string, method string) error {
-	id, err := c.client.Register(login, secret, method)
-	if err != nil {
-		return err
-	}
-
-	_, err = c.clientWaitReply(id, models.TypeRegister)
-	return err
-}
-
-func (c *PCClient) Login(login string, secret string, method string) error {
-	id, err := c.client.Login(login, secret, method)
-	if err != nil {
-		return err
-	}
-
-	_, err = c.clientWaitReply(id, models.TypeLogin)
-	return err
-}
-
-func (c *PCClient) Logout() error {
-	_, err := c.client.Logout()
+	_, err := c.client.Register(login, secret, method)
 	if err != nil {
 		return err
 	}
@@ -56,64 +30,124 @@ func (c *PCClient) Logout() error {
 	return err
 }
 
-func (c *PCClient) PersonalDataAdd(key string, value string) error {
-	id, err := c.client.PersonalDataAdd(&client.PersonalDataInput{
-		Key:      []byte(key),
-		Value:    []byte(value),
-		DataFlag: client.DataFlagPrivate,
-	})
+type LoginResponse struct {
+	Authorization string   `json:"authorization"`
+	SecureRandom  [32]byte `json:"secure_random"`
+}
 
+func (c *PCClient) Login(login string, secret string) (*LoginResponse, error) {
+	response, err := c.client.Login(login, secret)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoginResponse{
+		Authorization: response.Authorization,
+		SecureRandom:  response.SecureRandom,
+	}, err
+}
+
+func (c *PCClient) Initialize(secret string) error {
+	response, err := c.client.SecureRandom(secret)
 	if err != nil {
 		return err
 	}
 
-	_, err = c.clientWaitReply(id, models.TypePersonalDataAdd)
-	return err
-}
-
-func (c *PCClient) PersonalDataGet(key string) (string, error) {
-	id, err := c.client.PersonalDataGet([]byte(key))
-
-	if err != nil {
-		return "", err
-	}
-
-	reply, err := c.clientWaitReply(id, models.TypePersonalDataGet)
-	if err != nil {
-		return "", err
-	}
-
-	parsed, err := c.client.Parse(reply)
-	if err != nil {
-		return "", err
-	}
-
-	return string(parsed.Data.Value), nil
-}
-
-func (c *PCClient) clientWaitReply(id string, replyType models.CallType) (*models.Response, error) {
 	var (
-		timer = time.NewTimer(time.Minute * 15)
-		r     = &models.Response{}
+		derivedPassword = cryptography.DerivedPassword([]byte(secret))
+		preMasterKey    = cryptography.CalculatePreMasterKey(derivedPassword)
+		masterKey       = cryptography.CalculateMasterKey(preMasterKey, response.SecureRandom)
 	)
 
-	select {
-	case <-timer.C:
-		return nil, fmt.Errorf("reply timeout")
-	case r = <-c.client.C:
+	c.client.SetMasterKey(masterKey)
+
+	return err
+}
+
+func (c *PCClient) DataAdd(table string, key string, value string) error {
+	err := c.client.DataAdd(table, key, value)
+	return err
+}
+
+type DataResponse struct {
+	// Table is name of the table in which the data is stored
+	Table []byte `json:"table"`
+	// Key is data unique key per table data is stored in
+	Key []byte `json:"key"`
+	// Value is data value
+	Value []byte `json:"value"`
+	// CreatedAt is epoch time when data was added
+	CreatedAt int64 `json:"created_at"`
+	// UpdatedAt is epoch time when data was last time updated
+	ModifiedAt int64 `json:"modified_at"`
+}
+
+func (c *PCClient) DataGet(table string, key string) (*DataResponse, error) {
+	response, err := c.client.DataGet(table, key)
+
+	if err != nil {
+		return nil, err
 	}
 
-	if r.Code != 200 {
-		return nil, fmt.Errorf("call failed: code: %d, err: %s", r.Code, r.Error)
+	parsed, err := c.client.ParseDataResponse(response)
+	if err != nil {
+		return nil, err
 	}
 
-	if r.ID != id {
-		return nil, fmt.Errorf("reply id=%s, expected: %s", r.ID, id)
+	return &DataResponse{
+		Table:      parsed.Table,
+		Key:        parsed.Key,
+		Value:      parsed.Value,
+		CreatedAt:  parsed.CreatedAt,
+		ModifiedAt: parsed.ModifiedAt,
+	}, nil
+}
+
+func (c *PCClient) ManagerNodeOrder(project string, password string) error {
+	managerClient := pc.NewManager(c.client)
+
+	return managerClient.NodeOrder(project, password)
+}
+
+func (c *PCClient) ManagerNodeDelete(project string) error {
+	managerClient := pc.NewManager(c.client)
+
+	return managerClient.NodeDelete(project)
+}
+
+type CustomerNode struct {
+	ID string `json:"node_id,omitempty"`
+	// ApiAddress is the ip:port address of the graphql endpoint
+	ApiAddress string `json:"api_address,omitempty"`
+	// Plan contains name of the plan assigned to user
+	Plan string `json:"plan,omitempty"`
+	// Token is keychain unlocking token
+	Token      string `json:"token,omitempty"`
+	ValidUntil int64  `json:"valid_until,omitempty"`
+	CreatedAt  int64  `json:"created_at,omitempty"`
+	Live       bool   `json:"live"`
+}
+
+func (c *PCClient) ManagerNodeShow(project string) (*CustomerNode, error) {
+	managerClient := pc.NewManager(c.client)
+
+	node, err := managerClient.NodeGet(project)
+	if err != nil {
+		return nil, err
 	}
 
-	if r.Type != replyType {
-		return nil, fmt.Errorf("reply type=%s, expected: %s", r.Type.String(), replyType.String())
-	}
+	return &CustomerNode{
+		ID:         node.ID,
+		ApiAddress: node.ApiAddress,
+		Plan:       node.Plan,
+		Token:      node.Token,
+		ValidUntil: node.ValidUntil,
+		CreatedAt:  node.CreatedAt,
+		Live:       node.Live,
+	}, nil
+}
 
-	return r, nil
+// VerifyAuthorization verifies JWT token
+func VerifyAuthorization(auth string) error {
+	return pc.VerifyAuthorization(auth)
 }

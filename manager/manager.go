@@ -29,6 +29,14 @@ type Client struct {
 	clientID string
 }
 
+func (c *Client) ClientID() string {
+	return c.clientID
+}
+
+func (c *Client) Password() string {
+	return c.password
+}
+
 type ClientOpt struct {
 	// Address is either http or https url
 	// https://manager.example.com
