@@ -90,12 +90,12 @@ func (m *Manager) NodeOrder(project string, password string) error {
 func (m *Manager) NodeGet(project string) (*manager.CustomerNode, error) {
 	table := fmt.Sprintf("app.i2i.%s", project)
 
-	clientID, err := m.restClient.DataGetParsed(table, "client_id")
+	clientID, err := m.restClient.DataGet(table, "client_id")
 	if err != nil {
 		return nil, err
 	}
 
-	password, err := m.restClient.DataGetParsed(table, "password")
+	password, err := m.restClient.DataGet(table, "password")
 	if err != nil {
 		return nil, err
 	}
@@ -112,27 +112,27 @@ func (m *Manager) NodeGet(project string) (*manager.CustomerNode, error) {
 		}
 	}
 
-	plan, err := m.restClient.DataGetParsed(table, "plan")
+	plan, err := m.restClient.DataGet(table, "plan")
 	if err != nil {
 		return nil, err
 	}
 
-	address, err := m.restClient.DataGetParsed(table, "address")
+	address, err := m.restClient.DataGet(table, "address")
 	if err != nil {
 		return nil, err
 	}
 
-	id, err := m.restClient.DataGetParsed(table, "id")
+	id, err := m.restClient.DataGet(table, "id")
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := m.restClient.DataGetParsed(table, "token")
+	token, err := m.restClient.DataGet(table, "token")
 	if err != nil {
 		return nil, err
 	}
 
-	liveRaw, err := m.restClient.DataGetParsed(table, "live")
+	liveRaw, err := m.restClient.DataGet(table, "live")
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (m *Manager) NodeGet(project string) (*manager.CustomerNode, error) {
 		return nil, err
 	}
 
-	validUntilRaw, err := m.restClient.DataGetParsed(table, "valid_until")
+	validUntilRaw, err := m.restClient.DataGet(table, "valid_until")
 	if err != nil {
 		return nil, err
 	}
@@ -164,12 +164,12 @@ func (m *Manager) NodeGet(project string) (*manager.CustomerNode, error) {
 func (m *Manager) NodeDelete(project string) error {
 	table := fmt.Sprintf("app.i2i.%s", project)
 
-	clientID, err := m.restClient.DataGetParsed(table, "client_id")
+	clientID, err := m.restClient.DataGet(table, "client_id")
 	if err != nil {
 		return err
 	}
 
-	password, err := m.restClient.DataGetParsed(table, "password")
+	password, err := m.restClient.DataGet(table, "password")
 	if err != nil {
 		return err
 	}

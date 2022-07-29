@@ -5,10 +5,6 @@ import (
 	"github.com/planet-network/i2i-sdk-go/pc/models"
 )
 
-func (r *RestClient) ParseDataResponse(resp *models.DataResponse) (*models.DataResponse, error) {
-	return r.parseDataResponse(resp)
-}
-
 func (r *RestClient) parseValueKeyFromDataResponse(resp *models.DataResponse) ([32]byte, error) {
 	return r.client.DecryptValueKey(resp.EncryptedValueKey)
 }
@@ -58,7 +54,7 @@ func (r *RestClient) ParseDataListResponse(list []*models.DataResponse) ([]*mode
 	return parsedList, nil
 }
 
-func (r *RestClient) ParseTableListResponse(response *models.TableListResponse) (*models.TableListResponse, error) {
+func (r *RestClient) parseTableListResponse(response *models.TableListResponse) (*models.TableListResponse, error) {
 	parsedResponse := &models.TableListResponse{Tables: make([][]byte, 0, len(response.Tables))}
 
 	for i := range response.Tables {

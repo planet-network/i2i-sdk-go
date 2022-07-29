@@ -6,10 +6,6 @@ import (
 )
 
 func (r *RestClient) DataGet(table, key string) (*models.DataResponse, error) {
-	return r.dataGet(table, key)
-}
-
-func (r *RestClient) DataGetParsed(table, key string) (*models.DataResponse, error) {
 	response, err := r.dataGet(table, key)
 	if err != nil {
 		return nil, err
@@ -100,7 +96,17 @@ func (r *RestClient) DataList(tables []string) ([]*models.DataResponse, error) {
 		response: &response,
 	})
 
-	return response, err
+	parsedList := make([]*models.DataResponse, 0, len(response))
+
+	for i := range response {
+		parsed, err := r.parseDataResponse(response[i])
+		if err != nil {
+			return nil, err
+		}
+		parsedList = append(parsedList, parsed)
+	}
+
+	return parsedList, err
 }
 
 func (r *RestClient) TableList() (*models.TableListResponse, error) {
@@ -112,5 +118,10 @@ func (r *RestClient) TableList() (*models.TableListResponse, error) {
 		response: &response,
 	})
 
-	return &response, err
+	parsed, err := r.parseTableListResponse(&response)
+	if err != nil {
+		return nil, err
+	}
+
+	return parsed, err
 }
